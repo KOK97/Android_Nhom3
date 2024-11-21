@@ -8,19 +8,24 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class AccountActivity : AppCompatActivity() {
     private lateinit var btnLogout: com.google.android.material.card.MaterialCardView
+    private lateinit var navbarBott: BottomNavigationView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_account)
         setControl()
         setEvent()
+        setEventNavBar()
     }
 
     private fun setControl() {
         btnLogout = findViewById(R.id.btnLogout)
+        //nav
+        navbarBott = findViewById<BottomNavigationView>(R.id.bottom_navigation)
     }
 
     private fun setEvent() {
@@ -49,5 +54,34 @@ class AccountActivity : AppCompatActivity() {
             alertDialog.show()
         }
     }
+    private fun setEventNavBar(){
+        navbarBott.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    // Xử lý khi chọn Home
+                    true
+                }
+                R.id.nav_search -> {
+                    // Xử lý khi chọn Search
+                    true
+                }
+                R.id.nav_shoppingcart -> {
+                    // Chuyển
+                    val intent = Intent(this, CartActivity::class.java)
+                    startActivity(intent)
 
+                    true
+                }
+                R.id.nav_wishlist -> {
+                    // Xử lý khi chọn Favorites
+                    true
+                }
+                R.id.nav_account -> {
+                    // Xử lý khi chọn Profile
+                    true
+                }
+                else -> false
+            }
+        }
+    }
 }
