@@ -1,20 +1,97 @@
 package com.example.nhom3_project
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.animation.AnimationUtils
+import android.widget.TextView
+import android.widget.ViewFlipper
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.denzcoskun.imageslider.ImageSlider
+import com.denzcoskun.imageslider.constants.ScaleTypes
+import com.denzcoskun.imageslider.models.SlideModel
 
 class HomeActivity : AppCompatActivity() {
+    private lateinit var tvNextspm: TextView
+    private lateinit var tvPrespm: TextView
+    private lateinit var tvNextspbc: TextView
+    private lateinit var tvPrespbc: TextView
+    private lateinit var viewFlipperspbc: ViewFlipper
+    private lateinit var viewFlipperspm: ViewFlipper
+
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
         setContentView(R.layout.activity_home)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+
+        //banner
+        val imageSlider = findViewById<ImageSlider>(R.id.bannerSlide)
+        val imageList = ArrayList<SlideModel>()
+        imageList.add(SlideModel("https://trangsuc.vntheme.com/wp-content/uploads/2023/05/banner_Lac.jpg","Trang sức lắc tay"))
+        imageList.add(SlideModel("https://image.donghohaitrieu.com/wp-content/uploads/2023/10/trang-suc-bac-nam-nu-chinh-hang.jpg","Trang sức bạc"))
+        imageList.add(SlideModel("https://theme.hstatic.net/200000061680/1000549213/14/2banner_top_img.png?v=1351","Nhẫn đá Cubic"))
+        imageSlider.setImageList(imageList, ScaleTypes.FIT)
+
+
+
+
+        setControl()
+        setEvent()
+    }
+    private fun setControl(){
+        tvNextspm = findViewById(R.id.tvNextspm)
+        tvPrespm = findViewById(R.id.tvPrespm)
+        tvNextspbc = findViewById(R.id.tvNextspbc)
+        tvPrespbc = findViewById(R.id.tvPrespbc)
+        viewFlipperspm = findViewById(R.id.vfSPM)
+        viewFlipperspbc = findViewById(R.id.vfSPBC)
+    }
+    private fun setEvent(){
+        //viewFlip spbc
+        val inani = AnimationUtils.loadAnimation(this,R.anim.fade_in)
+        val outani = AnimationUtils.loadAnimation(this,R.anim.fade_out)
+        viewFlipperspbc.setInAnimation(inani)
+        viewFlipperspbc.setOutAnimation(outani)
+        viewFlipperspbc.setFlipInterval(5000)
+        viewFlipperspbc.startFlipping()
+
+        tvNextspbc.setOnClickListener(){
+
+            viewFlipperspbc.showNext()
+            viewFlipperspbc.startFlipping()
+
         }
+        tvPrespbc.setOnClickListener(){
+
+
+            viewFlipperspbc.showPrevious()
+            viewFlipperspbc.startFlipping()
+
+
+        }
+//viewFlip spm
+
+        viewFlipperspm.setInAnimation(inani)
+        viewFlipperspm.setOutAnimation(outani)
+        viewFlipperspm.setFlipInterval(5000)
+        viewFlipperspm.startFlipping()
+        tvNextspm.setOnClickListener(){
+
+            viewFlipperspm.showNext()
+            viewFlipperspm.startFlipping()
+
+        }
+        tvPrespm.setOnClickListener(){
+
+
+            viewFlipperspm.showPrevious()
+            viewFlipperspm.startFlipping()
+
+
+        }
+
     }
 }
+

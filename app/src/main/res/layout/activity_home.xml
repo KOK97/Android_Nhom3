@@ -1,10 +1,652 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#FFFFFF"
+    xmlns:tools="http://schemas.android.com/tools">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+
+            <ImageView
+                android:id="@+id/ivLogo"
+                android:layout_width="160dp"
+                android:layout_height="97dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="16dp"
+                app:srcCompat="@drawable/logo" />
+
+<!--            Banner              -->
+            <com.denzcoskun.imageslider.ImageSlider
+                android:id="@+id/bannerSlide"
+                android:layout_width="match_parent"
+                android:layout_height="210dp"
+                android:layout_marginTop="30dp"
+                app:iss_auto_cycle="true"
+                app:iss_corner_radius="5"
+                app:iss_delay="0"
+                app:iss_error_image="@android:color/darker_gray"
+                app:iss_period="1000"
+                app:iss_placeholder="@android:color/darker_gray"
+                app:iss_selected_dot="@drawable/default_selected_dot"
+                app:iss_unselected_dot="@drawable/default_unselected_dot"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ivLogo" />
+<!-- san pham ban chay -->
+            <TextView
+                android:id="@+id/tvSPBC"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="20dp"
+                android:text="Sản phẩm bán chạy"
+                android:textSize="20sp"
+                android:layout_gravity="start"/>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/frSPBC"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:layout_marginTop="20dp">
+
+                <ViewFlipper
+                    android:id="@+id/vfSPBC"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/frspbc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="30dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/frspbc1"
+                            tools:layout_editor_absoluteY="16dp">
+
+                            <ImageView
+                                android:id="@+id/imageView"
+                                android:layout_width="150dp"
+                                android:layout_height="100dp"
+                                android:src="@drawable/nhan"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tvNamePr"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Nhan"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+                            <TextView
+                                android:id="@+id/tvPrice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="560.00 VND"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent" />
+
+                            <ImageButton
+                                android:id="@+id/ibCart"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="2dp"
+                                android:background="#8EE4C6"
+                                android:src="@drawable/cart_icons"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/ibLike"
+                                tools:ignore="MissingConstraints" />
+
+                            <ImageButton
+                                android:id="@+id/ibLike"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="#8EE4C6"
+                                android:src="@drawable/like"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/frspbc1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="30dp"
+                            android:layout_marginEnd="10dp"
+                            app:layout_constraintEnd_toStartOf="@+id/frspbc"
+                            app:layout_constraintStart_toStartOf="parent"
+                            tools:ignore="NotSibling"
+                            tools:layout_editor_absoluteY="0dp">
+
+                            <ImageView
+                                android:id="@+id/imageView1"
+                                android:layout_width="150dp"
+                                android:layout_height="100dp"
+                                android:src="@drawable/nhan2"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tvNamePr1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Nhan"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/imageView1" />
+
+                            <TextView
+                                android:id="@+id/tvPrice1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="560.00 VND"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent" />
+
+                            <ImageButton
+                                android:id="@+id/ibCart1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="2dp"
+                                android:background="#8EE4C6"
+                                android:src="@drawable/cart_icons"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/ibLike1"
+                                tools:ignore="MissingConstraints" />
+
+                            <ImageButton
+                                android:id="@+id/ibLike1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="#8EE4C6"
+                                android:src="@drawable/like"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    <!--                    flipper image 2-->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/frspbc2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="30dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/frspbc3"
+                            tools:layout_editor_absoluteY="16dp">
+
+                            <ImageView
+                                android:id="@+id/imageView2"
+                                android:layout_width="150dp"
+                                android:layout_height="100dp"
+                                android:src="@drawable/nhan3"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tvNamePr2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Nhan vang"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+                            <TextView
+                                android:id="@+id/tvPrice2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="960.00 VND"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent" />
+
+                            <ImageButton
+                                android:id="@+id/ibCart2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="2dp"
+                                android:background="#8EE4C6"
+                                android:src="@drawable/cart_icons"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/ibLike2"
+                                tools:ignore="MissingConstraints" />
+
+                            <ImageButton
+                                android:id="@+id/ibLike2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="#8EE4C6"
+                                android:src="@drawable/like"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/frspbc3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="30dp"
+                            android:layout_marginEnd="10dp"
+                            app:layout_constraintEnd_toStartOf="@+id/frspm2"
+                            app:layout_constraintStart_toStartOf="parent"
+                            tools:ignore="NotSibling"
+                            tools:layout_editor_absoluteY="0dp">
+
+                            <ImageView
+                                android:id="@+id/imageView3"
+                                android:layout_width="150dp"
+                                android:layout_height="100dp"
+                                android:src="@drawable/nhan4"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tvNamePr3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Nhan bac"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+
+                            <TextView
+                                android:id="@+id/tvPrice3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="760.00 VND"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent" />
+
+                            <ImageButton
+                                android:id="@+id/ibCart3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="2dp"
+                                android:background="#8EE4C6"
+                                android:src="@drawable/cart_icons"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/ibLike3"
+                                tools:ignore="MissingConstraints" />
+
+                            <ImageButton
+                                android:id="@+id/ibLike3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="#8EE4C6"
+                                android:src="@drawable/like"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </ViewFlipper>
+
+                <TextView
+                    android:id="@+id/tvNextspbc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="47dp"
+                    android:layout_marginBottom="46dp"
+                    android:text="+"
+                    android:textSize="50sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+
+                    app:layout_constraintTop_toTopOf="parent"
+                   />
+
+                <TextView
+                    android:id="@+id/tvPrespbc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="46dp"
+                    android:layout_marginBottom="47dp"
+                    android:text="-"
+                    android:textSize="50sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                 />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--san pham moi-->
+            <TextView
+                android:id="@+id/tvSPM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="20dp"
+                android:text="Sản phẩm mới"
+                android:textSize="20sp"
+                android:layout_gravity="start"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/frSPM"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:layout_marginTop="20dp">
+
+                <ViewFlipper
+                    android:id="@+id/vfSPM"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/frspm"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="30dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/frspm1"
+                            tools:layout_editor_absoluteY="16dp">
+
+                            <ImageView
+                                android:id="@+id/imageViewspm"
+                                android:layout_width="150dp"
+                                android:layout_height="100dp"
+                                android:src="@drawable/nhan"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tvNamePrspm"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Nhan"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/imageViewspm" />
+
+                            <TextView
+                                android:id="@+id/tvPricespm"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="560.00 VND"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent" />
+
+                            <ImageButton
+                                android:id="@+id/ibCartspm"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="2dp"
+                                android:background="#8EE4C6"
+                                android:src="@drawable/cart_icons"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/ibLikespm"
+                                tools:ignore="MissingConstraints" />
+
+                            <ImageButton
+                                android:id="@+id/ibLikespm"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="#8EE4C6"
+                                android:src="@drawable/like"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/frspm1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="30dp"
+                            android:layout_marginEnd="10dp"
+                            app:layout_constraintEnd_toStartOf="@+id/frspm"
+                            app:layout_constraintStart_toStartOf="parent"
+                            tools:ignore="NotSibling"
+                            tools:layout_editor_absoluteY="0dp">
+
+                            <ImageView
+                                android:id="@+id/imageViewspm1"
+                                android:layout_width="150dp"
+                                android:layout_height="100dp"
+                                android:src="@drawable/nhan2"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tvNamePrspm1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Nhan"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/imageViewspm1" />
+
+                            <TextView
+                                android:id="@+id/tvPricespm1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="560.00 VND"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent" />
+
+                            <ImageButton
+                                android:id="@+id/ibCartspm1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="2dp"
+                                android:background="#8EE4C6"
+                                android:src="@drawable/cart_icons"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/ibLikespm1"
+                                tools:ignore="MissingConstraints" />
+
+                            <ImageButton
+                                android:id="@+id/ibLikespm1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="#8EE4C6"
+                                android:src="@drawable/like"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    <!--                    flipper image 2-->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/frspm2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="30dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/frspm3"
+                            tools:layout_editor_absoluteY="16dp">
+
+                            <ImageView
+                                android:id="@+id/imageViewspm2"
+                                android:layout_width="150dp"
+                                android:layout_height="100dp"
+                                android:src="@drawable/nhan3"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tvNamePrspm2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Nhan vang"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/imageViewspm2" />
+
+                            <TextView
+                                android:id="@+id/tvPricespm2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="960.00 VND"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent" />
+
+                            <ImageButton
+                                android:id="@+id/ibCartspm2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="2dp"
+                                android:background="#8EE4C6"
+                                android:src="@drawable/cart_icons"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/ibLikespm2"
+                                tools:ignore="MissingConstraints" />
+
+                            <ImageButton
+                                android:id="@+id/ibLikespm2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="#8EE4C6"
+                                android:src="@drawable/like"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/frspm3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="30dp"
+                            android:layout_marginEnd="10dp"
+                            app:layout_constraintEnd_toStartOf="@+id/frspm2"
+                            app:layout_constraintStart_toStartOf="parent"
+                            tools:ignore="NotSibling"
+                            tools:layout_editor_absoluteY="0dp">
+
+                            <ImageView
+                                android:id="@+id/imageViewspm3"
+                                android:layout_width="150dp"
+                                android:layout_height="100dp"
+                                android:src="@drawable/nhan4"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tvNamePrspm3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Nhan bac"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/imageViewspm3" />
+
+                            <TextView
+                                android:id="@+id/tvPricespm3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="760.00 VND"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent" />
+
+                            <ImageButton
+                                android:id="@+id/ibCartspm3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="2dp"
+                                android:background="#8EE4C6"
+                                android:src="@drawable/cart_icons"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/ibLikespm3"
+                                tools:ignore="MissingConstraints" />
+
+                            <ImageButton
+                                android:id="@+id/ibLikespm3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="#8EE4C6"
+                                android:src="@drawable/like"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </ViewFlipper>
+
+                <TextView
+                    android:id="@+id/tvNextspm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="47dp"
+                    android:layout_marginBottom="46dp"
+                    android:text="+"
+                    android:textSize="50sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+
+                    app:layout_constraintTop_toTopOf="parent"
+                   />
+
+                <TextView
+                    android:id="@+id/tvPrespm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="46dp"
+                    android:layout_marginBottom="47dp"
+                    android:text="-"
+                    android:textSize="50sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
