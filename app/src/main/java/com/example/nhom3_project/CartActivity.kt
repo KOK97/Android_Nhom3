@@ -61,12 +61,6 @@ class CartActivity : AppCompatActivity() {
                     // Xử lý khi chọn Search
                     true
                 }
-                R.id.nav_shoppingcart -> {
-                    // Chuyển
-                    val intent = Intent(this, CartActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
                 R.id.nav_wishlist -> {
                     // Xử lý khi chọn Favorites
                     true
