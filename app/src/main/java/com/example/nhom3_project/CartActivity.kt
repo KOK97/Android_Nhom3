@@ -44,7 +44,10 @@ class CartActivity : AppCompatActivity() {
         ivBackCart.setOnClickListener{
             // Quay lại hoặc hiện thông báo
             Toast.makeText(this, "Back button clicked", Toast.LENGTH_SHORT).show()
-            finish() // Kết thúc activity để quay lại màn hình trước
+//            finish() // Kết thúc activity để quay lại màn hình trước
+            // Chuyển
+            val intent = Intent(this, AccountActivity::class.java)
+            startActivity(intent)
         }
     }
     private fun setEventNavBar(){
