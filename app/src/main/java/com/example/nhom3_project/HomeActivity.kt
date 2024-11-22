@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.animation.AnimationUtils
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.ViewFlipper
@@ -19,6 +20,18 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var tvPrespm: ImageView
     private lateinit var tvNextspbc: ImageView
     private lateinit var tvPrespbc: ImageView
+    private lateinit var ibCart: ImageButton
+    private lateinit var ibCart1: ImageButton
+    private lateinit var ibCart2: ImageButton
+    private lateinit var ibCart3: ImageButton
+
+    private lateinit var ibCartspm: ImageButton
+    private lateinit var ibCartspm1: ImageButton
+    private lateinit var ibCartspm2: ImageButton
+    private lateinit var ibCartspm3: ImageButton
+
+    private lateinit var ibLike: ImageButton
+
     private lateinit var viewFlipperspbc: ViewFlipper
     private lateinit var viewFlipperspm: ViewFlipper
 
@@ -45,6 +58,17 @@ class HomeActivity : AppCompatActivity() {
     }
     private fun setControl(){
         tvNextspm = findViewById(R.id.tvNextspm)
+
+        ibCart = findViewById(R.id.ibCart)
+        ibCart1 = findViewById(R.id.ibCart1)
+        ibCart2= findViewById(R.id.ibCart2)
+        ibCart3= findViewById(R.id.ibCart3)
+
+        ibCartspm = findViewById(R.id.ibCartspm)
+        ibCartspm1 = findViewById(R.id.ibCartspm1)
+        ibCartspm2= findViewById(R.id.ibCartspm2)
+        ibCartspm3= findViewById(R.id.ibCartspm3)
+
         tvPrespm = findViewById(R.id.tvPrespm)
         tvNextspbc = findViewById(R.id.tvNextspbc)
         tvPrespbc = findViewById(R.id.tvPrespbc)
@@ -97,6 +121,40 @@ class HomeActivity : AppCompatActivity() {
 
         }
 
+
+        ibCart.setOnClickListener {
+            val intent = Intent(this, CartActivity::class.java)
+            startActivity(intent)
+        }
+        ibCart1.setOnClickListener {
+            val intent = Intent(this, CartActivity::class.java)
+            startActivity(intent)
+        }
+        ibCart2.setOnClickListener {
+            val intent = Intent(this, CartActivity::class.java)
+            startActivity(intent)
+        }
+        ibCart3.setOnClickListener {
+            val intent = Intent(this, CartActivity::class.java)
+            startActivity(intent)
+        }
+
+        ibCartspm1.setOnClickListener {
+            val intent = Intent(this, CartActivity::class.java)
+            startActivity(intent)
+        }
+        ibCartspm.setOnClickListener {
+            val intent = Intent(this, CartActivity::class.java)
+            startActivity(intent)
+        }
+        ibCartspm2.setOnClickListener {
+            val intent = Intent(this, CartActivity::class.java)
+            startActivity(intent)
+        }
+        ibCartspm3.setOnClickListener {
+            val intent = Intent(this, CartActivity::class.java)
+            startActivity(intent)
+        }
     }
     private fun setEventNavBar(){
         navbarBott.setOnNavigationItemSelectedListener { item ->
