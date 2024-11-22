@@ -11,7 +11,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val intent = Intent(this, AccountActivity::class.java)
+        val intent = Intent(this, SplashActivity::class.java)
         val splashScreen = installSplashScreen()
 
         startActivity(intent)
