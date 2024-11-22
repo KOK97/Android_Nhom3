@@ -16,6 +16,9 @@
             android:name=".AccountActivity"
             android:exported="false" />
         <activity
+            android:name=".AdminAction"
+            android:exported="false" />
+        <activity
             android:name=".LoginActivity"
             android:exported="false" />
         <activity

@@ -3,6 +3,7 @@ package com.example.nhom3_project
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +11,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 class AccountActivity : AppCompatActivity() {
+    private lateinit var tvHTQL : TextView
     private lateinit var btnLogout: com.google.android.material.card.MaterialCardView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,6 +23,7 @@ class AccountActivity : AppCompatActivity() {
 
     private fun setControl() {
         btnLogout = findViewById(R.id.btnLogout)
+        tvHTQL = findViewById(R.id.hethongquanly)
     }
 
     private fun setEvent() {
@@ -39,6 +42,7 @@ class AccountActivity : AppCompatActivity() {
                 finish() // Kết thúc Activity hiện tại
             }
 
+
             // Nút "Hủy"
             builder.setNegativeButton("Hủy") { dialog, _ ->
                 dialog.dismiss() // Đóng hộp thoại
@@ -47,6 +51,11 @@ class AccountActivity : AppCompatActivity() {
             // Hiển thị hộp thoại
             val alertDialog = builder.create()
             alertDialog.show()
+        }
+        tvHTQL.setOnClickListener{
+            val intent = Intent(this, AdminAction::class.java)
+            startActivity(intent)
+
         }
     }
 
