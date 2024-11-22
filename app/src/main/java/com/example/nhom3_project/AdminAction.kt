@@ -27,7 +27,7 @@ class AdminAction : AppCompatActivity(), NavigationView.OnNavigationItemSelected
         setSupportActionBar(toolbar)
 
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
-        navigationView.setNavigationItemSelectedListener (this)
+        navigationView.setNavigationItemSelectedListener(this)
         val toggle = ActionBarDrawerToggle(
             this,
             drawerLayout,
@@ -38,27 +38,34 @@ class AdminAction : AppCompatActivity(), NavigationView.OnNavigationItemSelected
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-        if (savedInstanceState == null)
-        {
-            supportFragmentManager.beginTransaction().replace(R.id.fragment_container,
-                HomeFragment()
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction().replace(
+                R.id.fragment_container,
+
+                SanPhamFragment()
             ).commit()
-            navigationView.setCheckedItem(R.id.nav_home)
+            navigationView.setCheckedItem(R.id.nav_qlsanpham)
         }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            R.id.nav_qlsanpham ->supportFragmentManager.beginTransaction().replace(R.id.fragment_container,
+        when (item.itemId) {
+            R.id.nav_qlsanpham -> supportFragmentManager.beginTransaction().replace(
+                R.id.fragment_container,
                 SanPhamFragment()
             ).commit()
-            R.id.nav_qlkhachhang ->supportFragmentManager.beginTransaction().replace(R.id.fragment_container,
+
+            R.id.nav_qlkhachhang -> supportFragmentManager.beginTransaction().replace(
+                R.id.fragment_container,
                 KhachHangFragment()
             ).commit()
-            R.id.nav_qldonhang ->supportFragmentManager.beginTransaction().replace(R.id.fragment_container,
+
+            R.id.nav_qldonhang -> supportFragmentManager.beginTransaction().replace(
+                R.id.fragment_container,
                 DonHangFragment()
             ).commit()
-            R.id.nav_logout ->  nav_logout.setOnClickListener {
+
+            R.id.nav_logout -> nav_logout.setOnClickListener {
                 // Hiển thị hộp thoại xác nhận đăng xuất
                 val builder = AlertDialog.Builder(this)
                 builder.setTitle("Xác nhận")
@@ -90,9 +97,9 @@ class AdminAction : AppCompatActivity(), NavigationView.OnNavigationItemSelected
 
     override fun onBackPressed() {
         super.onBackPressed()
-        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
-        }else{
+        } else {
             onBackPressedDispatcher.onBackPressed()
         }
     }
