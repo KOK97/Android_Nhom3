@@ -46,7 +46,7 @@ class CartActivity : AppCompatActivity() {
             Toast.makeText(this, "Back button clicked", Toast.LENGTH_SHORT).show()
 //            finish() // Kết thúc activity để quay lại màn hình trước
             // Chuyển
-            val intent = Intent(this, AccountActivity::class.java)
+            val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
         }
     }
@@ -68,6 +68,8 @@ class CartActivity : AppCompatActivity() {
                 }
                 R.id.nav_account -> {
                     // Xử lý khi chọn Profile
+                    val intent = Intent(this, AccountActivity::class.java)
+                    startActivity(intent)
                     true
                 }
                 else -> false

@@ -40,6 +40,7 @@ class HomeActivity : AppCompatActivity() {
         setControl()
         setEvent()
         setEventNavBar()
+        navbarBott.menu.findItem(R.id.nav_home).isChecked = true
     }
     private fun setControl(){
         tvNextspm = findViewById(R.id.tvNextspm)
@@ -99,11 +100,6 @@ class HomeActivity : AppCompatActivity() {
     private fun setEventNavBar(){
         navbarBott.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.nav_home -> {
-                    val intent = Intent(this, HomeActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
                 R.id.nav_search -> {
                     // Xử lý khi chọn Search
                     true
@@ -121,6 +117,9 @@ class HomeActivity : AppCompatActivity() {
                 }
                 R.id.nav_account -> {
                     // Xử lý khi chọn Profile
+                    // Chuyển
+                    val intent = Intent(this, AccountActivity::class.java)
+                    startActivity(intent)
                     true
                 }
                 else -> false

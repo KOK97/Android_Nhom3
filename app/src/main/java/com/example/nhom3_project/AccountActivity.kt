@@ -20,6 +20,7 @@ class AccountActivity : AppCompatActivity() {
         setControl()
         setEvent()
         setEventNavBar()
+        navbarBott.menu.findItem(R.id.nav_account).isChecked = true
     }
 
     private fun setControl() {
@@ -70,15 +71,10 @@ class AccountActivity : AppCompatActivity() {
                     // Chuyển
                     val intent = Intent(this, CartActivity::class.java)
                     startActivity(intent)
-
                     true
                 }
                 R.id.nav_wishlist -> {
                     // Xử lý khi chọn Favorites
-                    true
-                }
-                R.id.nav_account -> {
-                    // Xử lý khi chọn Profile
                     true
                 }
                 else -> false
