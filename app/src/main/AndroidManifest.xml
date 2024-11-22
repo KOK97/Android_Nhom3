@@ -13,14 +13,13 @@
         android:theme="@style/Theme.Nhom3_Project"
         tools:targetApi="31">
         <activity
-<<<<<<< HEAD
+
             android:name=".PayActivity"
             android:exported="false" />
         <activity
-            android:name=".CartActivity"
-=======
+            android:name=".CartActivity"/>
+        <activity
             android:name=".HomeActivity"
->>>>>>> lam
             android:exported="false" />
         <activity
             android:name=".AccountActivity"

@@ -54,7 +54,8 @@ class CartActivity : AppCompatActivity() {
         navbarBott.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {
-                    // Xử lý khi chọn Home
+                    val intent = Intent(this, HomeActivity::class.java)
+                    startActivity(intent)
                     true
                 }
                 R.id.nav_search -> {

@@ -1,6 +1,7 @@
 package com.example.nhom3_project
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.animation.AnimationUtils
 import android.widget.TextView
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.denzcoskun.imageslider.ImageSlider
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var tvNextspm: TextView
@@ -19,6 +21,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var viewFlipperspbc: ViewFlipper
     private lateinit var viewFlipperspm: ViewFlipper
 
+    private lateinit var navbarBott: BottomNavigationView
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,11 +37,9 @@ class HomeActivity : AppCompatActivity() {
         imageList.add(SlideModel("https://theme.hstatic.net/200000061680/1000549213/14/2banner_top_img.png?v=1351","Nhẫn đá Cubic"))
         imageSlider.setImageList(imageList, ScaleTypes.FIT)
 
-
-
-
         setControl()
         setEvent()
+        setEventNavBar()
     }
     private fun setControl(){
         tvNextspm = findViewById(R.id.tvNextspm)
@@ -47,6 +48,8 @@ class HomeActivity : AppCompatActivity() {
         tvPrespbc = findViewById(R.id.tvPrespbc)
         viewFlipperspm = findViewById(R.id.vfSPM)
         viewFlipperspbc = findViewById(R.id.vfSPBC)
+        //nav
+        navbarBott = findViewById<BottomNavigationView>(R.id.bottom_navigationCart)
     }
     private fun setEvent(){
         //viewFlip spbc
@@ -92,6 +95,37 @@ class HomeActivity : AppCompatActivity() {
 
         }
 
+    }
+    private fun setEventNavBar(){
+        navbarBott.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    val intent = Intent(this, HomeActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.nav_search -> {
+                    // Xử lý khi chọn Search
+                    true
+                }
+                R.id.nav_shoppingcart -> {
+                    // Chuyển
+                    val intent = Intent(this, CartActivity::class.java)
+                    startActivity(intent)
+
+                    true
+                }
+                R.id.nav_wishlist -> {
+                    // Xử lý khi chọn Favorites
+                    true
+                }
+                R.id.nav_account -> {
+                    // Xử lý khi chọn Profile
+                    true
+                }
+                else -> false
+            }
+        }
     }
 }
 
