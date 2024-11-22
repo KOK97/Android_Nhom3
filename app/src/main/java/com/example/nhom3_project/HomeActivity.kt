@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.ViewFlipper
 import androidx.activity.enableEdgeToEdge
@@ -14,10 +15,10 @@ import com.denzcoskun.imageslider.models.SlideModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class HomeActivity : AppCompatActivity() {
-    private lateinit var tvNextspm: TextView
-    private lateinit var tvPrespm: TextView
-    private lateinit var tvNextspbc: TextView
-    private lateinit var tvPrespbc: TextView
+    private lateinit var tvNextspm: ImageView
+    private lateinit var tvPrespm: ImageView
+    private lateinit var tvNextspbc: ImageView
+    private lateinit var tvPrespbc: ImageView
     private lateinit var viewFlipperspbc: ViewFlipper
     private lateinit var viewFlipperspm: ViewFlipper
 

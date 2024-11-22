@@ -20,55 +20,19 @@ class PayActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_pay)
         setControll()
-        eventNavBar()
         eventBack()
-        navbarBott.menu.findItem(R.id.nav_shoppingcart).isChecked = true
-
     }
     private fun setControll(){
         //btnBack
         ivBackPay = findViewById<ImageView>(R.id.ivBackPay)
-        //nav
-        navbarBott = findViewById<BottomNavigationView>(R.id.bottomNavigationViewPay)
         //btnPay
         btnAccepp = findViewById<Button>(R.id.btnAccepp)
     }
-
     private fun eventBack(){
         ivBackPay.setOnClickListener{
             // Quay lại hoặc hiện thông báo
             Toast.makeText(this, "Back button clicked", Toast.LENGTH_SHORT).show()
             finish() // Kết thúc activity để quay lại màn hình trước
-        }
-    }
-    private fun eventNavBar(){
-
-        navbarBott.setOnNavigationItemSelectedListener{ item ->
-            when (item.itemId) {
-                R.id.nav_home -> {
-                    // Xử lý khi chọn Home
-                    true
-                }
-                R.id.nav_search -> {
-                    // Xử lý khi chọn Search
-                    true
-                }
-                R.id.nav_shoppingcart -> {
-                    // Chuyển
-//                    val intent = Intent(this, Cart::class.java)
-//                    startActivity(intent)
-                    true
-                }
-                R.id.nav_wishlist -> {
-                    // Xử lý khi chọn Favorites
-                    true
-                }
-                R.id.nav_wishlist -> {
-                    // Xử lý khi chọn Profile
-                    true
-                }
-                else -> false
-            }
         }
     }
 }
