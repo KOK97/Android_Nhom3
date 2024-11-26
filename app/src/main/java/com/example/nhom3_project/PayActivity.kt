@@ -1,5 +1,6 @@
 package com.example.nhom3_project
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
@@ -14,13 +15,13 @@ class PayActivity : AppCompatActivity() {
 
     private lateinit var ivBackPay: ImageView
     private lateinit var btnAccepp: Button
-    private lateinit var navbarBott: BottomNavigationView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_pay)
         setControll()
         eventBack()
+        evenPay()
     }
     private fun setControll(){
         //btnBack
@@ -28,11 +29,21 @@ class PayActivity : AppCompatActivity() {
         //btnPay
         btnAccepp = findViewById<Button>(R.id.btnAccepp)
     }
+    private fun evenPay(){
+        btnAccepp.setOnClickListener{
+            showPaymentSuccessToast()
+            val intent = Intent(this, CartActivity::class.java)
+            startActivity(intent)
+        }
+    }
     private fun eventBack(){
         ivBackPay.setOnClickListener{
             // Quay lại hoặc hiện thông báo
             Toast.makeText(this, "Back button clicked", Toast.LENGTH_SHORT).show()
             finish() // Kết thúc activity để quay lại màn hình trước
         }
+    }
+    private fun showPaymentSuccessToast() {
+        Toast.makeText(this, "Thanh toán thành công!", Toast.LENGTH_SHORT).show()
     }
 }
