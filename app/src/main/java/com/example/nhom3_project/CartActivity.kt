@@ -98,7 +98,6 @@ class CartActivity : AppCompatActivity() {
                         productList.add(Products(id, name, price, img))
                     }
                 }
-
                 // Gán adapter sau khi đã có dữ liệu
                 adapter = CartAdapter(this@CartActivity, productList) { updateTotalPrice() }
                 lvCart.adapter = adapter
