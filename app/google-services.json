@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "323311786486",
+    "project_id": "apkprojectn3",
+    "storage_bucket": "apkprojectn3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:323311786486:android:efa5b74aafdb55211a4fd7",
+        "android_client_info": {
+          "package_name": "com.example.nhom3_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJBVuSm1BVrVIvzFpPHOlzLExgNWRwGZo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

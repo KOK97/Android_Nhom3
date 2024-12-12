@@ -6,78 +6,125 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatButton
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import android.widget.ListView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 
 class CartActivity : AppCompatActivity() {
     private lateinit var ivBackCart: ImageView
     private lateinit var btnPay: Button
     private lateinit var navbarBott: BottomNavigationView
-    //khai bao tang giam so luong sp
-    private lateinit var btnMinus: Button
-    private lateinit var btnPlus: Button
-    private lateinit var tvSolg: TextView
+    private lateinit var lvCart: ListView
+    private lateinit var adapter: CartAdapter
+    private lateinit var productList: MutableList<Products>
+    private lateinit var cartList: MutableList<Cart>
+    private lateinit var totalTextView: TextView
+    private lateinit var dbRef: DatabaseReference
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_cart)
         setControll()
+        // Đợi dữ liệu từ Firebase trước khi tiếp tục
+        getDataCart {
+            setDataCart()
+            updateTotalPrice()
+        }
+        setDataCart()
         setEventNavBar()
         setEventBack()
         setEventPay()
-        setTangGiamSL()
+
         navbarBott.menu.findItem(R.id.nav_shoppingcart).isChecked = true
+        updateTotalPrice()
     }
-    private fun setControll(){
-        //btnBack
-        ivBackCart = findViewById<ImageView>(R.id.ivBackCart)
-        //nav
-        navbarBott = findViewById<BottomNavigationView>(R.id.bottom_navigationCart)
-        //btnPay
-        btnPay = findViewById<Button>(R.id.btnThanhToan)
 
-        //btn minus
-        btnMinus= findViewById<Button>(R.id.btnMinusCart)
-        //btn plus
-        btnPlus= findViewById<Button>(R.id.btnPlusCart)
-        //tv solg
-        tvSolg = findViewById<TextView>(R.id.tvSoLg)
+    private fun setControll() {
+        ivBackCart = findViewById(R.id.ivBackCart)
+        navbarBott = findViewById(R.id.bottom_navigationCart)
+        btnPay = findViewById(R.id.btnThanhToan)
+        lvCart = findViewById(R.id.lvCart)
+        totalTextView = findViewById(R.id.tvTongTienCart)
     }
-    private fun setTangGiamSL() {
-        var slInt = tvSolg.text.toString().toIntOrNull() ?: 1
+    private fun getDataCart(onDataLoaded: () -> Unit) {
+        cartList = mutableListOf()
+        dbRef = FirebaseDatabase.getInstance().reference
 
-        btnMinus.setOnClickListener {
-            if (slInt > 1) { // Không cho phép giá trị < 1
-                slInt -= 1
-                tvSolg.text = slInt.toString()
-            } else {
-                Toast.makeText(this, "Số lượng tối thiểu là 1", Toast.LENGTH_SHORT).show()
+        dbRef.child("Cart").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                cartList.clear()
+                for (cartSnapshot in snapshot.children) {
+                    val id = cartSnapshot.child("id").getValue(Int::class.java) ?: 0
+                    val userid = cartSnapshot.child("userid").getValue(Int::class.java) ?: 0
+                    val productid = cartSnapshot.child("productid").getValue(Int::class.java) ?: 0
+                    val quantity = cartSnapshot.child("quantity").getValue(Int::class.java) ?: 0
+                    val cart = Cart(id, userid, productid, quantity)
+                    cartList.add(cart)
+                }
+
+                // Gọi hàm callback sau khi dữ liệu đã được tải xong
+                onDataLoaded()
             }
-        }
 
-        btnPlus.setOnClickListener {
-            slInt += 1
-            tvSolg.text = slInt.toString()
-        }
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@CartActivity, "Lỗi khi lấy dữ liệu từ Cart: ${error.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
-    private fun setEventPay(){
-        btnPay.setOnClickListener{
-            // Chuyển
+    private fun setDataCart() {
+        productList = mutableListOf()
+
+        // Khởi tạo Realtime Database Reference
+        dbRef = FirebaseDatabase.getInstance().reference
+
+        // Lấy dữ liệu Product
+        dbRef.child("Product").addValueEventListener(object : ValueEventListener {
+            val productIds = cartList.map { it.productid }.toSet()
+            override fun onDataChange(snapshot: DataSnapshot) {
+                productList.clear()
+
+                for (productSnapshot in snapshot.children) {
+                    val id = productSnapshot.child("id").getValue(Int::class.java) ?: 0
+                    if (id in productIds ){
+                        val name = productSnapshot.child("name").getValue(String::class.java) ?: "No Name"
+                        val price = productSnapshot.child("price").getValue(Double::class.java) ?: 0.0
+                        val img = productSnapshot.child("img").getValue(String::class.java) ?: ""
+                        // Thêm sản phẩm vào danh sách
+                        productList.add(Products(id, name, price, img))
+                    }
+                }
+
+                // Gán adapter sau khi đã có dữ liệu
+                adapter = CartAdapter(this@CartActivity, productList) { updateTotalPrice() }
+                lvCart.adapter = adapter
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@CartActivity, "Lỗi khi lấy và gán dữ liệu Product vào Cart: ${error.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun setEventPay() {
+        btnPay.setOnClickListener {
             val intent = Intent(this, PayActivity::class.java)
             startActivity(intent)
         }
     }
-    private fun setEventBack(){
-        ivBackCart.setOnClickListener{
+
+    private fun setEventBack() {
+        ivBackCart.setOnClickListener {
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
         }
     }
-    private fun setEventNavBar(){
+
+    private fun setEventNavBar() {
         navbarBott.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {
@@ -85,16 +132,9 @@ class CartActivity : AppCompatActivity() {
                     startActivity(intent)
                     true
                 }
-                R.id.nav_search -> {
-                    // Xử lý khi chọn Search
-                    true
-                }
-                R.id.nav_wishlist -> {
-                    // Xử lý khi chọn Favorites
-                    true
-                }
+                R.id.nav_search -> true
+                R.id.nav_wishlist -> true
                 R.id.nav_account -> {
-                    // Xử lý khi chọn Profile
                     val intent = Intent(this, AccountActivity::class.java)
                     startActivity(intent)
                     true
@@ -102,5 +142,10 @@ class CartActivity : AppCompatActivity() {
                 else -> false
             }
         }
+    }
+
+    private fun updateTotalPrice() {
+        val total = productList.filter { it.isSelected }.sumByDouble { it.price * it.quantity }
+        totalTextView.text = "Total: $total VND"
     }
 }
