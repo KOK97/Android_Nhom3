@@ -8,17 +8,11 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import com.google.firebase.FirebaseApp
-import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class SplashActivity : AppCompatActivity() {
     private lateinit var imgLogo: ImageView
     private lateinit var btnRegister: Button
     private lateinit var btnLogin: Button
-    private lateinit var mAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,21 +39,6 @@ class SplashActivity : AppCompatActivity() {
         animatorSet.playTogether(fadeIn, scaleX, scaleY)
         imgLogo.visibility = View.VISIBLE
         animatorSet.start()
-
-        mAuth = FirebaseAuth.getInstance()
-        lifecycleScope.launch {
-            delay(1000)
-            mAuth.signOut()
-            val user = mAuth.currentUser
-            if (user == null) {
-                startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
-            } else {
-                val mainIntent = Intent(this@SplashActivity, RegisterActivity::class.java)
-                mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                startActivity(mainIntent)
-            }
-            finish()
-        }
 
         btnRegister.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))

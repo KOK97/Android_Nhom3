@@ -115,8 +115,10 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun registerUser(emaill: String, pass: String, uname: String, phone: String) {
         progressBar.visibility = View.VISIBLE
+        btnRegister.isEnabled = false
         mAuth.createUserWithEmailAndPassword(emaill, pass).addOnCompleteListener { task ->
             progressBar.visibility = View.GONE
+            btnRegister.isEnabled = true
             if (task.isSuccessful) {
                 val user = mAuth.currentUser
                 val email = user!!.email
@@ -127,6 +129,7 @@ class RegisterActivity : AppCompatActivity() {
                 hashMap["email"] = email
                 hashMap["phone"] = phone
                 hashMap["typingTo"] = "noOne"
+                hashMap["role"] = "Customer"
                 val database = FirebaseDatabase.getInstance()
                 val reference = database.getReference("Users")
                 reference.child(uid).setValue(hashMap)
@@ -148,6 +151,7 @@ class RegisterActivity : AppCompatActivity() {
             }
         }.addOnFailureListener {
             progressBar.visibility = View.GONE
+            btnRegister.isEnabled = true
             Toast.makeText(this, "${it.message}", Toast.LENGTH_LONG).show()
         }
     }

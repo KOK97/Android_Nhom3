@@ -55,6 +55,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setEvent() {
+//        createTestAccounts()
         setSupportActionBar(toolbar)
         supportActionBar?.apply {
             title = "Quay lại"
@@ -70,7 +71,7 @@ class LoginActivity : AppCompatActivity() {
                     edtEmail.error = "Email không hợp lệ"
                     edtEmail.requestFocus()
                 }
-                
+
                 else -> {
                     loginUser(email, pass)
                 }
@@ -84,31 +85,30 @@ class LoginActivity : AppCompatActivity() {
 
     private fun loginUser(emaill: String, pass: String) {
         progressBar.visibility = View.VISIBLE
+        btnLogin.isEnabled = false
         mAuth.signInWithEmailAndPassword(emaill, pass).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 progressBar.visibility = View.GONE
+                btnLogin.isEnabled = true
                 val user = mAuth.currentUser
                 if (task.result.additionalUserInfo!!.isNewUser) {
                     val email = user!!.email
                     val uid = user!!.uid
                     val hashMap = HashMap<Any, String?>()
-                    hashMap["email"] = email
                     hashMap["uid"] = uid
                     hashMap["name"] = ""
-                    hashMap["typingTo"] = "noOne"
+                    hashMap["email"] = email
                     hashMap["phone"] = ""
+                    hashMap["typingTo"] = "noOne"
                     val database = FirebaseDatabase.getInstance()
                     val reference = database.getReference("Users")
                     reference.child(uid).setValue(hashMap)
                 }
                 Toast.makeText(
-                    this@LoginActivity,
-                    "Đăng nhập thành công " + user!!.email,
-                    Toast.LENGTH_LONG
+                    this@LoginActivity, "Đăng nhập thành công " + user!!.email, Toast.LENGTH_LONG
                 ).show()
                 val mainIntent = Intent(
-                    this@LoginActivity,
-                    HomeActivity::class.java
+                    this@LoginActivity, HomeActivity::class.java
                 )
                 mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 startActivity(mainIntent)
@@ -118,14 +118,44 @@ class LoginActivity : AppCompatActivity() {
                     this@LoginActivity,
                     "Đăng nhập không thành công !",
                     Toast.LENGTH_LONG
-                )
-                    .show()
+                ).show()
             }
         }.addOnFailureListener {
             progressBar.visibility = View.GONE
+            btnLogin.isEnabled = true
             Toast.makeText(this, "${it.message}", Toast.LENGTH_LONG).show()
         }
     }
 
     private fun String.isValidEmail() = Patterns.EMAIL_ADDRESS.matcher(this).matches()
+
+    private fun createTestAccounts() {
+        val database = FirebaseDatabase.getInstance().getReference("Users")
+
+        for (i in 1..9) {
+            val email = "test$i@gmail.com"
+            val password = "test123"
+            val username = "test$i"
+            val phone = "123456789$i"
+
+            mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val user = task.result?.user
+                        val uid = user?.uid ?: return@addOnCompleteListener
+                        val hashMap = mapOf(
+                            "uid" to uid,
+                            "name" to username,
+                            "email" to email,
+                            "phone" to phone,
+                            "role" to "Customer",
+                            "typingTo" to "noOne"
+                        )
+                        database.child(uid).setValue(hashMap)
+                    }
+                }
+        }
+    }
+
+
 }
