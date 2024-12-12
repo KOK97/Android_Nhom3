@@ -7,12 +7,16 @@ import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.google.firebase.FirebaseApp
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val intent = Intent(this, SplashActivity::class.java)
         val splashScreen = installSplashScreen()
+
+        // Đảm bảo Firebase được khởi tạo
+        FirebaseApp.initializeApp(this)
 
         startActivity(intent)
         splashScreen.setKeepOnScreenCondition{true}

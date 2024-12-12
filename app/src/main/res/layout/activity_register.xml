@@ -5,10 +5,18 @@
     android:id="@+id/register"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@drawable/background_gradient"
+    android:orientation="vertical"
     android:padding="16dp"
     tools:context=".RegisterActivity">
+    <!-- Actionbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#00CC99"
+        android:elevation="5dp"
+        android:titleTextColor="#FFFFFF" />
 
     <!-- Title -->
     <TextView
@@ -98,6 +106,14 @@
             android:textSize="14sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- ProgressBar -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:visibility="gone" />
 
     <!-- Register Button -->
     <Button
@@ -128,7 +144,7 @@
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/txtLogin"
+            android:id="@+id/txtExistaccount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
