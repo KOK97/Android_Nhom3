@@ -3,24 +3,35 @@ package com.example.nhom3_project
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class AccountActivity : AppCompatActivity() {
+    private lateinit var tvHTQL : TextView
     private lateinit var btnLogout: com.google.android.material.card.MaterialCardView
+    private lateinit var navbarBott: BottomNavigationView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_account)
         setControl()
         setEvent()
+        setEventNavBar()
+        navbarBott.menu.findItem(R.id.nav_account).isChecked = true
     }
 
     private fun setControl() {
         btnLogout = findViewById(R.id.btnLogout)
+        //nav
+        navbarBott = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+
+        tvHTQL = findViewById(R.id.hethongquanly)
+
     }
 
     private fun setEvent() {
@@ -39,6 +50,7 @@ class AccountActivity : AppCompatActivity() {
                 finish() // Kết thúc Activity hiện tại
             }
 
+
             // Nút "Hủy"
             builder.setNegativeButton("Hủy") { dialog, _ ->
                 dialog.dismiss() // Đóng hộp thoại
@@ -48,6 +60,36 @@ class AccountActivity : AppCompatActivity() {
             val alertDialog = builder.create()
             alertDialog.show()
         }
-    }
+        tvHTQL.setOnClickListener{
+            val intent = Intent(this, AdminAction::class.java)
+            startActivity(intent)
 
+        }
+    }
+    private fun setEventNavBar(){
+        navbarBott.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    val intent = Intent(this, HomeActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.nav_search -> {
+                    // Xử lý khi chọn Search
+                    true
+                }
+                R.id.nav_shoppingcart -> {
+                    // Chuyển
+                    val intent = Intent(this, CartActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.nav_wishlist -> {
+                    // Xử lý khi chọn Favorites
+                    true
+                }
+                else -> false
+            }
+        }
+    }
 }
