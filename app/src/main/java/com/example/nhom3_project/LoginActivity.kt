@@ -33,7 +33,6 @@ class LoginActivity : AppCompatActivity() {
         setControl()
         setEvent()
     }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
