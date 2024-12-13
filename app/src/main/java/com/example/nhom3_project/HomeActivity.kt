@@ -222,15 +222,15 @@ class HomeActivity : AppCompatActivity() {
                         val ibCart1 = view.findViewById<ImageButton>(R.id.ibCart1)
                         val ibLike1 = view.findViewById<ImageButton>(R.id.ibLike1)
 
-                        //chuyển activ khi click
-                        ibCart.setOnClickListener(){
-                            val intent = Intent(this@HomeActivity, CartActivity::class.java)
-                            startActivity(intent)
-                        }
-                        ibCart1.setOnClickListener(){
-                            val intent = Intent(this@HomeActivity, CartActivity::class.java)
-                            startActivity(intent)
-                        }
+//                        //chuyển activ khi click
+//                        ibCart.setOnClickListener(){
+//                            val intent = Intent(this@HomeActivity, CartActivity::class.java)
+//                            startActivity(intent)
+//                        }
+//                        ibCart1.setOnClickListener(){
+//                            val intent = Intent(this@HomeActivity, CartActivity::class.java)
+//                            startActivity(intent)
+//                        }
 
                         viewFlipperspm.addView(view)
                     }

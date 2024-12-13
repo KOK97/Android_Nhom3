@@ -55,13 +55,13 @@ class CartActivity : AppCompatActivity() {
         cartList = mutableListOf()
         dbRef = FirebaseDatabase.getInstance().reference
 
-        dbRef.child("Cart").addValueEventListener(object : ValueEventListener {
+        dbRef.child("CartT").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 cartList.clear()
                 for (cartSnapshot in snapshot.children) {
                     val id = cartSnapshot.child("id").getValue(Int::class.java) ?: 0
                     val userid = cartSnapshot.child("userid").getValue(Int::class.java) ?: 0
-                    val productid = cartSnapshot.child("productid").getValue(Int::class.java) ?: 0
+                    val productid = cartSnapshot.child("productid").getValue(String::class.java) ?: ""
                     val quantity = cartSnapshot.child("quantity").getValue(Int::class.java) ?: 0
                     val cart = Cart(id, userid, productid, quantity)
                     cartList.add(cart)
@@ -83,17 +83,17 @@ class CartActivity : AppCompatActivity() {
         dbRef = FirebaseDatabase.getInstance().reference
 
         // Lấy dữ liệu Product
-        dbRef.child("Product").addValueEventListener(object : ValueEventListener {
+        dbRef.child("products").addValueEventListener(object : ValueEventListener {
             val productIds = cartList.map { it.productid }.toSet()
             override fun onDataChange(snapshot: DataSnapshot) {
                 productList.clear()
 
                 for (productSnapshot in snapshot.children) {
-                    val id = productSnapshot.child("id").getValue(Int::class.java) ?: 0
+                    val id = productSnapshot.child("id").getValue(String::class.java) ?: ""
                     if (id in productIds ){
                         val name = productSnapshot.child("name").getValue(String::class.java) ?: "No Name"
                         val price = productSnapshot.child("price").getValue(Double::class.java) ?: 0.0
-                        val img = productSnapshot.child("img").getValue(String::class.java) ?: ""
+                        val img = productSnapshot.child("imageUrl").getValue(String::class.java) ?: ""
                         // Thêm sản phẩm vào danh sách
                         val cartItem = cartList.find { it.productid == id }
                         val quantity = cartItem?.quantity ?: 1

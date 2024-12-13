@@ -110,9 +110,9 @@ class CartAdapter(
                 for (cartSnapshot in snapshot.children) {
                     val id = cartSnapshot.child("id").getValue(Int::class.java) ?: 0
                     val userid = cartSnapshot.child("userid").getValue(Int::class.java) ?: 0
-                    val productid = cartSnapshot.child("productid").getValue(Int::class.java) ?: 0
+                    val productid = cartSnapshot.child("productid").getValue(String::class.java) ?: 0
                     val quantity = cartSnapshot.child("quantity").getValue(Int::class.java) ?: 0
-                    val cart = Cart(id, userid, productid, quantity)
+                    val cart = Cart(id, userid, productid.toString(), quantity)
                     cartList.add(cart)
                 }
             }
