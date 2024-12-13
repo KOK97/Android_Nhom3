@@ -95,7 +95,9 @@ class CartActivity : AppCompatActivity() {
                         val price = productSnapshot.child("price").getValue(Double::class.java) ?: 0.0
                         val img = productSnapshot.child("img").getValue(String::class.java) ?: ""
                         // Thêm sản phẩm vào danh sách
-                        productList.add(Products(id, name, price, img))
+                        val cartItem = cartList.find { it.productid == id }
+                        val quantity = cartItem?.quantity ?: 1
+                        productList.add(Products(id, name, price, img, quantity))
                     }
                 }
                 // Gán adapter sau khi đã có dữ liệu

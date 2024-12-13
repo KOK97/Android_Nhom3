@@ -6,16 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 
-class CartAdapter(context: Context, private val productsList: MutableList<Products>, private val updateTotalPrice: () -> Unit) :
-    ArrayAdapter<Products>(context, 0, productsList) {
+class CartAdapter(
+    context: Context,
+    private val productsList: MutableList<Products>,
+    private val updateTotalPrice: () -> Unit
+) : ArrayAdapter<Products>(context, 0, productsList) {
     private lateinit var dbRef: DatabaseReference
-    private lateinit var cartList: MutableList<Cart>
+    private var cartList: MutableList<Cart> = mutableListOf()
+
+    init {
+        getDataCart()
+    }
+
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view: View
         val holder: ViewHolder
@@ -30,8 +34,7 @@ class CartAdapter(context: Context, private val productsList: MutableList<Produc
         }
 
         val product = productsList[position]
-        getDataCart()
-        holder.bind(product,position)
+        holder.bind(product, position)
         return view
     }
 
@@ -45,59 +48,60 @@ class CartAdapter(context: Context, private val productsList: MutableList<Produc
         val cbSp: CheckBox = view.findViewById(R.id.cbSelectSPCart)
         val btnDele: ImageView = view.findViewById(R.id.ivDeleteCart)
 
-        fun bind(product: Products,position: Int) {
+        fun bind(product: Products, position: Int) {
             productName.text = product.name
             productPrice.text = product.price.toString()
+            tvSolg.text = product.quantity.toString()
+
             val imageResId = context.resources.getIdentifier(product.img, "drawable", context.packageName)
             productImage.setImageResource(if (imageResId != 0) imageResId else R.drawable.baseline_hide_image_24)
 
-            // Đặt sự kiện cho CheckBox
             cbSp.isChecked = product.isSelected
             cbSp.setOnCheckedChangeListener { _, isChecked ->
                 product.isSelected = isChecked
                 updateTotalPrice()
             }
-            //
-            btnDele.setOnClickListener{
-               for (cart in cartList){
-                   if (cart.productid == product.id){
-                       removeCartItem(cart.id,position)
-                       Log.d("CartAdapter", "Cart ID: ${cart.id}, Product ID: ${cart.productid}")
-                   }
-               }
+
+            btnDele.setOnClickListener {
+                if (cartList.isNotEmpty()) {
+                    for (cart in cartList) {
+                        if (cart.productid == product.id) {
+                            removeCartItem(cart.id, position)
+                            Log.d("CartAdapter", "Cart ID: ${cart.id}, Product ID: ${cart.productid}")
+                        }
+                    }
+                }
             }
-            // Đặt số lượng
-            tvSolg.text = product.quantity.toString()
+
             btnMinus.setOnClickListener {
                 if (product.quantity > 1) {
                     product.quantity -= 1
                     tvSolg.text = product.quantity.toString()
-                    for (cart in cartList) {
-                        if (cart.productid == product.id) {
-                            updateCartItem(cart.id,product.quantity)
-                        }
-                    }
-                    updateTotalPrice()
+                    updateCartQuantity(product)
                 } else {
                     Toast.makeText(context, "Số lượng tối thiểu là 1", Toast.LENGTH_SHORT).show()
                 }
             }
+
             btnPlus.setOnClickListener {
                 product.quantity += 1
                 tvSolg.text = product.quantity.toString()
-
-                for (cart in cartList) {
-                    if (cart.productid == product.id) {
-                        updateCartItem(cart.id,product.quantity)
-                    }
-                }
-                updateTotalPrice()
+                updateCartQuantity(product)
             }
         }
+
+        private fun updateCartQuantity(product: Products) {
+            for (cart in cartList) {
+                if (cart.productid == product.id) {
+                    updateCartItem(cart.id, product.quantity)
+                    break
+                }
+            }
+            updateTotalPrice()
+        }
     }
-    //
+
     private fun getDataCart() {
-        cartList = mutableListOf()
         dbRef = FirebaseDatabase.getInstance().reference
 
         dbRef.child("Cart").addValueEventListener(object : ValueEventListener {
@@ -112,41 +116,35 @@ class CartAdapter(context: Context, private val productsList: MutableList<Produc
                     cartList.add(cart)
                 }
             }
+
             override fun onCancelled(error: DatabaseError) {
-               print(error)
+                Log.e("CartAdapter", "Lỗi tải dữ liệu giỏ hàng: ${error.message}")
             }
         })
     }
-    //
+
     private fun updateCartItem(cartId: Int, newQuantity: Int) {
-        // Đường dẫn đến mục cần cập nhật
-        val cartItemRef = dbRef.child("Cart").child(cartId.toString())
-
-        // Dữ liệu cần cập nhật
-        val updates = mapOf(
-            "quantity" to newQuantity // Cập nhật trường quantity
-        )
-
-        // Thực hiện cập nhật
-        cartItemRef.updateChildren(updates)
+        dbRef.child("Cart").child(cartId.toString()).child("quantity").setValue(newQuantity)
             .addOnSuccessListener {
-                Toast.makeText(context, "Cập nhật số lượng thành công!", Toast.LENGTH_SHORT).show()
+                Log.d("CartAdapter", "Cập nhật số lượng thành công cho Cart ID: $cartId")
+                Toast.makeText(context, "Cập nhật thành công!", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener { error ->
-                Toast.makeText(context, "Lỗi cập nhật: ${error.message}", Toast.LENGTH_SHORT).show()
+                Log.e("CartAdapter", "Lỗi cập nhật: ${error.message}")
+                Toast.makeText(context, "Lỗi: ${error.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
-    // Hàm xóa sản phẩm khỏi giỏ hàng
     private fun removeCartItem(cartId: Int, position: Int) {
         dbRef.child("Cart").child(cartId.toString()).removeValue()
             .addOnSuccessListener {
+                productsList.removeAt(position)
+                notifyDataSetChanged()
+                updateTotalPrice()
                 Toast.makeText(context, "Xóa sản phẩm thành công!", Toast.LENGTH_SHORT).show()
-                productsList.removeAt(position) // Xóa sản phẩm khỏi danh sách
-                notifyDataSetChanged() // Làm mới giao diện
-                updateTotalPrice() // Cập nhật tổng tiền
             }
             .addOnFailureListener { error ->
+                Log.e("CartAdapter", "Lỗi xóa sản phẩm: ${error.message}")
                 Toast.makeText(context, "Lỗi xóa sản phẩm: ${error.message}", Toast.LENGTH_SHORT).show()
             }
     }
