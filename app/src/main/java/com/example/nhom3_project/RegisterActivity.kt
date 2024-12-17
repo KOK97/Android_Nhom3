@@ -113,23 +113,24 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    private fun registerUser(emaill: String, pass: String, uname: String, phone: String) {
+    private fun registerUser(email: String, pass: String, uname: String, phone: String) {
         progressBar.visibility = View.VISIBLE
         btnRegister.isEnabled = false
-        mAuth.createUserWithEmailAndPassword(emaill, pass).addOnCompleteListener { task ->
+        mAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener { task ->
             progressBar.visibility = View.GONE
             btnRegister.isEnabled = true
             if (task.isSuccessful) {
                 val user = mAuth.currentUser
                 val email = user!!.email
                 val uid = user!!.uid
+                val role = "Customer"
                 val hashMap = HashMap<Any, String?>()
                 hashMap["uid"] = uid
                 hashMap["name"] = uname
                 hashMap["email"] = email
                 hashMap["phone"] = phone
                 hashMap["typingTo"] = "noOne"
-                hashMap["role"] = "Customer"
+                hashMap["role"] = role
                 val database = FirebaseDatabase.getInstance()
                 val reference = database.getReference("Users")
                 reference.child(uid).setValue(hashMap)

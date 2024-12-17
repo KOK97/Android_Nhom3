@@ -19,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var txtRegister: TextView
+    private lateinit var txtForgotPassword: TextView
     private lateinit var btnLogin: Button
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
     private lateinit var mAuth: FirebaseAuth
@@ -47,6 +48,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setControl() {
         txtRegister = findViewById(R.id.txtRegister)
+        txtForgotPassword = findViewById(R.id.txtForgotPassword)
         btnLogin = findViewById(R.id.btnLogin)
         toolbar = findViewById(R.id.toolbar)
         edtEmail = findViewById(R.id.edtEmail)
@@ -79,6 +81,10 @@ class LoginActivity : AppCompatActivity() {
         }
         txtRegister.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+        }
+        txtForgotPassword.setOnClickListener {
+            val intent = Intent(this, ForgotPasswordActivity::class.java)
             startActivity(intent)
         }
     }
