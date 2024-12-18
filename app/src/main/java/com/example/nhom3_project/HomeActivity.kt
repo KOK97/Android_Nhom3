@@ -136,10 +136,23 @@ class HomeActivity : AppCompatActivity() {
                         val imageUrl1 = firstProduct.child("imageUrl").getValue(String::class.java) ?: "No image"
 
                         //set data sp1
-                        Glide.with(this@HomeActivity)
-                            .load("$imageUrl1")
-                            .override(150,100)
-                            .into(view.findViewById<ImageView>(R.id.imageView))
+                        //lay anh tu drawble
+                        val imageResId1 = resources.getIdentifier(imageUrl1, "drawable", packageName) //lay id anh tu drawble
+
+                        if (imageResId1 != 0) {
+                           //neu co id anh trong drawble thi load len
+                            Glide.with(this@HomeActivity)
+                                .load(imageResId1)
+                                .override(150, 100)
+                                .into(view.findViewById<ImageView>(R.id.imageView))
+                        }
+                        else{
+                            //lay anh truc tiep tu url
+                            Glide.with(this@HomeActivity)
+                                .load("$imageUrl1")
+                                .override(150,100)
+                                .into(view.findViewById<ImageView>(R.id.imageView))
+                        }
                         view.findViewById<TextView>(R.id.tvNamePr).text = productName1
 //                        view.findViewById<TextView>(R.id.tvId).text = product_id1
                         view.findViewById<TextView>(R.id.tvPrice).text = "$productPrice1 VND"
@@ -150,10 +163,24 @@ class HomeActivity : AppCompatActivity() {
                         val productPrice2 = secondProduct.child("price").getValue(Int::class.java) ?: 0
                         val imageUrl2 = secondProduct.child("imageUrl").getValue(String::class.java) ?: "No image"
                         //set data sp2
-                        Glide.with(this@HomeActivity)
-                            .load("$imageUrl2")
-                            .override(150,100)
-                            .into(view.findViewById<ImageView>(R.id.imageView1))
+                        //lay anh tu drawble
+                        val imageResId2 = resources.getIdentifier(imageUrl2, "drawable", packageName)
+
+                        if (imageResId2 != 0) {
+                            //neu co id anh trong drawble thi load len
+                            Glide.with(this@HomeActivity)
+                                .load(imageResId2)
+                                .override(150, 100)
+                                .into(view.findViewById<ImageView>(R.id.imageView1))
+                        }
+                        else{
+                            //lay anh truc tiep tu url
+                            Glide.with(this@HomeActivity)
+                                .load("$imageUrl2")
+                                .override(150,100)
+                                .into(view.findViewById<ImageView>(R.id.imageView1))
+                        }
+
 //                        view.findViewById<TextView>(R.id.tvId1).text = product_id2
                         view.findViewById<TextView>(R.id.tvNamePr1).text = productName2
                         view.findViewById<TextView>(R.id.tvPrice1).text = "$productPrice2 VND"
@@ -223,11 +250,21 @@ class HomeActivity : AppCompatActivity() {
                         val productPrice1 = firstProduct.child("price").getValue(Int::class.java) ?: 0
                         val imageUrl1 = firstProduct.child("imageUrl").getValue(String::class.java) ?: "No image"
 
-                        //set data sp1
-                        Glide.with(this@HomeActivity)
-                            .load("$imageUrl1")
-                            .override(150,100)
-                            .into(view.findViewById<ImageView>(R.id.imageView))
+                        //lay anh tu drawble
+                        val imageResId1 = resources.getIdentifier(imageUrl1, "drawable", packageName)
+                        if (imageResId1 != 0) {
+                            Glide.with(this@HomeActivity)
+                                .load(imageResId1)
+                                .override(150, 100)
+                                .into(view.findViewById<ImageView>(R.id.imageView))
+                        }
+                        else{
+                            //lay anh truc tiep tu url
+                            Glide.with(this@HomeActivity)
+                                .load("$imageUrl1")
+                                .override(150,100)
+                                .into(view.findViewById<ImageView>(R.id.imageView))
+                        }
                         view.findViewById<TextView>(R.id.tvNamePr).text = productName1
 //                        view.findViewById<TextView>(R.id.tvId).text = product_id1
                         view.findViewById<TextView>(R.id.tvPrice).text = "$productPrice1 VND"
@@ -238,10 +275,25 @@ class HomeActivity : AppCompatActivity() {
                         val productPrice2 = secondProduct.child("price").getValue(Int::class.java) ?: 0
                         val imageUrl2 = secondProduct.child("imageUrl").getValue(String::class.java) ?: "No image"
                         //set data sp2
-                        Glide.with(this@HomeActivity)
-                            .load("$imageUrl2")
-                            .override(150,100)
-                            .into(view.findViewById<ImageView>(R.id.imageView1))
+
+                        //lay anh tu drawble
+                        val imageResId2 = resources.getIdentifier(imageUrl2, "drawable", packageName)
+
+                        if (imageResId2 != 0) {
+                            Glide.with(this@HomeActivity)
+                                .load(imageResId2)
+                                .override(150, 100)
+                                .into(view.findViewById<ImageView>(R.id.imageView1))
+                        }
+                        else{
+                            //lay anh truc tiep tu url
+                            Glide.with(this@HomeActivity)
+                                .load("$imageUrl2")
+                                .override(150,100)
+                                .into(view.findViewById<ImageView>(R.id.imageView1))
+                        }
+
+
 //                        view.findViewById<TextView>(R.id.tvId1).text = product_id2
                         view.findViewById<TextView>(R.id.tvNamePr1).text = productName2
                         view.findViewById<TextView>(R.id.tvPrice1).text = "$productPrice2 VND"
