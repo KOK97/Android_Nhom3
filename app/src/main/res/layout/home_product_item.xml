@@ -18,7 +18,12 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/frspbc1"
             tools:layout_editor_absoluteY="16dp">
+            <TextView
+                android:id="@+id/tvId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
 
+                />
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="150dp"
@@ -77,7 +82,12 @@
             app:layout_constraintStart_toStartOf="parent"
             tools:ignore="NotSibling"
             tools:layout_editor_absoluteY="0dp">
+            <TextView
+                android:id="@+id/tvId1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
 
+                />
             <ImageView
                 android:id="@+id/imageView1"
                 android:layout_width="150dp"
