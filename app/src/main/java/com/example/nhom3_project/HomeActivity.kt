@@ -132,19 +132,28 @@ class HomeActivity : AppCompatActivity() {
                         // get data sp1
                         val product_id1 = firstProduct.child("id").getValue(String::class.java) ?: "0"
                         val productName1 = firstProduct.child("name").getValue(String::class.java) ?: "No name"
-                        val productPrice1 = firstProduct.child("price").getValue(Double::class.java) ?: 0.0
+                        val productPrice1 = firstProduct.child("price").getValue(Int::class.java) ?: 0
+                        val imageUrl1 = firstProduct.child("imageUrl").getValue(String::class.java) ?: "No image"
 
                         //set data sp1
+                        Glide.with(this@HomeActivity)
+                            .load("$imageUrl1")
+                            .override(150,100)
+                            .into(view.findViewById<ImageView>(R.id.imageView))
                         view.findViewById<TextView>(R.id.tvNamePr).text = productName1
 //                        view.findViewById<TextView>(R.id.tvId).text = product_id1
                         view.findViewById<TextView>(R.id.tvPrice).text = "$productPrice1 VND"
 
-                        // get data sp1
+                        // get data sp2
                         val product_id2 = secondProduct.child("id").getValue(String::class.java) ?: "0"
                         val productName2 = secondProduct.child("name").getValue(String::class.java) ?: "No name"
-                        val productPrice2 = secondProduct.child("price").getValue(Double::class.java) ?: 0.0
-
-                        //set data sp1
+                        val productPrice2 = secondProduct.child("price").getValue(Int::class.java) ?: 0
+                        val imageUrl2 = secondProduct.child("imageUrl").getValue(String::class.java) ?: "No image"
+                        //set data sp2
+                        Glide.with(this@HomeActivity)
+                            .load("$imageUrl2")
+                            .override(150,100)
+                            .into(view.findViewById<ImageView>(R.id.imageView1))
 //                        view.findViewById<TextView>(R.id.tvId1).text = product_id2
                         view.findViewById<TextView>(R.id.tvNamePr1).text = productName2
                         view.findViewById<TextView>(R.id.tvPrice1).text = "$productPrice2 VND"
@@ -211,19 +220,28 @@ class HomeActivity : AppCompatActivity() {
                         // get data sp1
                         val product_id1 = firstProduct.child("id").getValue(String::class.java) ?: "0"
                         val productName1 = firstProduct.child("name").getValue(String::class.java) ?: "No name"
-                        val productPrice1 = firstProduct.child("price").getValue(Double::class.java) ?: 0.0
+                        val productPrice1 = firstProduct.child("price").getValue(Int::class.java) ?: 0
+                        val imageUrl1 = firstProduct.child("imageUrl").getValue(String::class.java) ?: "No image"
 
                         //set data sp1
+                        Glide.with(this@HomeActivity)
+                            .load("$imageUrl1")
+                            .override(150,100)
+                            .into(view.findViewById<ImageView>(R.id.imageView))
                         view.findViewById<TextView>(R.id.tvNamePr).text = productName1
 //                        view.findViewById<TextView>(R.id.tvId).text = product_id1
                         view.findViewById<TextView>(R.id.tvPrice).text = "$productPrice1 VND"
 
-                        // get data sp1
+                        // get data sp2
                         val product_id2 = secondProduct.child("id").getValue(String::class.java) ?: "0"
                         val productName2 = secondProduct.child("name").getValue(String::class.java) ?: "No name"
-                        val productPrice2 = secondProduct.child("price").getValue(Double::class.java) ?: 0.0
-
-                        //set data sp1
+                        val productPrice2 = secondProduct.child("price").getValue(Int::class.java) ?: 0
+                        val imageUrl2 = secondProduct.child("imageUrl").getValue(String::class.java) ?: "No image"
+                        //set data sp2
+                        Glide.with(this@HomeActivity)
+                            .load("$imageUrl2")
+                            .override(150,100)
+                            .into(view.findViewById<ImageView>(R.id.imageView1))
 //                        view.findViewById<TextView>(R.id.tvId1).text = product_id2
                         view.findViewById<TextView>(R.id.tvNamePr1).text = productName2
                         view.findViewById<TextView>(R.id.tvPrice1).text = "$productPrice2 VND"
@@ -269,8 +287,6 @@ class HomeActivity : AppCompatActivity() {
                 Log.e("FirebaseError", "Failed to read data", databaseError.toException())
             }
         })
-
-
 
         //chuyển slide SP bán chạy
         val inani = AnimationUtils.loadAnimation(this, R.anim.fade_in)
