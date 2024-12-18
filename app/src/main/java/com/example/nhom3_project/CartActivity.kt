@@ -21,7 +21,7 @@ class CartActivity : AppCompatActivity() {
     private lateinit var navbarBott: BottomNavigationView
     private lateinit var lvCart: ListView
     private lateinit var adapter: CartAdapter
-    private lateinit var productList: MutableList<Products>
+    private var productList: MutableList<Products> = mutableListOf()
     private lateinit var cartList: MutableList<Cart>
     private lateinit var totalTextView: TextView
     private lateinit var dbRef: DatabaseReference
@@ -30,15 +30,27 @@ class CartActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cart)
         setControll()
-        // Đợi dữ liệu từ Firebase trước khi tiếp tục
         getDataCart {
-            setDataCart()
-            updateTotalPrice()
+            if (cartList.isNotEmpty()) {
+                setDataCart {
+                    updateTotalPrice()
+                }
+            } else {
+                Toast.makeText(this, "Không có sản phẩm trong giỏ hàng!", Toast.LENGTH_SHORT).show()
+            }
         }
-        setDataCart()
         setEventNavBar()
         setEventBack()
         setEventPay()
+
+        val dataproductid1 = intent.getStringExtra("productid1")
+        val dataproductid2 = intent.getStringExtra("productid2")
+
+        if (dataproductid1 != null){
+            Toast.makeText(this, "$dataproductid1", Toast.LENGTH_SHORT).show()
+        } else if (dataproductid2 != null){
+            Toast.makeText(this, "$dataproductid2", Toast.LENGTH_SHORT).show()
+        }
 
         navbarBott.menu.findItem(R.id.nav_shoppingcart).isChecked = true
         updateTotalPrice()
@@ -55,28 +67,26 @@ class CartActivity : AppCompatActivity() {
         cartList = mutableListOf()
         dbRef = FirebaseDatabase.getInstance().reference
 
-        dbRef.child("CartT").addValueEventListener(object : ValueEventListener {
+        dbRef.child("Carts").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 cartList.clear()
                 for (cartSnapshot in snapshot.children) {
-                    val id = cartSnapshot.child("id").getValue(Int::class.java) ?: 0
-                    val userid = cartSnapshot.child("userid").getValue(Int::class.java) ?: 0
+                    val id = cartSnapshot.child("id").getValue(String::class.java) ?: ""
+                    val userid = cartSnapshot.child("userid").getValue(String::class.java) ?: ""
                     val productid = cartSnapshot.child("productid").getValue(String::class.java) ?: ""
                     val quantity = cartSnapshot.child("quantity").getValue(Int::class.java) ?: 0
                     val cart = Cart(id, userid, productid, quantity)
                     cartList.add(cart)
                 }
-
                 // Gọi hàm callback sau khi dữ liệu đã được tải xong
                 onDataLoaded()
             }
-
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(this@CartActivity, "Lỗi khi lấy dữ liệu từ Cart: ${error.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }
-    private fun setDataCart() {
+    private fun setDataCart(function: () -> Unit) {
         productList = mutableListOf()
 
         // Khởi tạo Realtime Database Reference
@@ -90,14 +100,16 @@ class CartActivity : AppCompatActivity() {
 
                 for (productSnapshot in snapshot.children) {
                     val id = productSnapshot.child("id").getValue(String::class.java) ?: ""
-                    if (id in productIds ){
+                    if (id in productIds) {
                         val name = productSnapshot.child("name").getValue(String::class.java) ?: "No Name"
-                        val price = productSnapshot.child("price").getValue(Double::class.java) ?: 0.0
+                        val price = productSnapshot.child("price").getValue(Int::class.java) ?: 0
                         val img = productSnapshot.child("imageUrl").getValue(String::class.java) ?: ""
-                        // Thêm sản phẩm vào danh sách
+
+                        // Tìm sản phẩm trong giỏ hàng dựa vào productid
                         val cartItem = cartList.find { it.productid == id }
                         val quantity = cartItem?.quantity ?: 1
-                        productList.add(Products(id, name, price, img, quantity))
+
+                        productList.add(Products(id, name, price.toDouble(), img, quantity))
                     }
                 }
                 // Gán adapter sau khi đã có dữ liệu
@@ -110,6 +122,30 @@ class CartActivity : AppCompatActivity() {
             }
         })
     }
+    fun addToCart( productId: String) {
+        val dbRef = FirebaseDatabase.getInstance().getReference("Carts")
+
+        // Tạo key duy nhất cho mục giỏ hàng
+        val cartId = dbRef.push().key ?: return
+
+        // Tạo đối tượng Cart
+        val cartItem = Cart(
+            id = cartId,
+            userid = "BlsLWYh2AcWqeR6VFuE0Dhi0InI3",
+            productid = productId,
+            quantity = 1
+        )
+
+        // Thêm mục giỏ hàng vào Firebase
+        dbRef.child(cartId).setValue(cartItem)
+            .addOnSuccessListener {
+                Toast.makeText(this, "Sản phẩm đã được thêm vào giỏ hàng!", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Lỗi khi thêm sản phẩm: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
 
     private fun setEventPay() {
         btnPay.setOnClickListener {

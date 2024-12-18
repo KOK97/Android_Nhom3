@@ -44,16 +44,17 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <ImageButton
-                android:id="@+id/ibCart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <ImageView
+                android:id="@+id/ivCart2"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginEnd="2dp"
                 android:background="#8EE4C6"
                 android:src="@drawable/cart_icons"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/ibLike"
-                tools:ignore="MissingConstraints" />
+                tools:ignore="MissingConstraints"
+                android:clickable="true"/>
 
             <ImageButton
                 android:id="@+id/ibLike"
@@ -102,15 +103,16 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <ImageButton
-                android:id="@+id/ibCart1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <ImageView
+                android:id="@+id/ivCart1"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginEnd="2dp"
                 android:background="#8EE4C6"
                 android:src="@drawable/cart_icons"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/ibLike1"
+                android:clickable="true"
                 tools:ignore="MissingConstraints" />
 
             <ImageButton

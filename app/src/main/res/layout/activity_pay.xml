@@ -7,22 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".PayActivity">
 
-    <EditText
-        android:id="@+id/edtPhuongThucThanhToan"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="23dp"
-        android:layout_marginEnd="120dp"
-        android:background="@drawable/edt_ds_the"
-        android:hint="Phương thức thanh toán"
-        android:inputType="text"
-        android:padding="10dp"
-        android:scrollbarStyle="insideOverlay"
-        app:layout_constraintEnd_toStartOf="@+id/btnThayDoiThanhToan"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTaiKhoanTT" />
-
 
     <TextView
         android:id="@+id/tvThanhToan"
@@ -34,23 +18,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/editTextText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="23dp"
-        android:layout_marginEnd="120dp"
-        android:layout_weight="1"
-        android:background="@drawable/edt_ds_the"
-        android:hint="Địa chỉ"
-        android:padding="10dp"
-        app:layout_constraintEnd_toStartOf="@+id/btnThayDoiDiaChi"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvDiaChiNhanHang" />
-
 
 
     <TextView
@@ -64,36 +31,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvThanhToan" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnThayDoiDiaChi"
-        android:layout_width="wrap_content"
+    <Spinner
+        android:id="@+id/spPayDiaChi"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:background="@drawable/btn_ds_the"
-        android:text="Thay đổi"
-        android:textColor="@color/teal_200"
-        android:textColorHint="#00BCD4"
-        android:textColorLink="#FFFFFF"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:padding="10px"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvDiaChiNhanHang" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnThayDoiThanhToan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:background="@drawable/btn_ds_the"
-        android:text="Thay đổi"
-        android:textColor="@color/teal_200"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTaiKhoanTT" />
 
     <TextView
         android:id="@+id/tvTaiKhoanTT"
@@ -104,7 +52,19 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText" />
+        app:layout_constraintTop_toBottomOf="@+id/spPayDiaChi" />
+
+    <Spinner
+        android:id="@+id/spPayPhuongThuc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTaiKhoanTT" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"

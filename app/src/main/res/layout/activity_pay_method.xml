@@ -7,11 +7,175 @@
     android:layout_height="match_parent"
     tools:context=".PayMethodActivity">
 
+
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tvThanhToan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="173dp"
-        tools:layout_editor_absoluteY="28dp" />
+        android:layout_marginTop="40dp"
+        android:text="Phương Thức Thanh Toán"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:id="@+id/ivBackPay"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_back" />
+
+    <FrameLayout
+        android:id="@+id/flPayMAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/btnPayMDiaChi"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Địa Chỉ"
+            android:textSize="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvThanhToan" />
+
+        <EditText
+            android:id="@+id/edtPayMDiaChi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="120dp"
+            android:ems="10"
+            android:hint="Nhập địa chỉ bạn muốn thêm"
+            android:inputType="text"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toStartOf="@+id/btnPayMLuuDiaC"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnPayMLuuDiaC"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/teal_200"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:text="Lưu"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+        <ListView
+            android:id="@+id/lvPayMAddres"
+            android:layout_width="match_parent"
+            android:layout_height="597dp"
+            android:layout_marginTop="100dp"
+            android:dividerHeight="1dp"
+            android:listSelector="@color/teal_200"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/flPayMAddress"
+            tools:layout_editor_absoluteX="20dp" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/flPayMPaymernt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+
+        app:layout_constraintTop_toBottomOf="@+id/btnPayMDiaChi"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Phương thức thanh toán  "
+            android:textSize="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lvPayMAddres" />
+
+        <ListView
+            android:id="@+id/lvPayMPay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="100dp"
+            android:divider="@color/teal_200"
+            android:dividerHeight="1dp"
+            app:layout_constraintTop_toBottomOf="@+id/edtPayMPay"
+            tools:layout_editor_absoluteX="20dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnPayMLuuPay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/teal_200"
+            android:textColor="@color/white"
+            android:text="Lưu"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+        <EditText
+            android:id="@+id/edtPayMPay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="120dp"
+            android:ems="10"
+            android:hint="Nhập phương thức bạn muốn thêm "
+            android:inputType="text"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toStartOf="@+id/btnPayMLuuPay"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
+    </FrameLayout>
+
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnPayMDiaChi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/teal_200"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:text="Địa Chỉ"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvThanhToan" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnPayMPayment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="40dp"
+        android:background="@color/teal_200"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:text="Thanh toán"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvThanhToan" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

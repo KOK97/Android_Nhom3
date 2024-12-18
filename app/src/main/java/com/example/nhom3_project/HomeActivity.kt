@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.animation.AnimationUtils
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -30,30 +29,33 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var tvNextspbc: ImageView
     private lateinit var tvPrespbc: ImageView
 
-    private lateinit var ibCart: ImageButton
-    private lateinit var ibCart1: ImageButton
-    private lateinit var ibLike: ImageButton
-    private lateinit var ibLike1: ImageButton
-
     private lateinit var databaseReference: DatabaseReference
 
     private lateinit var viewFlipperspbc: ViewFlipper
     private lateinit var viewFlipperspm: ViewFlipper
 
     private lateinit var navbarBott: BottomNavigationView
+    var productid1: String = ""
+    var productid2: String = ""
+
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_home)
-
         setControl()
         setEvent()
         setEventNavBar()
         navbarBott.menu.findItem(R.id.nav_home).isChecked = true
-    }
 
+
+        //the lor
+        val inflater = LayoutInflater.from(this@HomeActivity)
+        var view = inflater.inflate(R.layout.home_product_item, viewFlipperspbc, false)
+
+        
+    }
     private fun setControl() {
         tvNextspm = findViewById(R.id.tvNextspm)
         tvPrespm = findViewById(R.id.tvPrespm)
@@ -108,7 +110,7 @@ class HomeActivity : AppCompatActivity() {
         })
 
         //lấy data cho viewFliper sản phẩm bán chạy
-        databaseReference = FirebaseDatabase.getInstance().getReference("Product")
+        databaseReference = FirebaseDatabase.getInstance().getReference("products")
         databaseReference.addValueEventListener(object : ValueEventListener {
             @SuppressLint("MissingInflatedId")
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -127,7 +129,8 @@ class HomeActivity : AppCompatActivity() {
                         val productPrice1 =
                             firstProduct.child("price").getValue(Double::class.java) ?: 0.0
                         val imageUrl1 =
-                            firstProduct.child("img").getValue(String::class.java) ?: "No image"
+                            firstProduct.child("imageUrl").getValue(String::class.java) ?: "No image"
+                        productid1 = firstProduct.child("id").getValue(String::class.java)?:" "
                         //dổ data vào các field sp 1
                         view.findViewById<TextView>(R.id.tvNamePr1).text = productName1
                         view.findViewById<TextView>(R.id.tvPrice1).text = "$productPrice1 VND"
@@ -142,7 +145,9 @@ class HomeActivity : AppCompatActivity() {
                         val productPrice2 =
                             secondProduct.child("price").getValue(Double::class.java) ?: 0.0
                         val imageUrl2 =
-                            secondProduct.child("img").getValue(String::class.java) ?: "No image"
+                            secondProduct.child("imageUrl").getValue(String::class.java) ?: "No image"
+                         productid2 = secondProduct.child("id").getValue(String::class.java)?:" "
+
                         //dổ data vào các field sp 2
                         view.findViewById<TextView>(R.id.tvNamePr).text = productName2
                         view.findViewById<TextView>(R.id.tvPrice).text = "$productPrice2 VND"
@@ -153,21 +158,6 @@ class HomeActivity : AppCompatActivity() {
 
                         viewFlipperspbc.addView(view)
                     }
-                    val ibCart = view.findViewById<ImageButton>(R.id.ibCart)
-                    val ibLike = view.findViewById<ImageButton>(R.id.ibLike)
-                    val ibCart1 = view.findViewById<ImageButton>(R.id.ibCart1)
-                    val ibLike1 = view.findViewById<ImageButton>(R.id.ibLike1)
-
-                    //chuyển activ khi click
-                    ibCart.setOnClickListener(){
-                        val intent = Intent(this@HomeActivity, CartActivity::class.java)
-                        startActivity(intent)
-                    }
-                    ibCart1.setOnClickListener(){
-                        val intent = Intent(this@HomeActivity, CartActivity::class.java)
-                        startActivity(intent)
-                    }
-
                 }
 
             }
@@ -178,7 +168,7 @@ class HomeActivity : AppCompatActivity() {
         })
 
         //lấy data cho viewFliper SP mới
-        databaseReference = FirebaseDatabase.getInstance().getReference("Product")
+        databaseReference = FirebaseDatabase.getInstance().getReference("products")
         databaseReference.addValueEventListener(object : ValueEventListener {
             @SuppressLint("MissingInflatedId")
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -194,7 +184,9 @@ class HomeActivity : AppCompatActivity() {
                         //lay data sp 1
                         val productName1 = firstProduct.child("name").getValue(String::class.java) ?: "No name"
                         val productPrice1 = firstProduct.child("price").getValue(Double::class.java) ?: 0.0
-                        val imageUrl1 = firstProduct.child("img").getValue(String::class.java) ?: "No image"
+                        val imageUrl1 = firstProduct.child("imageUrl").getValue(String::class.java) ?: "No image"
+                        productid1 = firstProduct.child("id").getValue(String::class.java)?:""
+
                         Log.d("url" ,imageUrl1)
                         //dổ data vào các field sp 1
                         view.findViewById<TextView>(R.id.tvNamePr1).text = productName1
@@ -207,7 +199,8 @@ class HomeActivity : AppCompatActivity() {
                         //lay data sp 2
                         val productName2 = secondProduct.child("name").getValue(String::class.java) ?: "No name"
                         val productPrice2 = secondProduct.child("price").getValue(Double::class.java) ?: 0.0
-                        val imageUrl2 = secondProduct.child("img").getValue(String::class.java) ?: "No image"
+                        val imageUrl2 = secondProduct.child("imageUrl").getValue(String::class.java) ?: "No image"
+                        productid2 = secondProduct.child("id").getValue(String::class.java)?:""
 
                         //dổ data vào các field sp 2
                         view.findViewById<TextView>(R.id.tvNamePr).text = productName2
@@ -216,22 +209,6 @@ class HomeActivity : AppCompatActivity() {
                             .load("$imageUrl2")
                             .override(150,100)
                             .into(view.findViewById<ImageView>(R.id.imageView))
-
-                        val ibCart = view.findViewById<ImageButton>(R.id.ibCart)
-                        val ibLike = view.findViewById<ImageButton>(R.id.ibLike)
-                        val ibCart1 = view.findViewById<ImageButton>(R.id.ibCart1)
-                        val ibLike1 = view.findViewById<ImageButton>(R.id.ibLike1)
-
-//                        //chuyển activ khi click
-//                        ibCart.setOnClickListener(){
-//                            val intent = Intent(this@HomeActivity, CartActivity::class.java)
-//                            startActivity(intent)
-//                        }
-//                        ibCart1.setOnClickListener(){
-//                            val intent = Intent(this@HomeActivity, CartActivity::class.java)
-//                            startActivity(intent)
-//                        }
-
                         viewFlipperspm.addView(view)
                     }
                 }
@@ -250,6 +227,7 @@ class HomeActivity : AppCompatActivity() {
         viewFlipperspbc.setOutAnimation(outani)
         viewFlipperspbc.setFlipInterval(10000)
         viewFlipperspbc.startFlipping()
+
 
         tvNextspbc.setOnClickListener() {
             viewFlipperspbc.showNext()

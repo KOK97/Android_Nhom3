@@ -15,11 +15,9 @@ class CartAdapter(
 ) : ArrayAdapter<Products>(context, 0, productsList) {
     private lateinit var dbRef: DatabaseReference
     private var cartList: MutableList<Cart> = mutableListOf()
-
     init {
         getDataCart()
     }
-
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view: View
         val holder: ViewHolder
@@ -53,7 +51,7 @@ class CartAdapter(
             productPrice.text = product.price.toString()
             tvSolg.text = product.quantity.toString()
 
-            val imageResId = context.resources.getIdentifier(product.img, "drawable", context.packageName)
+            val imageResId = context.resources.getIdentifier(product.imageUrl, "drawable", context.packageName)
             productImage.setImageResource(if (imageResId != 0) imageResId else R.drawable.baseline_hide_image_24)
 
             cbSp.isChecked = product.isSelected
@@ -91,10 +89,12 @@ class CartAdapter(
         }
 
         private fun updateCartQuantity(product: Products) {
-            for (cart in cartList) {
-                if (cart.productid == product.id) {
-                    updateCartItem(cart.id, product.quantity)
-                    break
+            if (cartList != null){
+                for (cart in cartList) {
+                    if (cart.productid == product.id) {
+                        updateCartItem(cart.id, product.quantity)
+                        break
+                    }
                 }
             }
             updateTotalPrice()
@@ -104,12 +104,12 @@ class CartAdapter(
     private fun getDataCart() {
         dbRef = FirebaseDatabase.getInstance().reference
 
-        dbRef.child("Cart").addValueEventListener(object : ValueEventListener {
+        dbRef.child("Carts").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 cartList.clear()
                 for (cartSnapshot in snapshot.children) {
-                    val id = cartSnapshot.child("id").getValue(Int::class.java) ?: 0
-                    val userid = cartSnapshot.child("userid").getValue(Int::class.java) ?: 0
+                    val id = cartSnapshot.child("id").getValue(String::class.java) ?: ""
+                    val userid = cartSnapshot.child("userid").getValue(String::class.java) ?: ""
                     val productid = cartSnapshot.child("productid").getValue(String::class.java) ?: 0
                     val quantity = cartSnapshot.child("quantity").getValue(Int::class.java) ?: 0
                     val cart = Cart(id, userid, productid.toString(), quantity)
@@ -123,8 +123,8 @@ class CartAdapter(
         })
     }
 
-    private fun updateCartItem(cartId: Int, newQuantity: Int) {
-        dbRef.child("Cart").child(cartId.toString()).child("quantity").setValue(newQuantity)
+    private fun updateCartItem(cartId: String, newQuantity: Int) {
+        dbRef.child("Carts").child(cartId.toString()).child("quantity").setValue(newQuantity)
             .addOnSuccessListener {
                 Log.d("CartAdapter", "Cập nhật số lượng thành công cho Cart ID: $cartId")
                 Toast.makeText(context, "Cập nhật thành công!", Toast.LENGTH_SHORT).show()
@@ -135,8 +135,8 @@ class CartAdapter(
             }
     }
 
-    private fun removeCartItem(cartId: Int, position: Int) {
-        dbRef.child("Cart").child(cartId.toString()).removeValue()
+    private fun removeCartItem(cartId: String, position: Int) {
+        dbRef.child("Carts").child(cartId.toString()).removeValue()
             .addOnSuccessListener {
                 productsList.removeAt(position)
                 notifyDataSetChanged()
