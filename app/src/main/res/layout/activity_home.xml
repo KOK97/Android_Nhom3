@@ -28,6 +28,7 @@
                 android:orientation="vertical">
 
 
+                <!--            Banner              -->
                 <ImageView
                     android:id="@+id/ivLogo"
                     android:layout_width="160dp"
@@ -36,7 +37,6 @@
                     android:layout_marginTop="16dp"
                     app:srcCompat="@drawable/logo" />
 
-                <!--            Banner              -->
                 <com.denzcoskun.imageslider.ImageSlider
                     android:id="@+id/bannerSlide"
                     android:layout_width="match_parent"
