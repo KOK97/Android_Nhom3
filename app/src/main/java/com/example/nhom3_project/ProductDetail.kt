@@ -17,7 +17,7 @@ class ProductDetail : AppCompatActivity() {
         setContentView(R.layout.activity_product_detail)
         val productId = intent.getStringExtra("productClick")
         Toast.makeText(this, "Clicked on: $productId", Toast.LENGTH_SHORT).show()
-    setControl()
+        setControl()
         setEvent()
     }
     private  fun setControl(){

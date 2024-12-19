@@ -2,6 +2,7 @@ package com.example.nhom3_project
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -39,19 +40,10 @@ class CartActivity : AppCompatActivity() {
                 Toast.makeText(this, "Không có sản phẩm trong giỏ hàng!", Toast.LENGTH_SHORT).show()
             }
         }
+        setEventAdd()
         setEventNavBar()
         setEventBack()
         setEventPay()
-
-        val dataproductid1 = intent.getStringExtra("productid1")
-        val dataproductid2 = intent.getStringExtra("productid2")
-
-        if (dataproductid1 != null){
-            Toast.makeText(this, "$dataproductid1", Toast.LENGTH_SHORT).show()
-        } else if (dataproductid2 != null){
-            Toast.makeText(this, "$dataproductid2", Toast.LENGTH_SHORT).show()
-        }
-
         navbarBott.menu.findItem(R.id.nav_shoppingcart).isChecked = true
         updateTotalPrice()
     }
@@ -62,6 +54,13 @@ class CartActivity : AppCompatActivity() {
         btnPay = findViewById(R.id.btnThanhToan)
         lvCart = findViewById(R.id.lvCart)
         totalTextView = findViewById(R.id.tvTongTienCart)
+    }
+    private fun setEventAdd(){
+        val dataproductid = intent.getStringExtra("productClick")
+          if (dataproductid != null){
+              addToCart(dataproductid.toString())
+          }
+
     }
     private fun getDataCart(onDataLoaded: () -> Unit) {
         cartList = mutableListOf()
@@ -122,28 +121,47 @@ class CartActivity : AppCompatActivity() {
             }
         })
     }
-    fun addToCart( productId: String) {
-        val dbRef = FirebaseDatabase.getInstance().getReference("Carts")
-
-        // Tạo key duy nhất cho mục giỏ hàng
-        val cartId = dbRef.push().key ?: return
-
-        // Tạo đối tượng Cart
-        val cartItem = Cart(
-            id = cartId,
-            userid = "BlsLWYh2AcWqeR6VFuE0Dhi0InI3",
-            productid = productId,
-            quantity = 1
-        )
-
-        // Thêm mục giỏ hàng vào Firebase
-        dbRef.child(cartId).setValue(cartItem)
-            .addOnSuccessListener {
-                Toast.makeText(this, "Sản phẩm đã được thêm vào giỏ hàng!", Toast.LENGTH_SHORT).show()
+    fun addToCart(productId: String) {
+        val uid = "BlsLWYh2AcWqeR6VFuE0Dhi0InI3"
+        dbRef.child("Carts").addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val existingCart = snapshot.children.find {
+                    val cartUserId = it.child("userid").getValue(String::class.java) ?: ""
+                    val cartProductId = it.child("productid").getValue(String::class.java) ?: ""
+                    cartUserId == uid && cartProductId == productId
+                }
+                if (existingCart == null) {
+                    val cartId = dbRef.child("Carts").push().key ?: return
+                    val cartItem = Cart(
+                        id = cartId,
+                        userid = uid,
+                        productid = productId,
+                        quantity = 1
+                    )
+                    dbRef.child("Carts").child(cartId).setValue(cartItem)
+                        .addOnSuccessListener {
+                            Toast.makeText(this@CartActivity, "Sản phẩm đã được thêm vào giỏ hàng!", Toast.LENGTH_SHORT).show()
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(this@CartActivity, "Lỗi khi thêm sản phẩm: ${e.message}", Toast.LENGTH_SHORT).show()
+                        }
+                } else {
+                    val cartId = existingCart.key ?: return
+                    val currentQuantity = existingCart.child("quantity").getValue(Int::class.java) ?: 1
+                    dbRef.child("Carts").child(cartId).child("quantity").setValue(currentQuantity + 1)
+                        .addOnSuccessListener {
+                            Toast.makeText(this@CartActivity, "Cập nhật số lượng thành công!", Toast.LENGTH_SHORT).show()
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(this@CartActivity, "Lỗi khi cập nhật số lượng: ${e.message}", Toast.LENGTH_SHORT).show()
+                        }
+                }
             }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Lỗi khi thêm sản phẩm: ${e.message}", Toast.LENGTH_SHORT).show()
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@CartActivity, "Lỗi: ${error.message}", Toast.LENGTH_SHORT).show()
             }
+        })
     }
 
 
@@ -180,7 +198,6 @@ class CartActivity : AppCompatActivity() {
             }
         }
     }
-
     private fun updateTotalPrice() {
         val total = productList.filter { it.isSelected }.sumByDouble { it.price * it.quantity }
         totalTextView.text = "Total: $total VND"
