@@ -49,6 +49,8 @@ class ProductDetail : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_product_detail)
+        val productId = intent.getStringExtra("productClick")
+        Toast.makeText(this, "Clicked on: $productId", Toast.LENGTH_SHORT).show()
         setControl()
         setEvent()
         setEventNavBar()

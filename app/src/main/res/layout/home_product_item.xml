@@ -51,8 +51,8 @@
 
             <ImageButton
                 android:id="@+id/ibCart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginEnd="2dp"
                 android:background="#8EE4C6"
                 android:src="@drawable/cart_icons"
@@ -62,8 +62,8 @@
 
             <ImageButton
                 android:id="@+id/ibLike"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:background="#8EE4C6"
                 android:src="@drawable/like"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -114,8 +114,8 @@
 
             <ImageButton
                 android:id="@+id/ibCart1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginEnd="2dp"
                 android:background="#8EE4C6"
                 android:src="@drawable/cart_icons"
@@ -125,8 +125,8 @@
 
             <ImageButton
                 android:id="@+id/ibLike1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:background="#8EE4C6"
                 android:src="@drawable/like"
                 app:layout_constraintBottom_toBottomOf="parent"

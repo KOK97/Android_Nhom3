@@ -140,7 +140,7 @@ class HomeActivity : AppCompatActivity() {
                         val imageResId1 = resources.getIdentifier(imageUrl1, "drawable", packageName) //lay id anh tu drawble
 
                         if (imageResId1 != 0) {
-                           //neu co id anh trong drawble thi load len
+                            //neu co id anh trong drawble thi load len
                             Glide.with(this@HomeActivity)
                                 .load(imageResId1)
                                 .override(150, 100)
@@ -407,4 +407,3 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 }
-

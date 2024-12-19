@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("com.google.gms.google-services")
+    id ("kotlin-kapt")
 }
 
 android {
@@ -11,7 +12,7 @@ android {
     defaultConfig {
         applicationId = "com.example.nhom3_project"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -37,14 +38,17 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.junit)
     implementation(libs.androidx.constraintlayout)
+
+    implementation("com.github.denzcoskun:ImageSlideshow:0.1.0")
+    implementation("androidx.core:core-splashscreen:1.0.1")
     implementation(libs.firebase.database)
+
     implementation(libs.firebase.auth)
     implementation(libs.androidx.swiperefreshlayout)
     implementation(libs.androidx.recyclerview)

@@ -12,28 +12,12 @@
         android:id="@+id/tvGioHang"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="10dp"
         android:text="Giỏ hàng"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- Ảnh sản phẩm -->
-    <ImageView
-        android:id="@+id/ivPeoductCart"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="40dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvGioHang"
-        app:srcCompat="@drawable/h1"
-        tools:ignore="ContentDescription" />
-
-
-
-    <!-- Các thành phần khác giữ nguyên... -->
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigationCart"
@@ -49,7 +33,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="130dp"
+        android:layout_height="110dp"
         android:layout_marginBottom="8dp"
         android:background="@color/gray"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigationCart"
@@ -64,7 +48,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:text="Tổng Tiền : "
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -76,7 +60,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
             android:text="595.000 ₫"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -91,7 +75,7 @@
             android:paddingEnd="20dp"
             android:text="Thanh Toán"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -103,110 +87,20 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_back" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="140dp"
-        android:layout_marginTop="40dp"
-        app:layout_constraintStart_toEndOf="@+id/ivPeoductCart"
+    <ListView
+        android:id="@+id/lvCart"
+        android:layout_width="409dp"
+        android:layout_height="442dp"
+        android:layout_marginTop="10dp"
+        android:divider="@color/teal_200"
+        android:dividerHeight="2dp"
         app:layout_constraintTop_toBottomOf="@+id/tvGioHang"
-        tools:ignore="MissingConstraints">
-        <!-- Tên sản phẩm -->
-
-        <!-- Mã sản phẩm -->
-
-        <TextView
-            android:id="@+id/tvTenSP1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Hạt Charm Bạc đính đá PNJSilver hình dream catcher NHXMW060004"
-            android:textSize="16sp"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="0dp" />
-
-        <!-- Giá sản phẩm -->
-
-        <TextView
-            android:id="@+id/TVGiaSP1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="595.000 ₫"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvMaSP1"
-            tools:layout_editor_absoluteX="0dp" />
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="SỐ LƯỢNG"
-            android:textColor="#00BCD4"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvMaSP1" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnPlusCart"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="4dp"
-            android:backgroundTint="#F0F0F0"
-            android:text="+"
-            android:textColor="#000000"
-            app:layout_constraintStart_toEndOf="@+id/tvSoLg"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-        <TextView
-            android:id="@+id/tvSoLg"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:gravity="center"
-            android:text="1"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnMinusCart"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="4dp"
-            android:backgroundTint="#F0F0F0"
-            android:text="-"
-            android:textColor="#000000"
-            app:layout_constraintEnd_toStartOf="@+id/tvSoLg"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        tools:layout_editor_absoluteX="1dp" />
 
 
-        <ImageView
-            android:id="@+id/ivDeleteProductCart"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginEnd="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView4"
-            app:srcCompat="@drawable/ic_trash_cart" />
-
-        <TextView
-            android:id="@+id/tvMaSP1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Mã: SINHXMW060004"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTenSP1" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
