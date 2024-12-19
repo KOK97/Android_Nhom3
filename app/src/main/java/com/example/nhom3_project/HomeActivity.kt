@@ -121,7 +121,12 @@ class HomeActivity : AppCompatActivity() {
                 viewFlipperspbc.removeAllViews()
                 val productList = snapshot.children.toList()
 
-                for (pair in productList.chunked(2)) { // tạo vòng lặp với mỗi 2 sản phẩm
+                // sort by buycount giam dan
+                val sortedProductList = productList.sortedByDescending {
+                    it.child("buyCount").getValue(Int::class.java) ?: 0
+                }
+
+                for (pair in sortedProductList.chunked(2)) { // tạo vòng lặp với mỗi 2 sản phẩm
                     val inflater = LayoutInflater.from(this@HomeActivity)
                     val view = inflater.inflate(R.layout.home_product_item, viewFlipperspbc, false)
 

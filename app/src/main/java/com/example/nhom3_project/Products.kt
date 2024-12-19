@@ -10,7 +10,7 @@ data class Products(
     var quantity: Int =0,
     var desc: String = "",
     var imageUrl: String = "",
-
+    var buyCount: Int = 0,
     var isSelected: Boolean = false
 ) : Parcelable {
 
