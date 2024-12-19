@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="EDIT PRODUCT"
+        android:textColor="@color/lavender"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="PRODUCT ID"
+        android:textColor="#55BFA6"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/edt_product_code"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:padding="10dp"
+        android:background="@drawable/border"
+        android:hint="  Enter Product ID"
+        android:inputType="text" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="PRODUCT NAME"
+        android:textColor="#55BFA6"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/edt_product_name"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:padding="10dp"
+        android:background="@drawable/border"
+        android:hint="   Enter Product Name"
+        android:inputType="text" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="CATEGORY"
+        android:textColor="#55BFA6"
+        android:textSize="14sp" />
+
+    <Spinner
+        android:id="@+id/spinner_category"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:padding="10dp"
+        android:background="@drawable/border"
+        android:hint="Select Category" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="TYPE "
+        android:textColor="#55BFA6"
+        android:textSize="14sp" />
+    <RadioGroup
+        android:id="@+id/rdo_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/radio_nam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Male"
+            android:layout_marginEnd="16dp" />
+
+        <RadioButton
+            android:id="@+id/radio_nu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Female" />
+    </RadioGroup>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="PRODUCT PRICE"
+        android:textColor="#55BFA6"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/edt_price"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:padding="10dp"
+        android:hint="  Enter Product Price"
+        android:background="@drawable/border"
+        android:inputType="number" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="QUANTITY"
+        android:textColor="#55BFA6"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/edt_quantity"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/border"
+        android:hint="  Enter Product Quantity"
+        android:inputType="number"
+        android:padding="10dp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="DESCRIPTION"
+        android:textColor="#55BFA6"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/edt_desc"
+        android:layout_width="match_parent"
+        android:background="@drawable/border"
+        android:layout_height="40dp"
+        android:padding="10dp"
+        android:hint="  Enter Description"
+        android:inputType="text" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="PRODUCT IMAGE URL"
+        android:textColor="#55BFA6"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/edt_image_url"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:padding="10dp"
+        android:hint="  Enter the Product Image URL"
+        android:background="@drawable/border"
+        android:inputType="text" />
+
+    <Button
+        android:id="@+id/btn_save_product"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="SAVE"
+        android:backgroundTint="@color/lavender"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp" />
+</LinearLayout>

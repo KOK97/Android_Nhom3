@@ -1,0 +1,63 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="4dp"
+    android:background="?android:attr/selectableItemBackground">
+
+    <TextView
+        android:id="@+id/tv_uid"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:text="ID"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/tv_customer_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="User Name"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/tv_phone"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.7"
+        android:text="Phone"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/tv_email"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Email"
+        android:gravity="center"
+        android:ellipsize="end"
+        android:maxLines="1" />
+    <TextView
+        android:id="@+id/tv_role"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Role"
+        android:ellipsize="end"
+        android:gravity="center"/>
+
+    <ImageButton
+        android:id="@+id/deleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_delete_24"
+        android:contentDescription="Xóa"
+        android:background="?android:attr/selectableItemBackground" />
+</LinearLayout>
