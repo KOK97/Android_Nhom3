@@ -32,13 +32,13 @@ class ProductDetail : AppCompatActivity() {
     private lateinit var tvType: TextView
     private lateinit var tvDesc: TextView
     private lateinit var tvRating: TextView
-    private lateinit var tvTotalCMT : TextView
-
+    
     private lateinit var ivProDetail: ImageView
+    private lateinit var tvTotalCMT : TextView
+    
     private lateinit var ivDefault: ImageView
     private lateinit var ivBackDetail: ImageView
 
-    private lateinit var btnExit :Button
     private lateinit var btnAddCart :Button
     private lateinit var btnBuyNow :Button
     private lateinit var btnComment :Button
@@ -59,7 +59,6 @@ class ProductDetail : AppCompatActivity() {
         setEventNavBar()
     }
     private  fun setControl(){
-        btnExit = findViewById(R.id.btnExit)
         btnAddCart = findViewById(R.id.btnAddCart)
         btnBuyNow = findViewById(R.id.btnBuyNow)
         btnComment = findViewById(R.id.btnComment)
@@ -193,17 +192,15 @@ class ProductDetail : AppCompatActivity() {
                 }
             })
         }
-
-
-        btnExit.setOnClickListener(){
-            finish()
-        }
-
         btnAddCart.setOnClickListener(){
             if(productId != null){
                 val intent = Intent(this@ProductDetail, CartActivity::class.java)
                 intent.putExtra("productId", productId)
-                startActivity(intent)
+                Toast.makeText(this, "Thêm vào giỏ hàng thành công", Toast.LENGTH_SHORT).show()
+//                startActivity(intent)
+            }
+            else{
+                Toast.makeText(this, "Thêm vào giỏ hàng thất bại", Toast.LENGTH_SHORT).show()
             }
         }
         btnBuyNow.setOnClickListener(){
