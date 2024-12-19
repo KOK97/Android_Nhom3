@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -29,6 +30,7 @@ class PayMethodActivity : AppCompatActivity() {
     private lateinit var btnPayment: Button
     private lateinit var flPayMDiachi: FrameLayout
     private lateinit var flPayMPayment: FrameLayout
+    private lateinit var ivBackPay: ImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pay_method)
@@ -38,6 +40,7 @@ class PayMethodActivity : AppCompatActivity() {
         setEvenViewDinamic()
         setEvenAddAddress()
         setEvenAddPayment()
+        setEventback()
     }
 
     private fun setControll() {
@@ -51,6 +54,12 @@ class PayMethodActivity : AppCompatActivity() {
         btnPayment = findViewById(R.id.btnPayMPayment)
         flPayMDiachi = findViewById(R.id.flPayMAddress)
         flPayMPayment = findViewById(R.id.flPayMPaymernt)
+        ivBackPay = findViewById(R.id.ivBackPay)
+    }
+    private fun setEventback(){
+        ivBackPay.setOnClickListener{
+            finish()
+        }
     }
     private fun setDataAddressPayMeThod() {
         addressPayMethodlist = mutableListOf()

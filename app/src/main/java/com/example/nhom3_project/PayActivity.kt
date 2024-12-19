@@ -13,6 +13,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -37,6 +38,7 @@ class PayActivity : AppCompatActivity() {
     private lateinit var spinerPayment :Spinner
     private  lateinit var lvDetail: ListView
     private lateinit var tvTotal: TextView
+    private lateinit var tvUpdatemethod: TextView
     private lateinit var dbRef: DatabaseReference
     private lateinit var uid: String
     private lateinit var total: String
@@ -45,6 +47,9 @@ class PayActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_pay)
         setControll()
+        val firebaseAuth = FirebaseAuth.getInstance()
+        val currentUser = firebaseAuth.currentUser
+        uid = currentUser?.uid.toString()
         setDataAddressPayMeThod()
         setDataPaymentPayMeThod()
         setEventGetDataPay()
@@ -52,6 +57,7 @@ class PayActivity : AppCompatActivity() {
         setEvenSpinerPayment(spinerPayment)
         setEventPay()
         eventBack()
+        setEvenClickUpdate()
     }
     private fun setControll(){
         //btnBack
@@ -65,8 +71,14 @@ class PayActivity : AppCompatActivity() {
         lvDetail = findViewById(R.id.lvDetailPay)
         //total
         tvTotal= findViewById(R.id.tvPayAllTotal)
-        //uid
-        uid = "4IkgM1ZTroMf3yLIVcKhbBGp9Ol2"
+        //tv update method
+        tvUpdatemethod = findViewById(R.id.tvPayUpdateMethod)
+    }
+    private fun setEvenClickUpdate(){
+        tvUpdatemethod.setOnClickListener{
+            val intent = Intent(this, PayMethodActivity::class.java)
+            startActivity(intent)
+        }
     }
     private fun setEventGetDataPay(){
         val data: MutableList<PayData> = intent.getParcelableArrayListExtra("product_list") ?: mutableListOf()
@@ -159,7 +171,7 @@ class PayActivity : AppCompatActivity() {
     private fun setDataAddressPayMeThod() {
         addressPayMethodlist = mutableListOf()
 
-        // Khởi tạo Realtime Database Reference
+        // Khởi tạo
         dbRef = FirebaseDatabase.getInstance().reference
 
         // Lấy dữ liệu
@@ -243,7 +255,6 @@ class PayActivity : AppCompatActivity() {
     }
     private fun eventBack(){
         ivBackPay.setOnClickListener{
-            Toast.makeText(this, "Back button clicked", Toast.LENGTH_SHORT).show()
             finish()
         }
     }
