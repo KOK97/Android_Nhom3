@@ -7,7 +7,9 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.ListView
 import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -21,13 +23,17 @@ class PayActivity : AppCompatActivity() {
 
     private lateinit var ivBackPay: ImageView
     private lateinit var btnAccepp: Button
+    private lateinit var adapter: PayAdapter
     private var Billslist: MutableList<Bills> = mutableListOf()
     private var addressPayMethodlist: MutableList<PayMethodAddress> = mutableListOf()
     private var paymentPayMethodlist: MutableList<PayMethodPayment> = mutableListOf()
+    private var detailList: MutableList<PayData> = mutableListOf()
     private lateinit var idAddress:String
     private lateinit var idPayment:String
     private lateinit var spinerAddress :Spinner
     private lateinit var spinerPayment :Spinner
+    private  lateinit var lvDetail: ListView
+    private lateinit var tvTotal: TextView
     private lateinit var dbRef: DatabaseReference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +42,7 @@ class PayActivity : AppCompatActivity() {
         setControll()
         setDataAddressPayMeThod()
         setDataPaymentPayMeThod()
+        setEventGetDataPay()
         setEvenSpinerAddress(spinerAddress)
         setEvenSpinerPayment(spinerPayment)
         eventBack()
@@ -50,7 +57,31 @@ class PayActivity : AppCompatActivity() {
         //spiner
         spinerAddress = findViewById(R.id.spPayDiaChi)
         spinerPayment = findViewById(R.id.spPayPhuongThuc)
-        //
+        //lv
+        lvDetail = findViewById(R.id.lvDetailPay)
+        //total
+        tvTotal= findViewById(R.id.tvPayAllTotal)
+    }
+    private fun setEventGetDataPay(){
+        val data: MutableList<PayData> = intent.getParcelableArrayListExtra("product_list") ?: mutableListOf()
+        val total = intent.getStringExtra("totalcart")?:""
+        if (data != null) {
+            for (detail in data){
+                detailList.add(PayData(detail.productid,detail.propductname,detail.quality))
+            }
+
+            adapter = PayAdapter(this@PayActivity, detailList)
+            if (total!= ""){
+                tvTotal.text = "$total VND"
+            }
+            else{
+                Toast.makeText(this, "Lỏ r ní", Toast.LENGTH_SHORT).show()
+            }
+            lvDetail.adapter = adapter
+        } else {
+            Toast.makeText(this, "Dữ liệu không tồn tại", Toast.LENGTH_SHORT).show()
+        }
+
     }
     private fun setEvenSpinerPayment(spinerPaym : Spinner){
         idPayment = ""
