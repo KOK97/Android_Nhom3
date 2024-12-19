@@ -13,11 +13,14 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 
 class LoginActivity : AppCompatActivity() {
-
     private lateinit var txtRegister: TextView
     private lateinit var txtForgotPassword: TextView
     private lateinit var btnLogin: Button
@@ -57,80 +60,92 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setEvent() {
-//        createTestAccounts()
         setSupportActionBar(toolbar)
         supportActionBar?.apply {
             title = "Quay lại"
             setDisplayHomeAsUpEnabled(true)
         }
-        btnLogin.setOnClickListener() {
-            val email: String = edtEmail.getText().toString().trim()
-            val pass: String = edtPassword.getText().toString().trim()
+        btnLogin.setOnClickListener {
+            val email = edtEmail.text.toString().trim()
+            val password = edtPassword.text.toString().trim()
 
-            // Kiểm tra email, mật khẩu và tên người dùng
             when {
-                !email.isValidEmail() -> {
-                    edtEmail.error = "Email không hợp lệ"
+                email.isEmpty() -> {
+                    edtEmail.error = "Vui lòng nhập email!"
                     edtEmail.requestFocus()
                 }
 
+                !email.isValidEmail() -> {
+                    edtEmail.error = "Email không hợp lệ!"
+                    edtEmail.requestFocus()
+                }
+
+                password.isEmpty() -> {
+                    edtPassword.error = "Vui lòng nhập mật khẩu!"
+                    edtPassword.requestFocus()
+                }
+
+                password.length < 6 -> {
+                    edtPassword.error = "Mật khẩu phải có ít nhất 6 ký tự!"
+                    edtPassword.requestFocus()
+                }
+
                 else -> {
-                    loginUser(email, pass)
+                    loginUser(email, password)
                 }
             }
         }
+
         txtRegister.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
+
         txtForgotPassword.setOnClickListener {
             val intent = Intent(this, ForgotPasswordActivity::class.java)
             startActivity(intent)
         }
     }
 
-    private fun loginUser(emaill: String, pass: String) {
+    private fun loginUser(email: String, password: String) {
         progressBar.visibility = View.VISIBLE
         btnLogin.isEnabled = false
-        mAuth.signInWithEmailAndPassword(emaill, pass).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                progressBar.visibility = View.GONE
-                btnLogin.isEnabled = true
-                val user = mAuth.currentUser
-                if (task.result.additionalUserInfo!!.isNewUser) {
-                    val email = user!!.email
-                    val uid = user!!.uid
-                    val hashMap = HashMap<Any, String?>()
-                    hashMap["uid"] = uid
-                    hashMap["name"] = ""
-                    hashMap["email"] = email
-                    hashMap["phone"] = ""
-                    hashMap["typingTo"] = "noOne"
-                    val database = FirebaseDatabase.getInstance()
-                    val reference = database.getReference("Users")
-                    reference.child(uid).setValue(hashMap)
-                }
-                Toast.makeText(
-                    this@LoginActivity, "Đăng nhập thành công " + user!!.email, Toast.LENGTH_LONG
-                ).show()
-                val mainIntent = Intent(
-                    this@LoginActivity, HomeActivity::class.java
-                )
-                mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                startActivity(mainIntent)
-                finish()
-            } else {
-                Toast.makeText(
-                    this@LoginActivity,
-                    "Đăng nhập không thành công !",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }.addOnFailureListener {
+        edtEmail.isEnabled = false
+        edtPassword.isEnabled = false
+
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             progressBar.visibility = View.GONE
             btnLogin.isEnabled = true
-            Toast.makeText(this, "${it.message}", Toast.LENGTH_LONG).show()
+            edtEmail.isEnabled = true
+            edtPassword.isEnabled = true
+            if (task.isSuccessful) {
+                val user = mAuth.currentUser
+                if (user != null) {
+                    Toast.makeText(
+                        this, "Đăng nhập thành công!", Toast.LENGTH_LONG
+                    ).show()
+                    val mainIntent = Intent(this, HomeActivity::class.java)
+                    mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    startActivity(mainIntent)
+                }
+            } else {
+                handleLoginError(task.exception)
+            }
         }
+    }
+
+    private fun handleLoginError(exception: Exception?) {
+        val errorMessage = when (exception) {
+            is FirebaseAuthInvalidUserException -> "Tài khoản không tồn tại. Vui lòng kiểm tra lại."
+            is FirebaseAuthInvalidCredentialsException -> "Email hoặc mật khẩu không đúng."
+            else -> exception?.message ?: "Đã xảy ra lỗi không xác định."
+        }
+
+        Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
+        progressBar.visibility = View.GONE
+        btnLogin.isEnabled = true
+        edtEmail.isEnabled = true
+        edtPassword.isEnabled = true
     }
 
     private fun String.isValidEmail() = Patterns.EMAIL_ADDRESS.matcher(this).matches()
@@ -162,6 +177,4 @@ class LoginActivity : AppCompatActivity() {
                 }
         }
     }
-
-
 }

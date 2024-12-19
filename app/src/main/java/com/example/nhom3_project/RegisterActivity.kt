@@ -12,6 +12,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
@@ -42,7 +45,6 @@ class RegisterActivity : AppCompatActivity() {
                 onBackPressed()
                 true
             }
-
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -68,102 +70,106 @@ class RegisterActivity : AppCompatActivity() {
         txtExistaccount.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
         }
+
         btnRegister.setOnClickListener {
-            val emailText = edtEmail.text.toString().trim()
+            val email = edtEmail.text.toString().trim()
             val username = edtUserName.text.toString().trim()
-            val pass = edtPassword.text.toString().trim()
+            val password = edtPassword.text.toString().trim()
             val phone = edtPhone.text.toString().trim()
 
-            // Kiểm tra email, mật khẩu và tên người dùng
+            // Kiểm tra dữ liệu đầu vào
             when {
                 username.isEmpty() -> {
                     edtUserName.error = "Tên người dùng không được để trống"
                     edtUserName.requestFocus()
                 }
-
                 !isValidUsername(username) -> {
-                    edtUserName.error = "Tên người dùng không được có ký tự đặc biệt"
+                    edtUserName.error = "Tên người dùng không được chứa ký tự đặc biệt"
                     edtUserName.requestFocus()
                 }
-
-                !emailText.isValidEmail() -> {
+                email.isEmpty() -> {
+                    edtEmail.error = "Email không được để trống"
+                    edtEmail.requestFocus()
+                }
+                !email.isValidEmail() -> {
                     edtEmail.error = "Email không hợp lệ"
                     edtEmail.requestFocus()
                 }
-
-                pass.length < 6 -> {
-                    edtPassword.error = "Mật khẩu phải dài hơn 6 ký tự"
+                password.length < 6 -> {
+                    edtPassword.error = "Mật khẩu phải có ít nhất 6 ký tự"
                     edtPassword.requestFocus()
                 }
-
                 phone.isEmpty() -> {
                     edtPhone.error = "Số điện thoại không được để trống"
                     edtPhone.requestFocus()
                 }
-
                 phone.length < 6 -> {
-                    edtPhone.error = "Số điện thoại phải có ít nhất 6 chữ số"
+                    edtPhone.error = "Số điện thoại có ít nhất 6 số"
                     edtPhone.requestFocus()
                 }
-
                 else -> {
-                    registerUser(emailText, pass, username, phone)
+                    registerUser(email, password, username, phone)
                 }
             }
         }
     }
 
-    private fun registerUser(email: String, pass: String, uname: String, phone: String) {
+    private fun registerUser(email: String, password: String, username: String, phone: String) {
         progressBar.visibility = View.VISIBLE
         btnRegister.isEnabled = false
-        mAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener { task ->
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             progressBar.visibility = View.GONE
             btnRegister.isEnabled = true
             if (task.isSuccessful) {
                 val user = mAuth.currentUser
-                val email = user!!.email
-                val uid = user!!.uid
-                val role = "Customer"
-                val hashMap = HashMap<Any, String?>()
-                hashMap["uid"] = uid
-                hashMap["name"] = uname
-                hashMap["email"] = email
-                hashMap["phone"] = phone
-                hashMap["typingTo"] = "noOne"
-                hashMap["role"] = role
-                val database = FirebaseDatabase.getInstance()
-                val reference = database.getReference("Users")
-                reference.child(uid).setValue(hashMap)
-                Toast.makeText(
-                    this@RegisterActivity,
-                    "Đăng ký thành công " + user!!.email,
-                    Toast.LENGTH_LONG
-                ).show()
-                val mainIntent: Intent =
-                    Intent(
-                        this@RegisterActivity,
-                        LoginActivity::class.java
-                    )
-                mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                startActivity(mainIntent)
-                finish()
+                user?.sendEmailVerification()?.addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        saveUserToDatabase(user.uid, username, email, phone)
+                        Toast.makeText(
+                            this, "Đăng ký thành công! Vui lòng xác minh email.", Toast.LENGTH_LONG
+                        ).show()
+                        startActivity(Intent(this, LoginActivity::class.java))
+                        finish()
+                    } else {
+                        Toast.makeText(
+                            this, "Không thể gửi email xác minh.", Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
             } else {
-                Toast.makeText(this@RegisterActivity, "Đăng ký không thành công !", Toast.LENGTH_LONG).show()
+                handleRegistrationError(task.exception)
             }
-        }.addOnFailureListener {
-            progressBar.visibility = View.GONE
-            btnRegister.isEnabled = true
-            Toast.makeText(this, "${it.message}", Toast.LENGTH_LONG).show()
         }
     }
 
+    private fun saveUserToDatabase(uid: String, username: String, email: String, phone: String) {
+        val database = FirebaseDatabase.getInstance()
+        val reference = database.getReference("Users")
+        val userMap = hashMapOf(
+            "uid" to uid,
+            "name" to username,
+            "email" to email,
+            "phone" to phone,
+            "role" to "Customer",
+            "typingTo" to "noOne"
+        )
+        reference.child(uid).setValue(userMap)
+    }
 
-    // Extension function to validate email format
+    private fun handleRegistrationError(exception: Exception?) {
+        val errorMessage = when (exception) {
+            is FirebaseAuthInvalidCredentialsException -> "Email không hợp lệ."
+            is FirebaseAuthUserCollisionException -> "Email đã được sử dụng. Vui lòng chọn email khác."
+            else -> exception?.message ?: "Đã xảy ra lỗi không xác định."
+        }
+        Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
+    }
+
     private fun String.isValidEmail() = Patterns.EMAIL_ADDRESS.matcher(this).matches()
 
-    // Check if username contains special characters
     private fun isValidUsername(username: String): Boolean {
-        val regex = "^[A-Za-z0-9_]+$"  // Allow only letters, digits, and underscores
+        val regex = "^[A-Za-z0-9_]+$"
         return username.matches(regex.toRegex())
     }
+
 }
