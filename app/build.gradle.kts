@@ -42,9 +42,10 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
+    implementation(libs.junit)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.firebase.database)
     implementation(libs.firebase.auth)
-    testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation("com.github.denzcoskun:ImageSlideshow:0.1.0")
@@ -55,5 +56,7 @@ dependencies {
     implementation("com.google.firebase:firebase-bom:33.7.0")
     implementation("com.google.firebase:firebase-auth:23.1.0")
     // Firebase Realtime Database
-    implementation("com.google.firebase:firebase-database:21.0.0")
+    implementation ("com.google.firebase:firebase-database:21.0.0")
+    implementation ("com.github.bumptech.glide:glide:4.13.2")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.13.2")
 }

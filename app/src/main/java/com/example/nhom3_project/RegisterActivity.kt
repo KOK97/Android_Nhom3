@@ -126,7 +126,7 @@ class RegisterActivity : AppCompatActivity() {
                     if (it.isSuccessful) {
                         saveUserToDatabase(user.uid, username, email, phone)
                         Toast.makeText(
-                            this, "Đăng ký thành công! Vui lòng xác minh email.", Toast.LENGTH_LONG
+                            this, "Đăng ký thành công!", Toast.LENGTH_LONG
                         ).show()
                         startActivity(Intent(this, LoginActivity::class.java))
                         finish()

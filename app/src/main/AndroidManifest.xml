@@ -21,9 +21,17 @@
             android:name=".ForgotPasswordActivity"
             android:exported="false" />
         <activity
+            android:name=".ProductDetail"
+            android:exported="false" />
+        <activity
+            android:name=".Comment"
+            android:exported="false" />
+        <activity
             android:name=".PayActivity"
             android:exported="false" />
-        <activity android:name=".CartActivity" />
+        <activity
+            android:name=".CartActivity"
+            android:exported="false" />
         <activity
             android:name=".HomeActivity"
             android:exported="false" />
