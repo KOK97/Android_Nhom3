@@ -32,18 +32,20 @@ class ProductDetail : AppCompatActivity() {
     private lateinit var tvType: TextView
     private lateinit var tvDesc: TextView
     private lateinit var tvRating: TextView
-    private lateinit var ivProDetail: ImageView
-    private lateinit var ratingBar : RatingBar
     private lateinit var tvTotalCMT : TextView
-    private lateinit var lnBoxCMT : LinearLayout
 
+    private lateinit var ivProDetail: ImageView
+    private lateinit var ivDefault: ImageView
+    private lateinit var ivBackDetail: ImageView
 
     private lateinit var btnExit :Button
     private lateinit var btnAddCart :Button
     private lateinit var btnBuyNow :Button
     private lateinit var btnComment :Button
 
-    private lateinit var ivDefault: ImageView
+    private lateinit var ratingBar : RatingBar
+    private lateinit var lnBoxCMT : LinearLayout
+
     //nav
     private lateinit var navbarBott: BottomNavigationView
 
@@ -53,6 +55,7 @@ class ProductDetail : AppCompatActivity() {
         setContentView(R.layout.activity_product_detail)
         setControl()
         setEvent()
+        eventBack()
         setEventNavBar()
     }
     private  fun setControl(){
@@ -66,15 +69,15 @@ class ProductDetail : AppCompatActivity() {
         tvIdDetait = findViewById(R.id.tvIdDetail)
         tvType = findViewById(R.id.tvType)
         tvDesc = findViewById(R.id.tvDesc)
-        ivProDetail = findViewById(R.id.ivProDetail)
-
         tvRating = findViewById(R.id.tvRating)
-        ratingBar = findViewById(R.id.ratingBar)
-
-        ivDefault = findViewById(R.id.ivDefault)
         tvTotalCMT = findViewById(R.id.tvTotalCmt)
-        lnBoxCMT = findViewById(R.id.lvBoxCMT)
 
+        ivBackDetail = findViewById(R.id.ivBackDetail)
+        ivProDetail = findViewById(R.id.ivProDetail)
+        ivDefault = findViewById(R.id.ivDefault)
+
+        ratingBar = findViewById(R.id.ratingBar)
+        lnBoxCMT = findViewById(R.id.lvBoxCMT)
 
         //nav
         navbarBott = findViewById<BottomNavigationView>(R.id.bottom_navigationCart)
@@ -121,7 +124,7 @@ class ProductDetail : AppCompatActivity() {
                         }
                         //set data sp2
                         tvNameDetail.text = productName
-                        tvPriceDetail.text = productPrice.toString()
+                        tvPriceDetail.text = "Giá: $productPrice VND"
                         tvIdDetait.text = "Mã: $productId"
                         tvType.text = "Giới tính: $productType"
                         tvDesc.text = productDesc
@@ -222,6 +225,14 @@ class ProductDetail : AppCompatActivity() {
                 5 -> tvRating.text = "5"
                 else ->  tvRating.text = "0"
             }
+        }
+    }
+    // btn back
+    private fun eventBack(){
+        ivBackDetail.setOnClickListener{
+            // Quay lại hoặc hiện thông báo
+//            Toast.makeText(this, "Back button clicked", Toast.LENGTH_SHORT).show()
+            finish() // Kết thúc activity để quay lại màn hình trước
         }
     }
     //nav
