@@ -25,7 +25,7 @@ class CartActivity : AppCompatActivity() {
     private lateinit var adapter: CartAdapter
     private var productList: MutableList<Products> = mutableListOf()
     private lateinit var cartList: MutableList<Cart>
-    private var datapay: MutableList<PayData> =  mutableListOf()
+    private var datapay: MutableList<PayData> = mutableListOf()
     private lateinit var totalTextView: TextView
     private lateinit var dbRef: DatabaseReference
 
@@ -71,17 +71,19 @@ class CartActivity : AppCompatActivity() {
         btnPay.setOnClickListener {
             val ProductsSelected = productList.filter { it.isSelected }
             val total = productList.filter { it.isSelected }.sumByDouble { it.price * it.quantity }
-            datapay.clear()
-            for (pro in ProductsSelected) {
-                val cart = cartList.filter { it.productid == pro.id }
-                for (ca in cart) {
-                    datapay.add(PayData(pro.id,pro.name,ca.quantity))
+            if (ProductsSelected.isNotEmpty()) {
+                datapay.clear()
+                for (pro in ProductsSelected) {
+                    val cart = cartList.filter { it.productid == pro.id }
+                    for (ca in cart) {
+                        datapay.add(PayData(ca.id, pro.id, pro.name, ca.quantity))
+                    }
                 }
+                val intent = Intent(this, PayActivity::class.java)
+                intent.putExtra("product_list", ArrayList(datapay))
+                intent.putExtra("totalcart", total.toString())
+                startActivity(intent)
             }
-            val intent = Intent(this, PayActivity::class.java)
-            intent.putExtra("product_list", ArrayList(datapay))
-            intent.putExtra("totalcart",total.toString())
-            startActivity(intent)
         }
     }
 
@@ -136,14 +138,13 @@ class CartActivity : AppCompatActivity() {
                         val img =
                             productSnapshot.child("imageUrl").getValue(String::class.java) ?: ""
 
-                        // Tìm sản phẩm trong giỏ hàng dựa vào productid
+
                         val cartItem = cartList.find { it.productid == id }
                         val quantity = cartItem?.quantity ?: 1
 
                         productList.add(Products(id, name, price.toDouble(), img, quantity))
                     }
                 }
-                // Gán adapter sau khi đã có dữ liệu
                 adapter = CartAdapter(this@CartActivity, productList) { updateTotalPrice() }
                 lvCart.adapter = adapter
             }

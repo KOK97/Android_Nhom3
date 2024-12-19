@@ -1,6 +1,5 @@
 package com.example.nhom3_project
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -18,6 +17,9 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class PayActivity : AppCompatActivity() {
 
@@ -35,6 +37,8 @@ class PayActivity : AppCompatActivity() {
     private  lateinit var lvDetail: ListView
     private lateinit var tvTotal: TextView
     private lateinit var dbRef: DatabaseReference
+    private lateinit var uid: String
+    private lateinit var total: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -45,9 +49,8 @@ class PayActivity : AppCompatActivity() {
         setEventGetDataPay()
         setEvenSpinerAddress(spinerAddress)
         setEvenSpinerPayment(spinerPayment)
+        setEventPay()
         eventBack()
-        evenPay()
-
     }
     private fun setControll(){
         //btnBack
@@ -61,15 +64,16 @@ class PayActivity : AppCompatActivity() {
         lvDetail = findViewById(R.id.lvDetailPay)
         //total
         tvTotal= findViewById(R.id.tvPayAllTotal)
+        //uid
+        uid = "4IkgM1ZTroMf3yLIVcKhbBGp9Ol2"
     }
     private fun setEventGetDataPay(){
         val data: MutableList<PayData> = intent.getParcelableArrayListExtra("product_list") ?: mutableListOf()
-        val total = intent.getStringExtra("totalcart")?:""
+        total = intent.getStringExtra("totalcart")?:""
         if (data != null) {
             for (detail in data){
-                detailList.add(PayData(detail.productid,detail.propductname,detail.quality))
+                detailList.add(PayData(detail.cartid,detail.productid,detail.propductname,detail.quality))
             }
-
             adapter = PayAdapter(this@PayActivity, detailList)
             if (total!= ""){
                 tvTotal.text = "$total VND"
@@ -81,15 +85,14 @@ class PayActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this, "Dữ liệu không tồn tại", Toast.LENGTH_SHORT).show()
         }
-
     }
     private fun setEvenSpinerPayment(spinerPaym : Spinner){
         idPayment = ""
         spinerPaym.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                val selectedItem = addressPayMethodlist[position]
-                //set id address
-                idPayment = selectedItem.toString()
+                val selectedItem = paymentPayMethodlist[position]
+                //set id pay
+                idPayment = selectedItem.payment
                 Toast.makeText(this@PayActivity, "Selected: pay id $idPayment", Toast.LENGTH_SHORT).show()
             }
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -99,7 +102,7 @@ class PayActivity : AppCompatActivity() {
     private fun setDataPaymentPayMeThod() {
         paymentPayMethodlist = mutableListOf()
 
-        // Khởi tạo Realtime Database Reference
+        // Khởi tạo
         dbRef = FirebaseDatabase.getInstance().reference
 
         // Lấy dữ liệu
@@ -147,7 +150,7 @@ class PayActivity : AppCompatActivity() {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 val selectedItem = addressPayMethodlist[position]
                 //set id address
-                idAddress = selectedItem.toString()
+                idAddress = selectedItem.deliverylocation
                 Toast.makeText(this@PayActivity, "Selected: address id $idAddress", Toast.LENGTH_SHORT).show()
             }
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -198,12 +201,44 @@ class PayActivity : AppCompatActivity() {
         )
 
     }
-    private fun evenPay(){
+    private fun setEventPay(){
         btnAccepp.setOnClickListener{
-            showPaymentSuccess()
-            val intent = Intent(this, CartActivity::class.java)
-            startActivity(intent)
+              Payment(detailList,uid,idAddress,idPayment,total.toDouble())
         }
+    }
+    private fun Payment(products: List<PayData>, uid: String, addressid: String, paymentid: String, total: Double,){
+            val dbRef = FirebaseDatabase.getInstance().getReference("Bills")
+            // Tạo key
+            val billid = dbRef.push().key ?: ""
+            val sdf = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault())
+            val currentTime = sdf.format(Date())
+               val billsitem = Bills(
+                   id = billid,
+                   userid =uid,
+                   products = products,
+                   addressid = addressid,
+                   paymentid = paymentid,
+                   totalpayment =total,
+                   creationdate = currentTime,
+               )
+            if (billid != ""){
+                dbRef.child(billid).setValue(billsitem)
+                    .addOnSuccessListener {
+
+                        Toast.makeText(this, "Thanh Toán thành công", Toast.LENGTH_SHORT).show()
+                    }
+                    .addOnFailureListener { e ->
+                        Toast.makeText(this, "Thanh toán lỗi", Toast.LENGTH_SHORT).show()
+                    }
+                for (data in products){
+                    if (data.cartid != ""){
+                        removeCartItem(data.cartid)
+                    }
+                }
+            }
+            else{
+                Toast.makeText(this, "lỗi không tạo được id", Toast.LENGTH_SHORT).show()
+            }
     }
     private fun eventBack(){
         ivBackPay.setOnClickListener{
@@ -212,8 +247,7 @@ class PayActivity : AppCompatActivity() {
             finish() // Kết thúc activity để quay lại màn hình trước
         }
     }
-    private fun showPaymentSuccess() {
-        Toast.makeText(this, "Thanh toán thành công!", Toast.LENGTH_SHORT).show()
+    private fun removeCartItem(cartId: String) {
+        dbRef.child("Carts").child(cartId.toString()).removeValue()
     }
-
 }

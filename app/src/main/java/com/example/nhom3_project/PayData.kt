@@ -6,6 +6,7 @@ import android.os.Parcelable
 
 @SuppressLint("ParcelCreator")
 data class PayData(
+    val cartid: String,
     val productid: String,
     var propductname: String,
     var quality: Int,
@@ -13,10 +14,12 @@ data class PayData(
     constructor(parcel: Parcel) : this(
         parcel.readString() ?: "",
         parcel.readString() ?: "",
+        parcel.readString() ?: "",
         parcel.readInt(),
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(cartid)
         parcel.writeString(productid)
         parcel.writeString(propductname)
         parcel.writeInt(quality)
