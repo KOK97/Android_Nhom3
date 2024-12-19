@@ -53,13 +53,6 @@ class CartActivity : AppCompatActivity() {
         setEventPayAccept()
         navbarBott.menu.findItem(R.id.nav_shoppingcart).isChecked = true
         updateTotalPrice()
-        if (uid == null) {
-            Toast.makeText(this, "Người dùng chưa đăng nhập", Toast.LENGTH_SHORT).show()
-            return
-        }
-        else{
-            Toast.makeText(this, "$uid", Toast.LENGTH_SHORT).show()
-        }
     }
 
     private fun setControll() {
