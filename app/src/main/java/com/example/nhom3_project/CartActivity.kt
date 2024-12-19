@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.ListView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.DataSnapshot
@@ -29,24 +30,36 @@ class CartActivity : AppCompatActivity() {
     private var datapay: MutableList<PayData> = mutableListOf()
     private lateinit var totalTextView: TextView
     private lateinit var dbRef: DatabaseReference
-
+    private lateinit var uid: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cart)
+        dbRef = FirebaseDatabase.getInstance().reference
+        val firebaseAuth = FirebaseAuth.getInstance()
+        val currentUser = firebaseAuth.currentUser
+        uid = currentUser?.uid.toString()
         setControll()
-        getDataCart {
-            if (cartList.isNotEmpty()) {
-                setDataCart {
-                    updateTotalPrice()
+
+            getDataCart {
+                if (cartList.isNotEmpty()) {
+                    setDataCart {
+                        updateTotalPrice()
+                    }
                 }
             }
-        }
         setEventAdd()
         setEventNavBar()
         setEventBack()
         setEventPayAccept()
         navbarBott.menu.findItem(R.id.nav_shoppingcart).isChecked = true
         updateTotalPrice()
+        if (uid == null) {
+            Toast.makeText(this, "Người dùng chưa đăng nhập", Toast.LENGTH_SHORT).show()
+            return
+        }
+        else{
+            Toast.makeText(this, "$uid", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun setControll() {
@@ -57,7 +70,6 @@ class CartActivity : AppCompatActivity() {
         totalTextView = findViewById(R.id.tvTongTienCart)
     }
 
-    @SuppressLint("SuspiciousIndentation")
     private fun setEventAdd() {
         val dataproductid = intent.getStringExtra("productClick")
         if (dataproductid != null) {
@@ -69,7 +81,8 @@ class CartActivity : AppCompatActivity() {
     private fun setEventPayAccept() {
         btnPay.setOnClickListener {
             val ProductsSelected = productList.filter { it.isSelected }
-            val total = productList.filter { it.isSelected }.sumByDouble { (it.price * it.quantity).toDouble() }
+            val total = productList.filter { it.isSelected }
+                .sumByDouble { (it.price * it.quantity).toDouble() }
             if (ProductsSelected.isNotEmpty()) {
                 datapay.clear()
                 for (pro in ProductsSelected) {
@@ -94,13 +107,15 @@ class CartActivity : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 cartList.clear()
                 for (cartSnapshot in snapshot.children) {
-                    val id = cartSnapshot.child("id").getValue(String::class.java) ?: ""
                     val userid = cartSnapshot.child("userid").getValue(String::class.java) ?: ""
-                    val productid =
-                        cartSnapshot.child("productid").getValue(String::class.java) ?: ""
-                    val quantity = cartSnapshot.child("quantity").getValue(Int::class.java) ?: 0
-                    val cart = Cart(id, userid, productid, quantity)
-                    cartList.add(cart)
+                   if (userid==uid){
+                       val id = cartSnapshot.child("id").getValue(String::class.java) ?: ""
+                       val productid =
+                           cartSnapshot.child("productid").getValue(String::class.java) ?: ""
+                       val quantity = cartSnapshot.child("quantity").getValue(Int::class.java) ?: 0
+                       val cart = Cart(id, userid, productid, quantity)
+                       cartList.add(cart)
+                   }
                 }
                 // Gọi hàm callback sau khi dữ liệu đã được tải xong
                 onDataLoaded()
@@ -127,13 +142,17 @@ class CartActivity : AppCompatActivity() {
             val productIds = cartList.map { it.productid }.toSet()
             override fun onDataChange(snapshot: DataSnapshot) {
                 productList.clear()
-
                 for (productSnapshot in snapshot.children) {
                     val id = productSnapshot.child("id").getValue(String::class.java) ?: ""
                     if (id in productIds) {
                         val name =
                             productSnapshot.child("name").getValue(String::class.java) ?: "No Name"
+
+                        val category = productSnapshot.child("category").getValue(String::class.java) ?: ""
+                        val type = productSnapshot.child("type").getValue(String::class.java) ?: ""
                         val price = productSnapshot.child("price").getValue(Int::class.java) ?: 0
+                        val desc = productSnapshot.child("desc").getValue(String()::class.java) ?:""
+
                         val img =
                             productSnapshot.child("imageUrl").getValue(String::class.java) ?: ""
 
@@ -143,8 +162,7 @@ class CartActivity : AppCompatActivity() {
 
                         productList.add(
                             Products(
-                                id, name,
-                                price.toDouble().toString(), img, quantity
+                               id,name,category,type,price,quantity,desc,img
                             )
                         )
                     }
@@ -164,7 +182,6 @@ class CartActivity : AppCompatActivity() {
     }
 
     private fun addToCart(productId: String) {
-        val uid = "BlsLWYh2AcWqeR6VFuE0Dhi0InI3"
         dbRef.child("Carts").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val existingCart = snapshot.children.find {
@@ -225,7 +242,6 @@ class CartActivity : AppCompatActivity() {
         })
     }
 
-
     private fun setEventBack() {
         ivBackCart.setOnClickListener {
             val intent = Intent(this, HomeActivity::class.java)
@@ -256,7 +272,9 @@ class CartActivity : AppCompatActivity() {
     }
 
     private fun updateTotalPrice() {
-        val total = productList.filter { it.isSelected }.sumByDouble { (it.price * it.quantity).toDouble() }
+        val total =
+            productList.filter { it.isSelected }.sumByDouble { (it.price * it.quantity).toDouble() }
         totalTextView.text = "Total: $total VND"
     }
 }
+

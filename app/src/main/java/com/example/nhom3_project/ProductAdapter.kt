@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nhom3_project.R
-import com.squareup.picasso.Picasso
+//import com.squareup.picasso.Picasso
 
 class ProductAdapter(
     private val context: Context,
@@ -43,7 +43,7 @@ class ProductAdapter(
         holder.tvPrice.text = "${product.price} VND"
         holder.tvQuantity.text = "${product.quantity}"
         holder.tvDesc.text = product.desc
-        Picasso.get().load(product.imageUrl).into(holder.ivProductImage)
+//        Picasso.get().load(product.imageUrl).into(holder.ivProductImage)
 
 
         holder.btnEdit.setOnClickListener {
