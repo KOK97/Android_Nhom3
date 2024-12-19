@@ -1,9 +1,9 @@
 package com.example.nhom3_project
 
+import OrderManager
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
@@ -42,7 +42,7 @@ class AdminAction : AppCompatActivity(), NavigationView.OnNavigationItemSelected
             supportFragmentManager.beginTransaction().replace(
                 R.id.fragment_container,
 
-                SanPhamFragment()
+                ProductManager()
             ).commit()
             navigationView.setCheckedItem(R.id.nav_qlsanpham)
         }
@@ -52,43 +52,22 @@ class AdminAction : AppCompatActivity(), NavigationView.OnNavigationItemSelected
         when (item.itemId) {
             R.id.nav_qlsanpham -> supportFragmentManager.beginTransaction().replace(
                 R.id.fragment_container,
-                SanPhamFragment()
+                ProductManager()
             ).commit()
 
             R.id.nav_qlkhachhang -> supportFragmentManager.beginTransaction().replace(
                 R.id.fragment_container,
-                KhachHangFragment()
+                CustomerManager()
             ).commit()
 
             R.id.nav_qldonhang -> supportFragmentManager.beginTransaction().replace(
                 R.id.fragment_container,
-                DonHangFragment()
+                OrderManager()
             ).commit()
 
             R.id.nav_logout -> nav_logout.setOnClickListener {
-                // Hiển thị hộp thoại xác nhận đăng xuất
-                val builder = AlertDialog.Builder(this)
-                builder.setTitle("Xác nhận")
-                builder.setMessage("Bạn có muốn đăng xuất không?")
-
-                // Nút "Đồng ý"
-                builder.setPositiveButton("Đồng ý") { _, _ ->
-                    // Điều hướng về màn hình SplashActivity
-                    val intent = Intent(this, SplashActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    val intent = Intent(this, AccountActivity::class.java)
                     startActivity(intent)
-                    finish() // Kết thúc Activity hiện tại
-                }
-
-
-                // Nút "Hủy"
-                builder.setNegativeButton("Hủy") { dialog, _ ->
-                    dialog.dismiss() // Đóng hộp thoại
-                }
-
-                // Hiển thị hộp thoại
-                val alertDialog = builder.create()
-                alertDialog.show()
             }
         }
         drawerLayout.closeDrawer(GravityCompat.START)
@@ -100,7 +79,11 @@ class AdminAction : AppCompatActivity(), NavigationView.OnNavigationItemSelected
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
         } else {
-            onBackPressedDispatcher.onBackPressed()
+            if (supportFragmentManager.backStackEntryCount > 0) {
+                supportFragmentManager.popBackStack()
+            } else {
+                finish()
+            }
         }
     }
 

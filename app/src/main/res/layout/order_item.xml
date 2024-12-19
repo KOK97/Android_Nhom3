@@ -1,0 +1,82 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="?android:attr/selectableItemBackground">
+
+    <TextView
+        android:id="@+id/textViewId"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Bill ID"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textSize="12sp"
+        android:fontFamily="sans-serif-medium"
+        android:paddingBottom="8dp" />
+
+    <TextView
+        android:id="@+id/textViewProductName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Product Name"
+        android:textSize="12sp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:paddingBottom="8dp" />
+
+    <TextView
+        android:id="@+id/textViewTotalPayment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="Total Payment"
+        android:textSize="12sp"
+        android:paddingBottom="8dp" />
+
+    <TextView
+        android:id="@+id/textViewCreationDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Creation Date"
+        android:textSize="14sp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:paddingBottom="8dp" />
+    <TextView
+        android:id="@+id/textViewUserId"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="User ID"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textSize="14sp"
+        android:paddingBottom="8dp" />
+
+    <TextView
+        android:id="@+id/textViewAddressId"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Address ID"
+        android:textSize="12sp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:paddingBottom="8dp" />
+
+    <TextView
+        android:id="@+id/textViewPaymentId"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Payment ID"
+        android:textSize="12sp"
+        android:paddingBottom="8dp" />
+</LinearLayout>
