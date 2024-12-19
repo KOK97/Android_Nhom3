@@ -27,6 +27,7 @@ class AccountActivity : AppCompatActivity() {
     private lateinit var btnLogout: com.google.android.material.card.MaterialCardView
     private lateinit var navbarBott: BottomNavigationView
     private lateinit var phanquyen: LinearLayout
+    private lateinit var accountDetail: LinearLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -40,9 +41,9 @@ class AccountActivity : AppCompatActivity() {
     }
 
     private fun setControl() {
-
         btnLogout = findViewById(R.id.btnLogout)
         phanquyen = findViewById(R.id.phanquyen)
+        accountDetail = findViewById(R.id.accountDetail)
         //nav
         navbarBott = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
@@ -52,6 +53,16 @@ class AccountActivity : AppCompatActivity() {
 
     private fun setEvent() {
         checkUserRole()
+        accountDetail.setOnClickListener {
+            val intent = Intent(this, AccountDetailActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+        tvHTQL.setOnClickListener {
+            val intent = Intent(this, AdminAction::class.java)
+            startActivity(intent)
+            finish()
+        }
         btnLogout.setOnClickListener {
             // Hiển thị hộp thoại xác nhận đăng xuất
             val builder = AlertDialog.Builder(this)
@@ -73,11 +84,6 @@ class AccountActivity : AppCompatActivity() {
 
             val alertDialog = builder.create()
             alertDialog.show()
-        }
-        tvHTQL.setOnClickListener {
-            val intent = Intent(this, AdminAction::class.java)
-            startActivity(intent)
-
         }
     }
 
