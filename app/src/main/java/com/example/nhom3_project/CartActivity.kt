@@ -38,8 +38,6 @@ class CartActivity : AppCompatActivity() {
                 setDataCart {
                     updateTotalPrice()
                 }
-            } else {
-                Toast.makeText(this, "Không có sản phẩm trong giỏ hàng!", Toast.LENGTH_SHORT).show()
             }
         }
         setEventAdd()

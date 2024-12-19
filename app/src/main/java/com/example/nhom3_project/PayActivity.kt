@@ -1,5 +1,6 @@
 package com.example.nhom3_project
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -92,8 +93,7 @@ class PayActivity : AppCompatActivity() {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 val selectedItem = paymentPayMethodlist[position]
                 //set id pay
-                idPayment = selectedItem.payment
-                Toast.makeText(this@PayActivity, "Selected: pay id $idPayment", Toast.LENGTH_SHORT).show()
+                idPayment = selectedItem.id
             }
             override fun onNothingSelected(parent: AdapterView<*>) {
             }
@@ -150,8 +150,7 @@ class PayActivity : AppCompatActivity() {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 val selectedItem = addressPayMethodlist[position]
                 //set id address
-                idAddress = selectedItem.deliverylocation
-                Toast.makeText(this@PayActivity, "Selected: address id $idAddress", Toast.LENGTH_SHORT).show()
+                idAddress = selectedItem.id
             }
             override fun onNothingSelected(parent: AdapterView<*>) {
             }
@@ -204,6 +203,8 @@ class PayActivity : AppCompatActivity() {
     private fun setEventPay(){
         btnAccepp.setOnClickListener{
               Payment(detailList,uid,idAddress,idPayment,total.toDouble())
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
         }
     }
     private fun Payment(products: List<PayData>, uid: String, addressid: String, paymentid: String, total: Double,){
