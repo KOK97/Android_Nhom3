@@ -1,16 +1,3 @@
 package com.example.nhom3_project
 
-import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-
-class Comment : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_comment)
-
-    }
-}
+data class Comment(val idCmt:String,val idPro:String ,val nameUser:String, val cmt:String)
