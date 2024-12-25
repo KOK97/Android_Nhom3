@@ -60,10 +60,9 @@ class CartAdapter(
                 product.isSelected = isChecked
                 updateTotalPrice()
             }
-
             btnDele.setOnClickListener {
-                if (cartList.isNotEmpty()) {
-                    for (cart in cartList) {
+                for (cart in cartList) {
+                if (position >= 0 && position < cartList.size){
                         if (cart.productid == product.id) {
                             removeCartItem(cart.id, position)
                             Log.d("CartAdapter", "Cart ID: ${cart.id}, Product ID: ${cart.productid}")
@@ -128,14 +127,12 @@ class CartAdapter(
         dbRef.child("Carts").child(cartId.toString()).child("quantity").setValue(newQuantity)
             .addOnSuccessListener {
                 Log.d("CartAdapter", "Cập nhật số lượng thành công cho Cart ID: $cartId")
-                Toast.makeText(context, "Cập nhật thành công!", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener { error ->
                 Log.e("CartAdapter", "Lỗi cập nhật: ${error.message}")
                 Toast.makeText(context, "Lỗi: ${error.message}", Toast.LENGTH_SHORT).show()
             }
     }
-
     private fun removeCartItem(cartId: String, position: Int) {
         dbRef.child("Carts").child(cartId.toString()).removeValue()
             .addOnSuccessListener {

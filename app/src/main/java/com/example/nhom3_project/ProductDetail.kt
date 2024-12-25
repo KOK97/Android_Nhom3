@@ -49,6 +49,8 @@ class ProductDetail : AppCompatActivity() {
     //nav
     private lateinit var navbarBott: BottomNavigationView
 
+    //cua the lo
+    private var datapay: MutableList<PayData> = mutableListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -195,18 +197,23 @@ class ProductDetail : AppCompatActivity() {
         btnAddCart.setOnClickListener(){
             if(productId != null){
                 val intent = Intent(this@ProductDetail, CartActivity::class.java)
-                intent.putExtra("productId", productId)
+                intent.putExtra("productID", productId)
                 Toast.makeText(this, "Thêm vào giỏ hàng thành công", Toast.LENGTH_SHORT).show()
-//                startActivity(intent)
+                startActivity(intent)
             }
             else{
                 Toast.makeText(this, "Thêm vào giỏ hàng thất bại", Toast.LENGTH_SHORT).show()
             }
         }
         btnBuyNow.setOnClickListener(){
+            val namepro = tvNameDetail.text.toString()?:""
+            val pricepro = tvPriceDetail.text.toString()?:""
+            datapay.clear()
+            datapay.add(PayData("0", productId.toString(), namepro,1))
             if(productId != null){
-                val intent = Intent(this@ProductDetail, CartActivity::class.java)
-                intent.putExtra("productId", productId)
+                val intent = Intent(this, PayActivity::class.java)
+                intent.putExtra("product_list", ArrayList(datapay))
+                intent.putExtra("totalcart", pricepro)
                 startActivity(intent)
             }
         }

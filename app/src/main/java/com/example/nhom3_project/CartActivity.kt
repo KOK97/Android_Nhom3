@@ -39,7 +39,6 @@ class CartActivity : AppCompatActivity() {
         val currentUser = firebaseAuth.currentUser
         uid = currentUser?.uid.toString()
         setControll()
-
             getDataCart {
                 if (cartList.isNotEmpty()) {
                     setDataCart {
@@ -48,9 +47,11 @@ class CartActivity : AppCompatActivity() {
                 }
             }
         setEventAdd()
+        setEvenDAddtoCart()
         setEventNavBar()
         setEventBack()
         setEventPayAccept()
+
         navbarBott.menu.findItem(R.id.nav_shoppingcart).isChecked = true
         updateTotalPrice()
     }
@@ -65,6 +66,13 @@ class CartActivity : AppCompatActivity() {
 
     private fun setEventAdd() {
         val dataproductid = intent.getStringExtra("productClick")
+        if (dataproductid != null) {
+            addToCart(dataproductid.toString())
+        }
+
+    }
+    private fun setEvenDAddtoCart() {
+        val dataproductid = intent.getStringExtra("productID")
         if (dataproductid != null) {
             addToCart(dataproductid.toString())
         }
@@ -91,6 +99,33 @@ class CartActivity : AppCompatActivity() {
             }
         }
     }
+//    private fun setEventDetailBuy() {
+//        val productid = intent.getStringExtra("productIdBuyNow")
+//        if (productid != null) {
+//            datapay.clear()
+//            val matchingProduct = productList.firstOrNull { it.id == productid }
+//            val quality = matchingProduct?.quantity
+//            val newquality = quality?.plus(1)
+//            if (quality != newquality ){
+//                addToCart(productid)
+//            }
+//            val matchingCartItems = cartList.filter { it.productid == productid }
+//
+//            if (matchingCartItems.isNotEmpty() && matchingProduct != null) {
+//                val cartid = matchingCartItems.first().id.toString()
+//                val product = matchingProduct
+//
+//                datapay.add(PayData(cartid, product.id, product.name, 1))
+//
+//                val intent = Intent(this, PayActivity::class.java)
+//                intent.putExtra("product_list", ArrayList(datapay))
+//                intent.putExtra("totalcart", product.price.toString())
+//                startActivity(intent)
+//            } else {
+//                Toast.makeText(this, "Không tìm thấy sản phẩm hoặc giỏ hàng.", Toast.LENGTH_SHORT).show()
+//            }
+//        }
+//    }
 
     private fun getDataCart(onDataLoaded: () -> Unit) {
         cartList = mutableListOf()
