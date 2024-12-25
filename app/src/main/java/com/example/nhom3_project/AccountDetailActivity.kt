@@ -2,6 +2,8 @@ package com.example.nhom3_project
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -17,6 +19,7 @@ class AccountDetailActivity : AppCompatActivity() {
     private lateinit var edtUserName: EditText
     private lateinit var edtEmail: EditText
     private lateinit var edtPhone: EditText
+    private lateinit var edtGender: AutoCompleteTextView
     private lateinit var mAuth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,17 +30,25 @@ class AccountDetailActivity : AppCompatActivity() {
     }
 
     private fun setControl() {
+        mAuth = FirebaseAuth.getInstance()
         btnBack = findViewById(R.id.btnBack)
         edtUserName = findViewById(R.id.edtUserName)
         edtEmail = findViewById(R.id.edtEmail)
         edtPhone = findViewById(R.id.edtPhone)
+        edtGender = findViewById(R.id.edtGender)
     }
 
     private fun setEvent() {
-        mAuth = FirebaseAuth.getInstance()
         showProfile()
+        val genderOptions = listOf("Nam", "Nữ")
+        val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, genderOptions)
+        edtGender.setAdapter(adapter)
+
+        edtGender.setOnClickListener {
+            edtGender.showDropDown()
+        }
         btnBack.setOnClickListener {
-            finish()
+            onBackPressed()
         }
     }
 
@@ -48,16 +59,17 @@ class AccountDetailActivity : AppCompatActivity() {
             val database = FirebaseDatabase.getInstance()
             val reference = database.getReference("Users").child(uid)
 
-            // Đọc dữ liệu từ database
             reference.get().addOnSuccessListener { snapshot ->
                 if (snapshot.exists()) {
                     val username = snapshot.child("name").value.toString()
                     val email = snapshot.child("email").value.toString()
                     val phone = snapshot.child("phone").value.toString()
+                    val gender = snapshot.child("gender").value.toString()
 
                     edtUserName.setText(username)
                     edtEmail.setText(email)
                     edtPhone.setText(phone)
+                    edtGender.setText(gender, false) // Không cho chỉnh sửa tự do
                 } else {
                     Toast.makeText(this, "Không tìm thấy thông tin người dùng.", Toast.LENGTH_SHORT)
                         .show()

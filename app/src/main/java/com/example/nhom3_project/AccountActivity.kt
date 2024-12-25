@@ -56,12 +56,10 @@ class AccountActivity : AppCompatActivity() {
         accountDetail.setOnClickListener {
             val intent = Intent(this, AccountDetailActivity::class.java)
             startActivity(intent)
-            finish()
         }
         tvHTQL.setOnClickListener {
             val intent = Intent(this, AdminAction::class.java)
             startActivity(intent)
-            finish()
         }
         btnLogout.setOnClickListener {
             // Hiển thị hộp thoại xác nhận đăng xuất
