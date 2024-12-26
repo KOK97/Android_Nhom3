@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="EDIT CUSTOMER"
+        android:textColor="@color/lavender"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="USER ID"
+        android:textColor="#55BFA6"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/edt_user_id"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:padding="10dp"
+        android:background="@drawable/border"
+        android:hint="Enter User ID"
+        android:inputType="text" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="USER NAME"
+        android:textColor="#55BFA6"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/edt_user_name"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:padding="10dp"
+        android:background="@drawable/border"
+        android:hint="Enter User Name"
+        android:inputType="text" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="PHONE"
+        android:textColor="#55BFA6"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/edt_phone"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:padding="10dp"
+        android:background="@drawable/border"
+        android:hint="Enter Phone Number"
+        android:inputType="phone" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="EMAIL"
+        android:textColor="#55BFA6"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/edt_email"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:padding="10dp"
+        android:background="@drawable/border"
+        android:hint="Enter Email Address"
+        android:inputType="textEmailAddress" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="ROLE"
+        android:textColor="#55BFA6"
+        android:textSize="14sp" />
+
+    <Spinner
+        android:id="@+id/spinner_role"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:padding="10dp"
+        android:background="@drawable/border" />
+
+    <Button
+        android:id="@+id/btn_save_customer"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="SAVE"
+        android:backgroundTint="@color/lavender"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp" />
+</LinearLayout>

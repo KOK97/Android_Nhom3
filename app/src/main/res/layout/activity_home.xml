@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#FFFFFF"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="20dp"
+            android:scrollbars="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <!--            Banner              -->
+                <ImageView
+                    android:id="@+id/ivLogo"
+                    android:layout_width="160dp"
+                    android:layout_height="97dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="16dp"
+                    app:srcCompat="@drawable/logo" />
+
+                <com.denzcoskun.imageslider.ImageSlider
+                    android:id="@+id/bannerSlide"
+                    android:layout_width="match_parent"
+                    android:layout_height="210dp"
+                    android:layout_marginTop="30dp"
+                    app:iss_auto_cycle="true"
+                    app:iss_corner_radius="5"
+                    app:iss_delay="0"
+                    app:iss_error_image="@android:color/darker_gray"
+                    app:iss_period="1000"
+                    app:iss_placeholder="@android:color/darker_gray"
+                    app:iss_selected_dot="@drawable/default_selected_dot"
+                    app:iss_unselected_dot="@drawable/default_unselected_dot"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/ivLogo" />
+                <!-- san pham ban chay -->
+                <TextView
+                    android:id="@+id/tvSPBC"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="20dp"
+                    android:text="Sản phẩm bán chạy"
+                    android:textSize="20sp" />
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/frSPBC"
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:layout_marginTop="20dp">
+
+                    <ViewFlipper
+                        android:id="@+id/vfSPBC"
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="match_parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"></ViewFlipper>
+
+                    <ImageView
+                        android:id="@+id/tvNextspbc"
+                        android:layout_width="20dp"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="47dp"
+                        android:layout_marginBottom="46dp"
+                        android:src="@drawable/ic_next"
+                        android:textSize="50sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/tvPrespbc"
+                        android:layout_width="20dp"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="46dp"
+                        android:layout_marginBottom="47dp"
+                        android:src="@drawable/ic_previus"
+                        android:textSize="50sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!--san pham moi-->
+                <TextView
+                    android:id="@+id/tvSPM"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="20dp"
+                    android:text="Sản phẩm mới"
+                    android:textSize="20sp" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/frSPM"
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:layout_marginTop="20dp">
+
+                    <ViewFlipper
+                        android:id="@+id/vfSPM"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+
+                    </ViewFlipper>
+
+                    <ImageView
+                        android:id="@+id/tvNextspm"
+                        android:layout_width="20dp"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="47dp"
+                        android:layout_marginBottom="46dp"
+                        android:src="@drawable/ic_next"
+                        android:textSize="50sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/tvPrespm"
+                        android:layout_width="20dp"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="46dp"
+                        android:layout_marginBottom="47dp"
+                        android:src="@drawable/ic_previus"
+                        android:textSize="50sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </FrameLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigationCart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:itemIconTint="@color/icon_color_selector_navbot"
+        app:itemTextColor="@color/icon_color_selector_navbot"
+        app:labelVisibilityMode="unlabeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_nav_menu"
+        tools:ignore="MissingConstraints" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "1034568844407",
+    "firebase_url": "https://nhom3-project-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "nhom3-project",
+    "storage_bucket": "nhom3-project.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1034568844407:android:6201a2d31db656ad7eb272",
+        "android_client_info": {
+          "package_name": "com.example.nhom3_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOf0Y9j8k4vtwMpw0JBAbYbeT-K27bwKY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

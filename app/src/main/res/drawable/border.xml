@@ -1,0 +1,8 @@
+<!-- res/drawable/border.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#FFFFFF" /> <!-- Màu nền của EditText (tùy chỉnh) -->
+    <corners android:radius="8dp" /> <!-- Bán kính bo góc -->
+    <stroke
+        android:width="2dp"
+        android:color="#55BFA6" />
+</shape>
