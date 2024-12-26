@@ -7,9 +7,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nhom3_project.R
-import com.squareup.picasso.Picasso
 
-//import com.squareup.picasso.Picasso
+import com.squareup.picasso.Picasso
 
 class ProductAdapter(
     private val context: Context,
@@ -38,6 +37,7 @@ class ProductAdapter(
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
         val product = productList[position]
+
         holder.tvId.text = "ID: ${product.id}"
         holder.tvName.text = "${product.name}"
         holder.tvCategory.text = "Category: ${product.category}"

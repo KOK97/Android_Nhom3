@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.util.Patterns
 import android.view.MenuItem
 import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
@@ -29,6 +31,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var edtEmail: EditText
     private lateinit var edtPhone: EditText
     private lateinit var edtPassword: EditText
+    private lateinit var edtGender: AutoCompleteTextView
     private lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,6 +48,7 @@ class RegisterActivity : AppCompatActivity() {
                 onBackPressed()
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -55,6 +59,7 @@ class RegisterActivity : AppCompatActivity() {
         toolbar = findViewById(R.id.toolbar)
         edtUserName = findViewById(R.id.edtUserName)
         edtEmail = findViewById(R.id.edtEmail)
+        edtGender = findViewById(R.id.edtGender)
         edtPhone = findViewById(R.id.edtPhone)
         edtPassword = findViewById(R.id.edtPassword)
         progressBar = findViewById(R.id.progressBar)
@@ -67,6 +72,14 @@ class RegisterActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
         }
 
+        val genderOptions = listOf("Nam", "Nữ")
+        val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, genderOptions)
+        edtGender.setAdapter(adapter)
+
+        edtGender.setOnClickListener {
+            edtGender.showDropDown()
+        }
+
         txtExistaccount.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
         }
@@ -76,6 +89,7 @@ class RegisterActivity : AppCompatActivity() {
             val username = edtUserName.text.toString().trim()
             val password = edtPassword.text.toString().trim()
             val phone = edtPhone.text.toString().trim()
+            val gender = edtGender.text.toString().trim()
 
             // Kiểm tra dữ liệu đầu vào
             when {
@@ -83,48 +97,64 @@ class RegisterActivity : AppCompatActivity() {
                     edtUserName.error = "Tên người dùng không được để trống"
                     edtUserName.requestFocus()
                 }
+
                 !isValidUsername(username) -> {
                     edtUserName.error = "Tên người dùng không được chứa ký tự đặc biệt"
                     edtUserName.requestFocus()
                 }
+
                 email.isEmpty() -> {
                     edtEmail.error = "Email không được để trống"
                     edtEmail.requestFocus()
                 }
+
                 !email.isValidEmail() -> {
                     edtEmail.error = "Email không hợp lệ"
                     edtEmail.requestFocus()
                 }
+
                 password.length < 6 -> {
                     edtPassword.error = "Mật khẩu phải có ít nhất 6 ký tự"
                     edtPassword.requestFocus()
                 }
+
                 phone.isEmpty() -> {
                     edtPhone.error = "Số điện thoại không được để trống"
                     edtPhone.requestFocus()
                 }
+
                 phone.length < 6 -> {
                     edtPhone.error = "Số điện thoại có ít nhất 6 số"
                     edtPhone.requestFocus()
                 }
+
                 else -> {
-                    registerUser(email, password, username, phone)
+                    registerUser(email, password, username, gender, phone)
                 }
             }
         }
     }
 
-    private fun registerUser(email: String, password: String, username: String, phone: String) {
+    private fun registerUser(
+        email: String,
+        password: String,
+        username: String,
+        gender: String,
+        phone: String
+    ) {
         progressBar.visibility = View.VISIBLE
         btnRegister.isEnabled = false
+        btnRegister.text = "Đang xử lý..."
+        disableFields()
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             progressBar.visibility = View.GONE
             btnRegister.isEnabled = true
+            btnRegister.text = "Đăng ký"
             if (task.isSuccessful) {
                 val user = mAuth.currentUser
                 user?.sendEmailVerification()?.addOnCompleteListener {
                     if (it.isSuccessful) {
-                        saveUserToDatabase(user.uid, username, email, phone)
+                        saveUserToDatabase(user.uid, username, email, gender, phone)
                         Toast.makeText(
                             this, "Đăng ký thành công!", Toast.LENGTH_LONG
                         ).show()
@@ -142,13 +172,20 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveUserToDatabase(uid: String, username: String, email: String, phone: String) {
+    private fun saveUserToDatabase(
+        uid: String,
+        username: String,
+        email: String,
+        gender: String,
+        phone: String
+    ) {
         val database = FirebaseDatabase.getInstance()
         val reference = database.getReference("Users")
         val userMap = hashMapOf(
             "uid" to uid,
             "name" to username,
             "email" to email,
+            "gender" to gender,
             "phone" to phone,
             "role" to "Customer",
             "typingTo" to "noOne"
@@ -163,6 +200,9 @@ class RegisterActivity : AppCompatActivity() {
             else -> exception?.message ?: "Đã xảy ra lỗi không xác định."
         }
         Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
+        btnRegister.text = "Đăng ký"
+        btnRegister.isEnabled = true
+        enableFields()
     }
 
     private fun String.isValidEmail() = Patterns.EMAIL_ADDRESS.matcher(this).matches()
@@ -172,4 +212,19 @@ class RegisterActivity : AppCompatActivity() {
         return username.matches(regex.toRegex())
     }
 
+    private fun disableFields() {
+        edtUserName.isEnabled = false
+        edtEmail.isEnabled = false
+        edtPhone.isEnabled = false
+        edtPassword.isEnabled = false
+        edtGender.isEnabled = false
+    }
+
+    private fun enableFields() {
+        edtUserName.isEnabled = true
+        edtEmail.isEnabled = true
+        edtPhone.isEnabled = true
+        edtPassword.isEnabled = true
+        edtGender.isEnabled = true
+    }
 }

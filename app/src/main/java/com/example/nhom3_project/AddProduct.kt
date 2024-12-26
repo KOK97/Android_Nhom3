@@ -53,7 +53,6 @@ class AddProduct : Fragment() {
 
     private fun setupCategorySpinner() {
         val categories = arrayOf("Jewelry", "Watches", "Earrings", "Rings")
-
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, categories)
 
         spinner_category.adapter = adapter

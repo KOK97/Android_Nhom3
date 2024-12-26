@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
 class PayMethodAddressAdapter(
@@ -13,7 +14,6 @@ class PayMethodAddressAdapter(
     private val payMeThodListAddress: MutableList<PayMethodAddress>,
 ) : ArrayAdapter<PayMethodAddress>(context, 0, payMeThodListAddress) {
     private lateinit var dbRef: DatabaseReference
-
     init {
         getDataPayMethod()
     }
@@ -97,22 +97,25 @@ class PayMethodAddressAdapter(
     private fun getDataPayMethod() {
         dbRef = FirebaseDatabase.getInstance().reference
         dbRef.child("PayMethodAddress").addValueEventListener(object : ValueEventListener {
+
             override fun onDataChange(snapshot: DataSnapshot) {
                 payMeThodListAddress.clear()
                 for (addressPayMethodSnapshot in snapshot.children) {
+                    val userid = addressPayMethodSnapshot.child("userid").getValue(String::class.java) ?: ""
+
                     val id = addressPayMethodSnapshot.child("id").getValue(String::class.java) ?: ""
+                    Log.d("PayMethodAdapter", "ID: $id") // Kiểm tra ID
                     if (id.isNotEmpty()) {
-                        val userid =
-                            addressPayMethodSnapshot.child("userid").getValue(String::class.java)
-                                ?: ""
                         val deliverylocation = addressPayMethodSnapshot.child("deliverylocation")
                             .getValue(String::class.java) ?: ""
                         val paythethod = PayMethodAddress(id, userid, deliverylocation)
                         payMeThodListAddress.add(paythethod)
                     }
                 }
-                Log.d("PayMethodAdapter", "Danh sách paymethodsaddresslist: $payMeThodListAddress")
+                // Log dữ liệu sau khi đã cập nhật
+                Log.d("PayMethodAdapter", "Danh sách paymethodsaddresslist sau khi cập nhật: $payMeThodListAddress")
             }
+
 
             override fun onCancelled(error: DatabaseError) {
                 Log.e("PayMethodAdapter", "Lỗi tải dữ liệu giỏ hàng: ${error.message}")
@@ -139,18 +142,25 @@ class PayMethodAddressAdapter(
             }
     }
     private fun removeAddresItem(paymethodaddressid: String, position: Int) {
-      if (position >= 0 && position < payMeThodListAddress.size){
-          dbRef.child("PayMethodAddress").child(paymethodaddressid.toString()).removeValue()
-              .addOnSuccessListener {
-                  payMeThodListAddress.removeAt(position)
-                  notifyDataSetChanged()
-                  Toast.makeText(context, "Xóa Địa Chỉ thành công!", Toast.LENGTH_SHORT).show()
-              }
-              .addOnFailureListener { error ->
-                  Log.e("PayMethodAdapter", "Lỗi xóa Địa Chỉ : ${error.message}")
-                  Toast.makeText(context, "Lỗi xóa sản phẩm: ${error.message}", Toast.LENGTH_SHORT)
-                      .show()
-              }
-      }
+        // Kiểm tra position
+        if (position >= 0 && position < payMeThodListAddress.size) {
+            dbRef.child("PayMethodAddress").child(paymethodaddressid).removeValue()
+                .addOnSuccessListener {
+                    // Kiểm tra list size
+                    if (position < payMeThodListAddress.size) {
+                        payMeThodListAddress.removeAt(position)
+                        notifyDataSetChanged()
+                        Toast.makeText(context, "Xóa Địa Chỉ thành công!", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                .addOnFailureListener { error ->
+                    Log.e("PayMethodAdapter", "Lỗi xóa Địa Chỉ : ${error.message}")
+                    Toast.makeText(context, "Lỗi xóa sản phẩm: ${error.message}", Toast.LENGTH_SHORT).show()
+                }
+        } else {
+            Log.e("PayMethodAdapter", "Vị trí không hợp lệ: $position")
+            Toast.makeText(context, "Lỗi: Không thể xóa địa chỉ!", Toast.LENGTH_SHORT).show()
+        }
     }
+
 }

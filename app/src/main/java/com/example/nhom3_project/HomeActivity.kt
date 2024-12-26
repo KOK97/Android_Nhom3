@@ -1,5 +1,6 @@
 package com.example.nhom3_project
 
+import Wishlist
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
@@ -21,6 +22,7 @@ import com.denzcoskun.imageslider.ImageSlider
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -35,27 +37,30 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var tvNextspbc: ImageView
     private lateinit var tvPrespbc: ImageView
 
-    private lateinit var ibCart: ImageButton
-    private lateinit var ibCart1: ImageButton
-    private lateinit var ibLike: ImageButton
-    private lateinit var ibLike1: ImageButton
-
     private lateinit var databaseReference: DatabaseReference
 
     private lateinit var viewFlipperspbc: ViewFlipper
     private lateinit var viewFlipperspm: ViewFlipper
 
     private lateinit var navbarBott: BottomNavigationView
+    //cua the lo
+    private val firebaseAuth = FirebaseAuth.getInstance()
+    private val currentUser = firebaseAuth.currentUser
+    private val uid = currentUser?.uid.toString()
 
+    private var wishlList: MutableList<Wishlist> = mutableListOf()
+    private lateinit var dbRef: DatabaseReference
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_home)
-
         setControl()
-        setEvent()
+        getDataWislist{
+            setEvent()
+        }
         setEventNavBar()
+
         navbarBott.menu.findItem(R.id.nav_home).isChecked = true
     }
 
@@ -208,6 +213,48 @@ class HomeActivity : AppCompatActivity() {
                         val ibCart1 = view.findViewById<ImageButton>(R.id.ibCart1)
                         val ibLike1 = view.findViewById<ImageButton>(R.id.ibLike1)
 
+                        val wishlistItem1 = wishlList.find { it.productid == product_id1 }
+                        if (wishlistItem1 != null) {
+                            if (wishlistItem1.selected) {
+                                ibLike.setImageResource(R.drawable.ic_wishlist_selected)
+                            } else {
+                                ibLike.setImageResource(R.drawable.ic_wishlist_unselected)
+                            }
+                        }
+                        val wishlistItem2 = wishlList.find { it.productid == product_id2 }
+                        if (wishlistItem2 != null) {
+                            if (wishlistItem2.selected == true) {
+                                ibLike1.setImageResource(R.drawable.ic_wishlist_selected)
+                            } else {
+                                ibLike1.setImageResource(R.drawable.ic_wishlist_unselected)
+                            }
+                        }
+
+                        ibLike.setOnClickListener{
+                            addToWishlist(product_id1)
+                            if (wishlistItem2 != null) {
+                                if (wishlistItem2.selected == true) {
+                                    ibLike.setImageResource(R.drawable.ic_wishlist_unselected)
+                                    wishlistItem2.selected = false
+                                } else if(wishlistItem2.selected == false){
+                                    ibLike.setImageResource(R.drawable.ic_wishlist_selected)
+                                    wishlistItem2.selected = true
+                                }
+                            }
+
+                        }
+                        ibLike1.setOnClickListener{
+                            addToWishlist(product_id2)
+                            if (wishlistItem2 != null) {
+                                if (wishlistItem2.selected == true) {
+                                    ibLike1.setImageResource(R.drawable.ic_wishlist_unselected)
+                                    wishlistItem2.selected = false
+                                } else if(wishlistItem2.selected == false){
+                                    ibLike1.setImageResource(R.drawable.ic_wishlist_selected)
+                                    wishlistItem2.selected = true
+                                }
+                            }
+                        }
                         //chuyển activ khi click
                         ibCart.setOnClickListener(){
                             productClick = product_id1
@@ -321,6 +368,47 @@ class HomeActivity : AppCompatActivity() {
                         val ibCart1 = view.findViewById<ImageButton>(R.id.ibCart1)
                         val ibLike1 = view.findViewById<ImageButton>(R.id.ibLike1)
 
+                        val wishlistItem1 = wishlList.find { it.productid == product_id1 }
+                        if (wishlistItem1 != null) {
+                            if (wishlistItem1.selected) {
+                                ibLike.setImageResource(R.drawable.ic_wishlist_selected)
+                            } else {
+                                ibLike.setImageResource(R.drawable.ic_wishlist_unselected)
+                            }
+                        }
+                        val wishlistItem2 = wishlList.find { it.productid == product_id2 }
+                        if (wishlistItem2 != null) {
+                            if (wishlistItem2.selected) {
+                                ibLike1.setImageResource(R.drawable.ic_wishlist_selected)
+                            } else {
+                                ibLike1.setImageResource(R.drawable.ic_wishlist_unselected)
+                            }
+                        }
+                        ibLike.setOnClickListener{
+                            addToWishlist(product_id1)
+                            if (wishlistItem2 != null) {
+                                if (wishlistItem2.selected == true) {
+                                    ibLike.setImageResource(R.drawable.ic_wishlist_unselected)
+                                    wishlistItem2.selected = false
+                                } else if(wishlistItem2.selected == false){
+                                    ibLike.setImageResource(R.drawable.ic_wishlist_selected)
+                                    wishlistItem2.selected = true
+                                }
+                            }
+
+                        }
+                        ibLike1.setOnClickListener{
+                            addToWishlist(product_id2)
+                            if (wishlistItem2 != null) {
+                                if (wishlistItem2.selected == true) {
+                                    ibLike1.setImageResource(R.drawable.ic_wishlist_unselected)
+                                    wishlistItem2.selected = false
+                                } else if(wishlistItem2.selected == false){
+                                    ibLike1.setImageResource(R.drawable.ic_wishlist_selected)
+                                    wishlistItem2.selected = true
+                                }
+                            }
+                        }
                         //chuyển activ khi click
                         ibCart.setOnClickListener(){
                             productClick = product_id1
@@ -377,12 +465,103 @@ class HomeActivity : AppCompatActivity() {
 
 
     }
+    private fun getDataWislist(onDataLoaded: () -> Unit) {
+        dbRef = FirebaseDatabase.getInstance().reference
 
+        dbRef.child("Wishlist").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                wishlList.clear() // Làm sạch danh sách trước khi thêm dữ liệu mới
+                for (cartSnapshot in snapshot.children) {
+                    val userid = cartSnapshot.child("userid").getValue(String::class.java) ?: ""
+                    if (userid == uid) {
+                        val id = cartSnapshot.child("id").getValue(String::class.java) ?: ""
+                        val productid = cartSnapshot.child("productid").getValue(String::class.java) ?: ""
+                        val select = cartSnapshot.child("selected").getValue(Boolean::class.java) ?: false
+                        val wishlist = Wishlist(id, userid, productid,select)
+                        wishlList.add(wishlist)
+                    }
+                }
+
+                onDataLoaded()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("HomeActivity", "Lỗi tải dữ liệu yêu thích: ${error.message}")
+            }
+        })
+    }
+    //cua the lo
+    private fun addToWishlist(productId: String) {
+        dbRef.child("Wishlist").addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val existingWishlist = snapshot.children.find {
+                    val wishlistUserId = it.child("userid").getValue(String::class.java) ?: ""
+                    val wishlistProductId = it.child("productid").getValue(String::class.java) ?: ""
+                    wishlistUserId == uid && wishlistProductId == productId
+                }
+                if (existingWishlist == null) {
+                    val WishlistId = dbRef.child("Wishlist").push().key ?: return
+                    val wishlistItem = Wishlist(
+                        id = WishlistId,
+                        userid = uid,
+                        productid = productId,
+                        selected = true,
+                    )
+                    dbRef.child("Wishlist").child(WishlistId).setValue(wishlistItem)
+                        .addOnSuccessListener {
+                            Toast.makeText(
+                                this@HomeActivity,
+                                "Sản phẩm đã được thêm vào yêu thích!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(
+                                this@HomeActivity,
+                                "Lỗi khi thêm yêu thích: ${e.message}",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                }else {
+                    val wishlistId = existingWishlist.key ?: return
+                    val Selectted =
+                        existingWishlist.child("selected").getValue(Boolean::class.java) ?: false
+
+                    if (Selectted == false){
+                        dbRef.child("Wishlist").child(wishlistId).child("selected")
+                            .setValue(true)
+                    } else{
+                        dbRef.child("Wishlist").child(wishlistId).child("selected")
+                            .setValue(false)
+                    }
+                        .addOnSuccessListener {
+                            Toast.makeText(
+                                this@HomeActivity,
+                                "Cập nhật thành công!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(
+                                this@HomeActivity,
+                                "Lỗi khi cập nhật số lượng: ${e.message}",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@HomeActivity, "Lỗi: ${error.message}", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        })
+    }
     private fun setEventNavBar() {
         navbarBott.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_search -> {
-                    // Xử lý khi chọn Search
+                    val intent = Intent(this, SearchActivity::class.java)
+                    startActivity(intent)
                     true
                 }
 
@@ -395,7 +574,8 @@ class HomeActivity : AppCompatActivity() {
                 }
 
                 R.id.nav_wishlist -> {
-                    // Xử lý khi chọn Favorites
+                    val intent = Intent(this, WishListActivity::class.java)
+                    startActivity(intent)
                     true
                 }
 

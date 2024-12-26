@@ -102,7 +102,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_marginEnd="16dp"
-                        android:src="@drawable/ic_purchase_history" />
+                        android:src="@drawable/ic_order_history" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -141,7 +141,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_marginEnd="16dp"
-                        android:src="@drawable/ic_coment" />
+                        android:src="@drawable/ic_comment" />
 
                     <TextView
                         android:layout_width="0dp"

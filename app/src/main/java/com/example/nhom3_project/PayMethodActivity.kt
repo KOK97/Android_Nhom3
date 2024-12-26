@@ -1,6 +1,7 @@
 package com.example.nhom3_project
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.FrameLayout
@@ -8,6 +9,7 @@ import android.widget.ImageView
 import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -31,9 +33,14 @@ class PayMethodActivity : AppCompatActivity() {
     private lateinit var flPayMDiachi: FrameLayout
     private lateinit var flPayMPayment: FrameLayout
     private lateinit var ivBackPay: ImageView
+    private lateinit var uid: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pay_method)
+        val firebaseAuth = FirebaseAuth.getInstance()
+        val currentUser = firebaseAuth.currentUser
+        uid = currentUser?.uid.toString()
+
         setControll()
         setDataAddressPayMeThod()
         setDataPaymentPayMeThod()
@@ -64,32 +71,25 @@ class PayMethodActivity : AppCompatActivity() {
     private fun setDataAddressPayMeThod() {
         addressPayMethodlist = mutableListOf()
 
-        // Khởi tạo Realtime Database Reference
         dbRef = FirebaseDatabase.getInstance().reference
-
-        // Lấy dữ liệu
         dbRef.child("PayMethodAddress").addValueEventListener(object : ValueEventListener {
-
             override fun onDataChange(snapshot: DataSnapshot) {
                 addressPayMethodlist.clear()
-
                 for (addressPayMethodSnapshot in snapshot.children) {
-
-                    val id = addressPayMethodSnapshot.child("id").getValue(String::class.java) ?: ""
-                    val userid =
-                        addressPayMethodSnapshot.child("userid").getValue(String::class.java) ?: ""
-                    val deliverylocation = addressPayMethodSnapshot.child("deliverylocation")
-                        .getValue(String::class.java) ?: ""
-                    val paythethod = PayMethodAddress(id, userid, deliverylocation)
-
-                    addressPayMethodlist.add(paythethod)
+                    val userid = addressPayMethodSnapshot.child("userid").getValue(String::class.java) ?: ""
+                    if (userid == uid) {
+                        val id = addressPayMethodSnapshot.child("id").getValue(String::class.java) ?: ""
+                        val deliverylocation = addressPayMethodSnapshot.child("deliverylocation")
+                            .getValue(String::class.java) ?: ""
+                        val paythethod = PayMethodAddress(id, userid, deliverylocation)
+                        addressPayMethodlist.add(paythethod)
+                    }
                 }
                 // Gán adapter sau khi đã có dữ liệu
-               if (addressPayMethodlist.isNotEmpty()){
-                   addressadapter = PayMethodAddressAdapter(this@PayMethodActivity, addressPayMethodlist)
-                   lvAddress.adapter = addressadapter
-               }
-
+                if (addressPayMethodlist.isNotEmpty()) {
+                    addressadapter = PayMethodAddressAdapter(this@PayMethodActivity, addressPayMethodlist)
+                    lvAddress.adapter = addressadapter
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -99,18 +99,15 @@ class PayMethodActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
-
-
-        }
-        )
-
+        })
     }
+
     private fun setEvenViewDinamic(){
         flPayMDiachi.visibility = android.view.View.GONE
         flPayMPayment.visibility = android.view.View.VISIBLE
         btnPayment.setOnClickListener{
-                flPayMDiachi.visibility = android.view.View.GONE
-                 flPayMPayment.visibility = android.view.View.VISIBLE
+            flPayMDiachi.visibility = android.view.View.GONE
+            flPayMPayment.visibility = android.view.View.VISIBLE
 
         }
         btnAddress.setOnClickListener{
@@ -139,10 +136,10 @@ class PayMethodActivity : AppCompatActivity() {
         // Tạo đối tượng Cart
         val addressItem = PayMethodAddress(
             id = addressid,
-            userid = "4IkgM1ZTroMf3yLIVcKhbBGp9Ol2",
+            userid = uid,
             deliverylocation = deliverylocation,
 
-        )
+            )
 
         // Thêm mục giỏ hàng vào Firebase
         dbRef.child(addressid).setValue(addressItem)
@@ -167,15 +164,16 @@ class PayMethodActivity : AppCompatActivity() {
                 paymentPayMethodlist.clear()
 
                 for (paymentPayMethodSnapshot in snapshot.children) {
-
-                    val id = paymentPayMethodSnapshot.child("id").getValue(String::class.java) ?: ""
                     val userid =
                         paymentPayMethodSnapshot.child("userid").getValue(String::class.java) ?: ""
-                    val payment = paymentPayMethodSnapshot.child("payment")
-                        .getValue(String::class.java) ?: ""
-                    val paythethod = PayMethodPayment(id, userid, payment)
+                    if (uid == userid){
+                        val id = paymentPayMethodSnapshot.child("id").getValue(String::class.java) ?: ""
+                        val payment = paymentPayMethodSnapshot.child("payment")
+                            .getValue(String::class.java) ?: ""
+                        val paythethod = PayMethodPayment(id, userid, payment)
 
-                    paymentPayMethodlist.add(paythethod)
+                        paymentPayMethodlist.add(paythethod)
+                    }
                 }
                 // Gán adapter sau khi đã có dữ liệu
                 if (paymentPayMethodlist.isNotEmpty()){
@@ -213,17 +211,14 @@ class PayMethodActivity : AppCompatActivity() {
     }
     fun addPaymentMethod(payment: String) {
         val dbRef = FirebaseDatabase.getInstance().getReference("PayMethodPayment")
-
         // Tạo key duy nhất cho mục giỏ hàng
         val paymentid = dbRef.push().key ?: return
-
         // Tạo đối tượng Cart
         val paymentItem = PayMethodPayment(
             id = paymentid,
-            userid = "4IkgM1ZTroMf3yLIVcKhbBGp9Ol2",
+            userid = uid,
             payment = payment,
-            )
-
+        )
         // Thêm mục giỏ hàng vào Firebase
         dbRef.child(paymentid).setValue(paymentItem)
             .addOnSuccessListener {
@@ -233,4 +228,5 @@ class PayMethodActivity : AppCompatActivity() {
                 Toast.makeText(this, "Lỗi khi thêm phương thức: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
 }

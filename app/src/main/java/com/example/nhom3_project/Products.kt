@@ -1,7 +1,5 @@
 import android.os.Parcel
 import android.os.Parcelable
-
-
 data class Products(
     val id: String = "",
     var name: String = "",

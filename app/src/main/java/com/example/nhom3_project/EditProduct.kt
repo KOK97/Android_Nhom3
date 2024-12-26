@@ -38,7 +38,6 @@ class EditProduct : AppCompatActivity() {
         edtImageUrl = findViewById(R.id.edt_image_url)
         btnSave = findViewById(R.id.btn_save_product)
 
-
         val categories = listOf("Jewelry", "Watches", "Earrings", "Rings")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categories)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)

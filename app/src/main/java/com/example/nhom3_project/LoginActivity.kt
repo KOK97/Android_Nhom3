@@ -60,6 +60,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setEvent() {
+        createTestAccounts()
         setSupportActionBar(toolbar)
         supportActionBar?.apply {
             title = "Quay lại"
@@ -109,6 +110,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun loginUser(email: String, password: String) {
         progressBar.visibility = View.VISIBLE
+        btnLogin.text = "Đang xử lý..."
         btnLogin.isEnabled = false
         edtEmail.isEnabled = false
         edtPassword.isEnabled = false
@@ -116,8 +118,6 @@ class LoginActivity : AppCompatActivity() {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             progressBar.visibility = View.GONE
             btnLogin.isEnabled = true
-            edtEmail.isEnabled = true
-            edtPassword.isEnabled = true
             if (task.isSuccessful) {
                 val user = mAuth.currentUser
                 if (user != null) {
@@ -143,6 +143,7 @@ class LoginActivity : AppCompatActivity() {
 
         Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
         progressBar.visibility = View.GONE
+        btnLogin.text = "Đăng nhập"
         btnLogin.isEnabled = true
         edtEmail.isEnabled = true
         edtPassword.isEnabled = true
@@ -158,6 +159,7 @@ class LoginActivity : AppCompatActivity() {
             val password = "test123"
             val username = "test$i"
             val phone = "123456789$i"
+            val gender = "Nam"
 
             mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
@@ -168,6 +170,7 @@ class LoginActivity : AppCompatActivity() {
                             "uid" to uid,
                             "name" to username,
                             "email" to email,
+                            "gender" to gender,
                             "phone" to phone,
                             "role" to "Customer",
                             "typingTo" to "noOne"

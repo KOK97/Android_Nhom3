@@ -84,7 +84,6 @@ class CustomerManager : Fragment() {
     private fun searchCustomer(query: String) {
         val database = FirebaseDatabase.getInstance()
         val myRef = database.getReference("Users")
-
         myRef.orderByChild("name").startAt(query).endAt(query + "\uf8ff").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 userList.clear()
@@ -128,4 +127,3 @@ class CustomerManager : Fragment() {
         }
     }
 }
-

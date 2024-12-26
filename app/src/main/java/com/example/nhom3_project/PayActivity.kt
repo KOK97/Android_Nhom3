@@ -124,16 +124,22 @@ class PayActivity : AppCompatActivity() {
                 paymentPayMethodlist.clear()
 
                 for (paymentPayMethodSnapshot in snapshot.children) {
-
-                    val id = paymentPayMethodSnapshot.child("id").getValue(String::class.java) ?: ""
                     val userid =
                         paymentPayMethodSnapshot.child("userid").getValue(String::class.java) ?: ""
-                    val payment = paymentPayMethodSnapshot.child("payment")
-                        .getValue(String::class.java) ?: ""
-                    val paythethod = PayMethodPayment(id, userid, payment)
+                    if (userid == uid){
+                        val id = paymentPayMethodSnapshot.child("id").getValue(String::class.java) ?: ""
 
-                    paymentPayMethodlist.add(paythethod)
+                        val payment = paymentPayMethodSnapshot.child("payment")
+                            .getValue(String::class.java) ?: ""
+                        val paythethod = PayMethodPayment(id, userid, payment)
+
+                        paymentPayMethodlist.add(paythethod)
+                    }
                 }
+//                if (paymentPayMethodlist.isEmpty()){
+//                    val paythethod = PayMethodPayment("0", uid,"Bạn chưa có phương thức")
+//                    paymentPayMethodlist.add(paythethod)
+//                }
                 val payment = paymentPayMethodlist.map { it.payment }
                 val adapter = ArrayAdapter(
                     this@PayActivity,
@@ -180,16 +186,22 @@ class PayActivity : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 addressPayMethodlist.clear()
                 for (addressPayMethodSnapshot in snapshot.children) {
-
-                    val id = addressPayMethodSnapshot.child("id").getValue(String::class.java) ?: ""
                     val userid =
                         addressPayMethodSnapshot.child("userid").getValue(String::class.java) ?: ""
-                    val deliverylocation = addressPayMethodSnapshot.child("deliverylocation")
-                        .getValue(String::class.java) ?: ""
-                    val paythethod = PayMethodAddress(id, userid, deliverylocation)
-                    addressPayMethodlist.add(paythethod)
+                    if (userid == uid){
+                        val id = addressPayMethodSnapshot.child("id").getValue(String::class.java) ?: ""
+
+                        val deliverylocation = addressPayMethodSnapshot.child("deliverylocation")
+                            .getValue(String::class.java) ?: ""
+                        val paythethod = PayMethodAddress(id, userid, deliverylocation)
+                        addressPayMethodlist.add(paythethod)
+                    }
 
                 }
+//                if (addressPayMethodlist.isEmpty()){
+//                    val paythethod = PayMethodAddress("0", uid,"Bạn chưa địa chỉ")
+//                    addressPayMethodlist.add(paythethod)
+//                }
                 val deliveryLocations = addressPayMethodlist.map { it.deliverylocation }
                 val adapter = ArrayAdapter(
                     this@PayActivity,
@@ -214,44 +226,44 @@ class PayActivity : AppCompatActivity() {
     }
     private fun setEventPay(){
         btnAccepp.setOnClickListener{
-              Payment(detailList,uid,idAddress,idPayment,total.toDouble())
+            Payment(detailList,uid,idAddress,idPayment,total.toDouble())
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
         }
     }
     private fun Payment(products: List<PayData>, uid: String, addressid: String, paymentid: String, total: Double,){
-            val dbRef = FirebaseDatabase.getInstance().getReference("Bills")
-            // Tạo key
-            val billid = dbRef.push().key ?: ""
-            val sdf = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault())
-            val currentTime = sdf.format(Date())
-               val billsitem = Bills(
-                   id = billid,
-                   userid =uid,
-                   products = products,
-                   addressid = addressid,
-                   paymentid = paymentid,
-                   totalpayment =total,
-                   creationdate = currentTime,
-               )
-            if (billid != ""){
-                dbRef.child(billid).setValue(billsitem)
-                    .addOnSuccessListener {
+        val dbRef = FirebaseDatabase.getInstance().getReference("Bills")
+        // Tạo key
+        val billid = dbRef.push().key ?: ""
+        val sdf = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault())
+        val currentTime = sdf.format(Date())
+        val billsitem = Bills(
+            id = billid,
+            userid =uid,
+            products = products,
+            addressid = addressid,
+            paymentid = paymentid,
+            totalpayment =total,
+            creationdate = currentTime,
+        )
+        if (billid != ""){
+            dbRef.child(billid).setValue(billsitem)
+                .addOnSuccessListener {
 
-                        Toast.makeText(this, "Thanh Toán thành công", Toast.LENGTH_SHORT).show()
-                    }
-                    .addOnFailureListener { e ->
-                        Toast.makeText(this, "Thanh toán lỗi", Toast.LENGTH_SHORT).show()
-                    }
-                for (data in products){
-                    if (data.cartid != ""){
-                        removeCartItem(data.cartid)
-                    }
+                    Toast.makeText(this, "Thanh Toán thành công", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "Thanh toán lỗi", Toast.LENGTH_SHORT).show()
+                }
+            for (data in products){
+                if (data.cartid != ""){
+                    removeCartItem(data.cartid)
                 }
             }
-            else{
-                Toast.makeText(this, "lỗi không tạo được id", Toast.LENGTH_SHORT).show()
-            }
+        }
+        else{
+            Toast.makeText(this, "lỗi không tạo được id", Toast.LENGTH_SHORT).show()
+        }
     }
     private fun eventBack(){
         ivBackPay.setOnClickListener{

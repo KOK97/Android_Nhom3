@@ -15,7 +15,7 @@ class CustomerAdapter(
     private val onDeleteClick: (Customer) -> Unit,
     private val onCustomerClick: (Customer) -> Unit
 
-    ) : BaseAdapter() {
+) : BaseAdapter() {
 
     class ViewHolder(view: View) {
         val tvId: TextView = view.findViewById(R.id.tv_uid)
@@ -54,7 +54,7 @@ class CustomerAdapter(
         }
         holder.btnEdit.setOnClickListener {
 
-           onCustomerClick(customer)
+            onCustomerClick(customer)
         }
 
         return view

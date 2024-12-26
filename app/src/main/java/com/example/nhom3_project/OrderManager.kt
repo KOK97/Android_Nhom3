@@ -114,5 +114,3 @@ class OrderManager : Fragment() {
     }
 
 }
-
-

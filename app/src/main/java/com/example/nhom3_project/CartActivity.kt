@@ -39,18 +39,19 @@ class CartActivity : AppCompatActivity() {
         val currentUser = firebaseAuth.currentUser
         uid = currentUser?.uid.toString()
         setControll()
-
-            getDataCart {
-                if (cartList.isNotEmpty()) {
-                    setDataCart {
-                        updateTotalPrice()
-                    }
+        getDataCart {
+            if (cartList.isNotEmpty()) {
+                setDataCart {
+                    updateTotalPrice()
                 }
             }
+        }
         setEventAdd()
+        setEvenDAddtoCart()
         setEventNavBar()
         setEventBack()
         setEventPayAccept()
+
         navbarBott.menu.findItem(R.id.nav_shoppingcart).isChecked = true
         updateTotalPrice()
     }
@@ -65,6 +66,13 @@ class CartActivity : AppCompatActivity() {
 
     private fun setEventAdd() {
         val dataproductid = intent.getStringExtra("productClick")
+        if (dataproductid != null) {
+            addToCart(dataproductid.toString())
+        }
+
+    }
+    private fun setEvenDAddtoCart() {
+        val dataproductid = intent.getStringExtra("productID")
         if (dataproductid != null) {
             addToCart(dataproductid.toString())
         }
@@ -101,14 +109,14 @@ class CartActivity : AppCompatActivity() {
                 cartList.clear()
                 for (cartSnapshot in snapshot.children) {
                     val userid = cartSnapshot.child("userid").getValue(String::class.java) ?: ""
-                   if (userid==uid){
-                       val id = cartSnapshot.child("id").getValue(String::class.java) ?: ""
-                       val productid =
-                           cartSnapshot.child("productid").getValue(String::class.java) ?: ""
-                       val quantity = cartSnapshot.child("quantity").getValue(Int::class.java) ?: 0
-                       val cart = Cart(id, userid, productid, quantity)
-                       cartList.add(cart)
-                   }
+                    if (userid==uid){
+                        val id = cartSnapshot.child("id").getValue(String::class.java) ?: ""
+                        val productid =
+                            cartSnapshot.child("productid").getValue(String::class.java) ?: ""
+                        val quantity = cartSnapshot.child("quantity").getValue(Int::class.java) ?: 0
+                        val cart = Cart(id, userid, productid, quantity)
+                        cartList.add(cart)
+                    }
                 }
                 // Gọi hàm callback sau khi dữ liệu đã được tải xong
                 onDataLoaded()
@@ -155,7 +163,7 @@ class CartActivity : AppCompatActivity() {
 
                         productList.add(
                             Products(
-                               id,name,category,type,price,quantity,desc,img
+                                id,name,category,type,price,quantity,desc,img
                             )
                         )
                     }
@@ -251,8 +259,18 @@ class CartActivity : AppCompatActivity() {
                     true
                 }
 
-                R.id.nav_search -> true
-                R.id.nav_wishlist -> true
+
+                R.id.nav_search -> {
+                    val intent = Intent(this, SearchActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.nav_wishlist -> {
+                    val intent = Intent(this, WishListActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+
                 R.id.nav_account -> {
                     val intent = Intent(this, AccountActivity::class.java)
                     startActivity(intent)
@@ -270,4 +288,3 @@ class CartActivity : AppCompatActivity() {
         totalTextView.text = "Total: $total VND"
     }
 }
-
