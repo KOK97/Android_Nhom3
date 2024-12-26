@@ -42,7 +42,7 @@ class ProductDetail : AppCompatActivity() {
     private lateinit var ivBackDetail: ImageView
 
     private lateinit var btnAddCart: Button
-    private lateinit var btnBuyNow: Button
+    private lateinit var btnBuyNow: com.google.android.material.button.MaterialButton
     private lateinit var btnComment: Button
 
     private lateinit var ratingBar: RatingBar
@@ -164,7 +164,6 @@ class ProductDetail : AppCompatActivity() {
                 val intent = Intent(this@ProductDetail, CartActivity::class.java)
                 intent.putExtra("productID", productId)
                 Toast.makeText(this, "Thêm vào giỏ hàng thành công", Toast.LENGTH_SHORT).show()
-
                 startActivity(intent)
             }
             else{
@@ -180,17 +179,9 @@ class ProductDetail : AppCompatActivity() {
                 val intent = Intent(this, PayActivity::class.java)
                 intent.putExtra("product_list", ArrayList(datapay))
                 intent.putExtra("totalcart", pricepro)
-
+                startActivity(intent)
             } else {
                 Toast.makeText(this, "Thêm vào giỏ hàng thất bại", Toast.LENGTH_SHORT).show()
-            }
-        }
-        btnBuyNow.setOnClickListener() {
-            if (productId != null) {
-                val intent = Intent(this@ProductDetail, CartActivity::class.java)
-                intent.putExtra("productId", productId)
-
-                startActivity(intent)
             }
         }
 

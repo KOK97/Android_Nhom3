@@ -47,26 +47,17 @@
             android:text="Tìm Kiếm"
             android:textColor="#FFFFFF" />
     </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recSearch"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="650dp"
         android:layout_marginTop="20dp"
         android:padding="8dp"
         android:scrollbars="vertical"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        tools:listitem="@layout/search_item"
-       />
+        tools:listitem="@layout/search_item" />
 
-<!--    <LinearLayout-->
-<!--        android:id="@+id/lnSearch"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="20dp"-->
-<!--        android:orientation="horizontal"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"-->
-<!--        tools:ignore="MissingConstraints"-->
-<!--        tools:layout_editor_absoluteX="-16dp" />-->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigationCart"
         android:layout_width="match_parent"
