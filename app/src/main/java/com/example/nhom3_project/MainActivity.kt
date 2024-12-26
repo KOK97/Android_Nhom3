@@ -7,20 +7,26 @@ import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.google.firebase.FirebaseApp
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val intent = Intent(this, AccountActivity::class.java)
+        val intent = Intent(this, SplashActivity::class.java)
         val splashScreen = installSplashScreen()
 
+        // Đảm bảo Firebase được khởi tạo
+        FirebaseApp.initializeApp(this)
+
         startActivity(intent)
-        splashScreen.setKeepOnScreenCondition{true}
+        splashScreen.setKeepOnScreenCondition { true }
         addLoading(splashScreen)
     }
-    private fun addLoading(splashScreen: SplashScreen){
+
+    private fun addLoading(splashScreen: SplashScreen) {
         Handler(Looper.getMainLooper()).postDelayed({
-            splashScreen.setKeepOnScreenCondition{false}
-        },2000)
+            splashScreen.setKeepOnScreenCondition { false }
+        }, 2000)
     }
 }
