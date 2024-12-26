@@ -62,7 +62,7 @@ class CartAdapter(
             }
             btnDele.setOnClickListener {
                 for (cart in cartList) {
-                if (position >= 0 && position < cartList.size){
+                    if (position >= 0 && position < cartList.size){
                         if (cart.productid == product.id) {
                             removeCartItem(cart.id, position)
                             Log.d("CartAdapter", "Cart ID: ${cart.id}, Product ID: ${cart.productid}")

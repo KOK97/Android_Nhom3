@@ -39,13 +39,13 @@ class CartActivity : AppCompatActivity() {
         val currentUser = firebaseAuth.currentUser
         uid = currentUser?.uid.toString()
         setControll()
-            getDataCart {
-                if (cartList.isNotEmpty()) {
-                    setDataCart {
-                        updateTotalPrice()
-                    }
+        getDataCart {
+            if (cartList.isNotEmpty()) {
+                setDataCart {
+                    updateTotalPrice()
                 }
             }
+        }
         setEventAdd()
         setEvenDAddtoCart()
         setEventNavBar()
@@ -99,33 +99,6 @@ class CartActivity : AppCompatActivity() {
             }
         }
     }
-//    private fun setEventDetailBuy() {
-//        val productid = intent.getStringExtra("productIdBuyNow")
-//        if (productid != null) {
-//            datapay.clear()
-//            val matchingProduct = productList.firstOrNull { it.id == productid }
-//            val quality = matchingProduct?.quantity
-//            val newquality = quality?.plus(1)
-//            if (quality != newquality ){
-//                addToCart(productid)
-//            }
-//            val matchingCartItems = cartList.filter { it.productid == productid }
-//
-//            if (matchingCartItems.isNotEmpty() && matchingProduct != null) {
-//                val cartid = matchingCartItems.first().id.toString()
-//                val product = matchingProduct
-//
-//                datapay.add(PayData(cartid, product.id, product.name, 1))
-//
-//                val intent = Intent(this, PayActivity::class.java)
-//                intent.putExtra("product_list", ArrayList(datapay))
-//                intent.putExtra("totalcart", product.price.toString())
-//                startActivity(intent)
-//            } else {
-//                Toast.makeText(this, "Không tìm thấy sản phẩm hoặc giỏ hàng.", Toast.LENGTH_SHORT).show()
-//            }
-//        }
-//    }
 
     private fun getDataCart(onDataLoaded: () -> Unit) {
         cartList = mutableListOf()
@@ -136,14 +109,14 @@ class CartActivity : AppCompatActivity() {
                 cartList.clear()
                 for (cartSnapshot in snapshot.children) {
                     val userid = cartSnapshot.child("userid").getValue(String::class.java) ?: ""
-                   if (userid==uid){
-                       val id = cartSnapshot.child("id").getValue(String::class.java) ?: ""
-                       val productid =
-                           cartSnapshot.child("productid").getValue(String::class.java) ?: ""
-                       val quantity = cartSnapshot.child("quantity").getValue(Int::class.java) ?: 0
-                       val cart = Cart(id, userid, productid, quantity)
-                       cartList.add(cart)
-                   }
+                    if (userid==uid){
+                        val id = cartSnapshot.child("id").getValue(String::class.java) ?: ""
+                        val productid =
+                            cartSnapshot.child("productid").getValue(String::class.java) ?: ""
+                        val quantity = cartSnapshot.child("quantity").getValue(Int::class.java) ?: 0
+                        val cart = Cart(id, userid, productid, quantity)
+                        cartList.add(cart)
+                    }
                 }
                 // Gọi hàm callback sau khi dữ liệu đã được tải xong
                 onDataLoaded()
@@ -190,7 +163,7 @@ class CartActivity : AppCompatActivity() {
 
                         productList.add(
                             Products(
-                               id,name,category,type,price,quantity,desc,img
+                                id,name,category,type,price,quantity,desc,img
                             )
                         )
                     }
@@ -305,4 +278,3 @@ class CartActivity : AppCompatActivity() {
         totalTextView.text = "Total: $total VND"
     }
 }
-
