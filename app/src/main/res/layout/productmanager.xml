@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ProductManager">
+
+    <!-- Thanh tìm kiếm -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <EditText
+            android:id="@+id/searchBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/search_bar_bg"
+            android:drawableStart="@android:drawable/ic_menu_search"
+            android:hint="Tìm kiếm"
+            android:padding="10dp" />
+
+        <Button
+            android:id="@+id/btnTimKiem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:backgroundTint="#4CAF50"
+            android:text="Tìm Kiếm"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
+
+    <!-- Nút thêm sản phẩm -->
+    <Button
+        android:id="@+id/addButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/searchBar"
+        android:layout_margin="16dp"
+        android:backgroundTint="#4CAF50"
+        android:text="+ Add"
+        android:textColor="#FFFFFF" />
+
+    <!-- Danh sách sản phẩm -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcv_list_user"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/addButton"
+        android:layout_marginTop="8dp"
+        android:padding="8dp" />
+</RelativeLayout>

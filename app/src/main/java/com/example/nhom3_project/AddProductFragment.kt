@@ -14,7 +14,7 @@ class AddProductFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_add_product, container, false)
+        val view = inflater.inflate(R.layout.addproduct, container, false)
 
         // Nút thêm sản phẩm
         val addProductButton = view.findViewById<Button>(R.id.addProductButton)

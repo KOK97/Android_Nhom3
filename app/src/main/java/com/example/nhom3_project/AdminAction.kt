@@ -3,7 +3,6 @@ package com.example.nhom3_project
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
@@ -39,30 +38,28 @@ class AdminAction : AppCompatActivity(), NavigationView.OnNavigationItemSelected
         toggle.syncState()
 
         if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction().replace(
-                R.id.fragment_container,
+            val intent = Intent(this, ProductManager::class.java)
+            startActivity(intent)
 
-                SanPhamFragment()
-            ).commit()
             navigationView.setCheckedItem(R.id.nav_qlsanpham)
         }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.nav_qlsanpham -> supportFragmentManager.beginTransaction().replace(
-                R.id.fragment_container,
-                SanPhamFragment()
-            ).commit()
+            R.id.nav_qlsanpham -> {
+                val intent = Intent(this, ProductManager::class.java)
+                startActivity(intent)
+            }
 
             R.id.nav_qlkhachhang -> supportFragmentManager.beginTransaction().replace(
                 R.id.fragment_container,
-                KhachHangFragment()
+                CustomerManager()
             ).commit()
 
             R.id.nav_qldonhang -> supportFragmentManager.beginTransaction().replace(
                 R.id.fragment_container,
-                DonHangFragment()
+                OderManager()
             ).commit()
 
             R.id.nav_logout -> nav_logout.setOnClickListener {

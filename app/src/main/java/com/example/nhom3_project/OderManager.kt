@@ -9,10 +9,10 @@ import androidx.fragment.app.Fragment
 
 /**
  * A simple [Fragment] subclass.
- * Use the [DonHangFragment.newInstance] factory method to
+ * Use the [OderManager.newInstance] factory method to
  * create an instance of this fragment.
  */
-class DonHangFragment : Fragment() {
+class OderManager : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -29,7 +29,7 @@ class DonHangFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_don_hang, container, false)
+        return inflater.inflate(R.layout.odermanager, container, false)
     }
 
     companion object {
@@ -44,7 +44,7 @@ class DonHangFragment : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            DonHangFragment().apply {
+            OderManager().apply {
                 arguments = Bundle().apply {
 
                 }

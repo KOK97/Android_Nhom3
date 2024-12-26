@@ -9,10 +9,10 @@ import androidx.fragment.app.Fragment
 
 /**
  * A simple [Fragment] subclass.
- * Use the [KhachHangFragment.newInstance] factory method to
+ * Use the [CustomerManager.newInstance] factory method to
  * create an instance of this fragment.
  */
-class KhachHangFragment : Fragment() {
+class CustomerManager : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -29,7 +29,7 @@ class KhachHangFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_khach_hang, container, false)
+        return inflater.inflate(R.layout.customermanager, container, false)
     }
 
     companion object {
@@ -44,7 +44,7 @@ class KhachHangFragment : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            KhachHangFragment().apply {
+            CustomerManager().apply {
                 arguments = Bundle().apply {
 
                 }
