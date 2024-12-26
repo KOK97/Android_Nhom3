@@ -260,7 +260,11 @@ class CartActivity : AppCompatActivity() {
                 }
 
                 R.id.nav_search -> true
-                R.id.nav_wishlist -> true
+                R.id.nav_wishlist -> {
+                    val intent = Intent(this, WishListActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
                 R.id.nav_account -> {
                     val intent = Intent(this, AccountActivity::class.java)
                     startActivity(intent)
