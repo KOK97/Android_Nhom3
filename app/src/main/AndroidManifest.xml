@@ -19,9 +19,6 @@
             android:name=".ForgotPasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".Comment"
-            android:exported="false" />
-        <activity
             android:name=".ProductDetail"
             android:exported="false" />
         <activity
