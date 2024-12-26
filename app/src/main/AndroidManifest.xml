@@ -15,7 +15,7 @@
         android:theme="@style/Theme.Nhom3_Project"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".WishListActivity"
             android:exported="false" />
         <activity
             android:name=".AccountDetailActivity"
@@ -57,6 +57,10 @@
             android:name=".RegisterActivity"
             android:exported="false" />
         <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+
             android:name=".SplashActivity"
             android:exported="false" />
         <activity

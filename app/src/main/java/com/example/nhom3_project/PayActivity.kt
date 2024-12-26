@@ -124,16 +124,22 @@ class PayActivity : AppCompatActivity() {
                 paymentPayMethodlist.clear()
 
                 for (paymentPayMethodSnapshot in snapshot.children) {
+                        val userid =
+                            paymentPayMethodSnapshot.child("userid").getValue(String::class.java) ?: ""
+                        if (userid == uid){
+                            val id = paymentPayMethodSnapshot.child("id").getValue(String::class.java) ?: ""
 
-                    val id = paymentPayMethodSnapshot.child("id").getValue(String::class.java) ?: ""
-                    val userid =
-                        paymentPayMethodSnapshot.child("userid").getValue(String::class.java) ?: ""
-                    val payment = paymentPayMethodSnapshot.child("payment")
-                        .getValue(String::class.java) ?: ""
-                    val paythethod = PayMethodPayment(id, userid, payment)
+                            val payment = paymentPayMethodSnapshot.child("payment")
+                                .getValue(String::class.java) ?: ""
+                            val paythethod = PayMethodPayment(id, userid, payment)
 
-                    paymentPayMethodlist.add(paythethod)
+                            paymentPayMethodlist.add(paythethod)
+                        }
                 }
+//                if (paymentPayMethodlist.isEmpty()){
+//                    val paythethod = PayMethodPayment("0", uid,"Bạn chưa có phương thức")
+//                    paymentPayMethodlist.add(paythethod)
+//                }
                 val payment = paymentPayMethodlist.map { it.payment }
                 val adapter = ArrayAdapter(
                     this@PayActivity,
@@ -180,16 +186,22 @@ class PayActivity : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 addressPayMethodlist.clear()
                 for (addressPayMethodSnapshot in snapshot.children) {
-
-                    val id = addressPayMethodSnapshot.child("id").getValue(String::class.java) ?: ""
                     val userid =
                         addressPayMethodSnapshot.child("userid").getValue(String::class.java) ?: ""
-                    val deliverylocation = addressPayMethodSnapshot.child("deliverylocation")
-                        .getValue(String::class.java) ?: ""
-                    val paythethod = PayMethodAddress(id, userid, deliverylocation)
-                    addressPayMethodlist.add(paythethod)
+                   if (userid == uid){
+                       val id = addressPayMethodSnapshot.child("id").getValue(String::class.java) ?: ""
+
+                       val deliverylocation = addressPayMethodSnapshot.child("deliverylocation")
+                           .getValue(String::class.java) ?: ""
+                       val paythethod = PayMethodAddress(id, userid, deliverylocation)
+                       addressPayMethodlist.add(paythethod)
+                   }
 
                 }
+//                if (addressPayMethodlist.isEmpty()){
+//                    val paythethod = PayMethodAddress("0", uid,"Bạn chưa địa chỉ")
+//                    addressPayMethodlist.add(paythethod)
+//                }
                 val deliveryLocations = addressPayMethodlist.map { it.deliverylocation }
                 val adapter = ArrayAdapter(
                     this@PayActivity,

@@ -90,7 +90,7 @@ class PayMethodPaymentAdapter (
                     Log.d("PayMethodAdapter", "Đã xóa phần tử với ID: ${selectedItem.id}")
                 } else {
                     Log.e("PayMethodAdapter", "Vị trí không hợp lệ: $position")
-                    Toast.makeText(context, "Lỗi: Không thể xóa địa chỉ!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Lỗi: Không thể xóa phương thức!", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -143,19 +143,27 @@ class PayMethodPaymentAdapter (
             }
     }
     private fun removeAddresItem(paymethodaddressid: String, position: Int) {
-        if (position >= 0 && position < payMeThodPaymentList.size){
-            dbRef.child("PayMethodPayment").child(paymethodaddressid.toString()).removeValue()
+        // kt position
+        if (position >= 0 && position < payMeThodPaymentList.size) {
+            dbRef.child("PayMethodPayment").child(paymethodaddressid).removeValue()
                 .addOnSuccessListener {
-                    payMeThodPaymentList.removeAt(position)
-                    notifyDataSetChanged()
-                    Toast.makeText(context, "Xóa phương thức thành công!", Toast.LENGTH_SHORT).show()
+                    // kt lại position
+                    if (position < payMeThodPaymentList.size) {
+                        payMeThodPaymentList.removeAt(position)
+                        notifyDataSetChanged()
+                        Toast.makeText(context, "Xóa phương thức thành công!", Toast.LENGTH_SHORT).show()
+                    }
                 }
                 .addOnFailureListener { error ->
-                    Log.e("PayMethodAdapter", "Lỗi xóa phương thức : ${error.message}")
-                    Toast.makeText(context, "Lỗi xóa phương thức: ${error.message}", Toast.LENGTH_SHORT)
-                        .show()
+                    Log.e("PayMethodAdapter", "Lỗi xóa phương thức: ${error.message}")
+                    Toast.makeText(context, "Lỗi xóa phương thức: ${error.message}", Toast.LENGTH_SHORT).show()
                 }
+        } else {
+            //
+            Log.e("PayMethodAdapter", "Vị trí không hợp lệ: $position")
+            Toast.makeText(context, "Lỗi: Không thể xóa phương thức!", Toast.LENGTH_SHORT).show()
         }
     }
+
 
 }
