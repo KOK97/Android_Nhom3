@@ -58,8 +58,10 @@ class SearchActivity : AppCompatActivity() {
         }
 
         setEventNavBar()
+        navbarBott.menu.findItem(R.id.nav_search).isChecked = true
     }
     private fun setControl(){
+        ivBackSearch = findViewById(R.id.ivBackSearch)
         navbarBott = findViewById(R.id.bottom_navigationCart)
         recSearch = findViewById(R.id.recSearch)
         btn_search = findViewById(R.id.btn_search)
