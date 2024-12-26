@@ -213,24 +213,6 @@ class HomeActivity : AppCompatActivity() {
                         val ibCart1 = view.findViewById<ImageButton>(R.id.ibCart1)
                         val ibLike1 = view.findViewById<ImageButton>(R.id.ibLike1)
 
-//                        for (wis in wishlList){
-//                            if (wis.productid == product_id1){
-//                                if (wis.selected){
-//                                    ibLike.setImageResource(R.drawable.ic_wishlist_selected)
-//                                }
-//                                else{
-//                                    ibLike.setImageResource(R.drawable.ic_wishlist_unselected)
-//                                }
-//                            }
-//                            if (wis.productid == product_id2){
-//                                if (wis.selected){
-//                                    ibLike1.setImageResource(R.drawable.ic_wishlist_selected)
-//                                }
-//                                else{
-//                                    ibLike1.setImageResource(R.drawable.ic_wishlist_unselected)
-//                                }
-//                            }
-//                        }
                         val wishlistItem1 = wishlList.find { it.productid == product_id1 }
                         if (wishlistItem1 != null) {
                             if (wishlistItem1.selected) {
