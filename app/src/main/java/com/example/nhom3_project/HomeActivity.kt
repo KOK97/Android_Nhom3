@@ -382,7 +382,8 @@ class HomeActivity : AppCompatActivity() {
         navbarBott.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_search -> {
-                    // Xử lý khi chọn Search
+                    val intent = Intent(this, SearchActivity::class.java)
+                    startActivity(intent)
                     true
                 }
 
