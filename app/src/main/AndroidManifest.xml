@@ -24,9 +24,6 @@
             android:name=".ForgotPasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".Comment"
-            android:exported="false" />
-        <activity
             android:name=".ProductDetail"
             android:exported="false" />
         <activity
@@ -61,10 +58,10 @@
             android:exported="false" />
         <activity
 
-            android:name=".SplashActivity"
+            android:name=".SearchActivity"
             android:exported="false" />
         <activity
-            android:name=".SearchActivity"
+            android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
