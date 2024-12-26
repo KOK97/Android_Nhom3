@@ -42,7 +42,6 @@ class WishListActivity : AppCompatActivity() {
         getDataWishlist {
             setDataWishlist()
         }
-        setEvenAddtoWishlist()
         navbarBott.menu.findItem(R.id.nav_wishlist).isChecked = true
     }
     private fun setControll(){
@@ -124,78 +123,7 @@ class WishListActivity : AppCompatActivity() {
             }
         })
     }
-    private fun setEvenAddtoWishlist() {
-        val dataproductid = intent.getStringExtra("productID")
-        if (dataproductid != null) {
-            addToWishlist(dataproductid.toString())
-        }
 
-    }
-    private fun addToWishlist(productId: String) {
-        dbRef.child("Wishlist").addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val existingWishlist = snapshot.children.find {
-                    val wishlistUserId = it.child("userid").getValue(String::class.java) ?: ""
-                    val wishlistProductId = it.child("productid").getValue(String::class.java) ?: ""
-                    wishlistUserId == uid && wishlistProductId == productId
-                }
-                if (existingWishlist == null) {
-                    val WishlistId = dbRef.child("Wishlist").push().key ?: return
-                    val wishlistItem = Wishlist(
-                        id = WishlistId,
-                        userid = uid,
-                        productid = productId,
-                        selected = true,
-                    )
-                    dbRef.child("Wishlist").child(WishlistId).setValue(wishlistItem)
-                        .addOnSuccessListener {
-                            Toast.makeText(
-                                this@WishListActivity,
-                                "Sản phẩm đã được thêm vào yêu thích!",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                        .addOnFailureListener { e ->
-                            Toast.makeText(
-                                this@WishListActivity,
-                                "Lỗi khi thêm yêu thích: ${e.message}",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                }else {
-                    val wishlistId = existingWishlist.key ?: return
-                    val Selectted =
-                        existingWishlist.child("selected").getValue(Boolean::class.java) ?: false
-
-                    if (Selectted == false){
-                        dbRef.child("Wishlist").child(wishlistId).child("selected")
-                            .setValue(true)
-                    } else{
-                        dbRef.child("Wishlist").child(wishlistId).child("selected")
-                            .setValue(false)
-                    }
-                        .addOnSuccessListener {
-                            Toast.makeText(
-                                this@WishListActivity,
-                                "Cập nhật số lượng thành công!",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                        .addOnFailureListener { e ->
-                            Toast.makeText(
-                                this@WishListActivity,
-                                "Lỗi khi cập nhật số lượng: ${e.message}",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                }
-            }
-            override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@WishListActivity, "Lỗi: ${error.message}", Toast.LENGTH_SHORT)
-                    .show()
-            }
-        })
-    }
     private fun setEventNavBar() {
         navbarBott.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {

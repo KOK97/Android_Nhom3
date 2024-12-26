@@ -249,14 +249,29 @@ class HomeActivity : AppCompatActivity() {
                         }
 
                         ibLike.setOnClickListener{
-                                val intent = Intent(this@HomeActivity, WishListActivity::class.java)
-                                intent.putExtra("productID", product_id1)
-                                startActivity(intent)
+                            addToWishlist(product_id1)
+                            if (wishlistItem2 != null) {
+                                if (wishlistItem2.selected == true) {
+                                    ibLike.setImageResource(R.drawable.ic_wishlist_unselected)
+                                    wishlistItem2.selected = false
+                                } else if(wishlistItem2.selected == false){
+                                    ibLike.setImageResource(R.drawable.ic_wishlist_selected)
+                                    wishlistItem2.selected = true
+                                }
+                            }
+
                         }
                         ibLike1.setOnClickListener{
-                            val intent = Intent(this@HomeActivity, WishListActivity::class.java)
-                            intent.putExtra("productID", product_id2)
-                            startActivity(intent)
+                            addToWishlist(product_id2)
+                            if (wishlistItem2 != null) {
+                                if (wishlistItem2.selected == true) {
+                                    ibLike1.setImageResource(R.drawable.ic_wishlist_unselected)
+                                    wishlistItem2.selected = false
+                                } else if(wishlistItem2.selected == false){
+                                    ibLike1.setImageResource(R.drawable.ic_wishlist_selected)
+                                    wishlistItem2.selected = true
+                                }
+                            }
                         }
                         //chuyển activ khi click
                         ibCart.setOnClickListener(){
@@ -387,16 +402,30 @@ class HomeActivity : AppCompatActivity() {
                                 ibLike1.setImageResource(R.drawable.ic_wishlist_unselected)
                             }
                         }
-
                         ibLike.setOnClickListener{
-                            val intent = Intent(this@HomeActivity, WishListActivity::class.java)
-                            intent.putExtra("productID", product_id1)
-                            startActivity(intent)
+                            addToWishlist(product_id1)
+                            if (wishlistItem2 != null) {
+                                if (wishlistItem2.selected == true) {
+                                    ibLike.setImageResource(R.drawable.ic_wishlist_unselected)
+                                    wishlistItem2.selected = false
+                                } else if(wishlistItem2.selected == false){
+                                    ibLike.setImageResource(R.drawable.ic_wishlist_selected)
+                                    wishlistItem2.selected = true
+                                }
+                            }
+
                         }
                         ibLike1.setOnClickListener{
-                            val intent = Intent(this@HomeActivity, WishListActivity::class.java)
-                            intent.putExtra("productID", product_id2)
-                            startActivity(intent)
+                            addToWishlist(product_id2)
+                            if (wishlistItem2 != null) {
+                                if (wishlistItem2.selected == true) {
+                                    ibLike1.setImageResource(R.drawable.ic_wishlist_unselected)
+                                    wishlistItem2.selected = false
+                                } else if(wishlistItem2.selected == false){
+                                    ibLike1.setImageResource(R.drawable.ic_wishlist_selected)
+                                    wishlistItem2.selected = true
+                                }
+                            }
                         }
                         //chuyển activ khi click
                         ibCart.setOnClickListener(){
@@ -476,6 +505,72 @@ class HomeActivity : AppCompatActivity() {
 
             override fun onCancelled(error: DatabaseError) {
                 Log.e("HomeActivity", "Lỗi tải dữ liệu yêu thích: ${error.message}")
+            }
+        })
+    }
+    //cua the lo
+    private fun addToWishlist(productId: String) {
+        dbRef.child("Wishlist").addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val existingWishlist = snapshot.children.find {
+                    val wishlistUserId = it.child("userid").getValue(String::class.java) ?: ""
+                    val wishlistProductId = it.child("productid").getValue(String::class.java) ?: ""
+                    wishlistUserId == uid && wishlistProductId == productId
+                }
+                if (existingWishlist == null) {
+                    val WishlistId = dbRef.child("Wishlist").push().key ?: return
+                    val wishlistItem = Wishlist(
+                        id = WishlistId,
+                        userid = uid,
+                        productid = productId,
+                        selected = true,
+                    )
+                    dbRef.child("Wishlist").child(WishlistId).setValue(wishlistItem)
+                        .addOnSuccessListener {
+                            Toast.makeText(
+                                this@HomeActivity,
+                                "Sản phẩm đã được thêm vào yêu thích!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(
+                                this@HomeActivity,
+                                "Lỗi khi thêm yêu thích: ${e.message}",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                }else {
+                    val wishlistId = existingWishlist.key ?: return
+                    val Selectted =
+                        existingWishlist.child("selected").getValue(Boolean::class.java) ?: false
+
+                    if (Selectted == false){
+                        dbRef.child("Wishlist").child(wishlistId).child("selected")
+                            .setValue(true)
+                    } else{
+                        dbRef.child("Wishlist").child(wishlistId).child("selected")
+                            .setValue(false)
+                    }
+                        .addOnSuccessListener {
+                            Toast.makeText(
+                                this@HomeActivity,
+                                "Cập nhật thành công!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(
+                                this@HomeActivity,
+                                "Lỗi khi cập nhật số lượng: ${e.message}",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@HomeActivity, "Lỗi: ${error.message}", Toast.LENGTH_SHORT)
+                    .show()
             }
         })
     }
