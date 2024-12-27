@@ -15,8 +15,11 @@
         android:theme="@style/Theme.Nhom3_Project"
         tools:targetApi="31">
         <activity
+            android:name=".CommentHistoryActivity"
+            android:exported="false" />
+        <activity
             android:name=".EditCustomer"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".WishListActivity"
             android:exported="false" />
@@ -63,7 +66,6 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity
-
             android:name=".SearchActivity"
             android:exported="false" />
         <activity

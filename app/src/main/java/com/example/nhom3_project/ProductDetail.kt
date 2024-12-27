@@ -343,6 +343,7 @@ class ProductDetail : AppCompatActivity() {
             })
     }
 
+}
     private fun updateProductRating() {
 //        val productId = getProductID ?: return
 //        val commentsRef = FirebaseDatabase.getInstance().getReference("Comments")
@@ -382,4 +383,3 @@ class ProductDetail : AppCompatActivity() {
 //                }
 //            })
     }
-}

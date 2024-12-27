@@ -25,6 +25,7 @@ class AccountActivity : AppCompatActivity() {
     private lateinit var databaseReference: DatabaseReference
     private lateinit var tvHTQL: TextView
     private lateinit var btnLogout: com.google.android.material.card.MaterialCardView
+    private lateinit var commentHistory: LinearLayout
     private lateinit var navbarBott: BottomNavigationView
     private lateinit var phanquyen: LinearLayout
     private lateinit var accountDetail: LinearLayout
@@ -44,6 +45,7 @@ class AccountActivity : AppCompatActivity() {
         btnLogout = findViewById(R.id.btnLogout)
         phanquyen = findViewById(R.id.phanquyen)
         accountDetail = findViewById(R.id.accountDetail)
+        commentHistory = findViewById(R.id.commentHistory)
         //nav
         navbarBott = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
@@ -55,6 +57,10 @@ class AccountActivity : AppCompatActivity() {
         checkUserRole()
         accountDetail.setOnClickListener {
             val intent = Intent(this, AccountDetailActivity::class.java)
+            startActivity(intent)
+        }
+        commentHistory.setOnClickListener {
+            val intent = Intent(this, CommentHistoryActivity::class.java)
             startActivity(intent)
         }
         tvHTQL.setOnClickListener {
@@ -98,11 +104,13 @@ class AccountActivity : AppCompatActivity() {
                     // Xử lý khi chọn Search
                     true
                 }
+
                 R.id.nav_wishlist -> {
                     val intent = Intent(this, WishListActivity::class.java)
                     startActivity(intent)
                     true
                 }
+
                 R.id.nav_shoppingcart -> {
                     // Chuyển
                     val intent = Intent(this, CartActivity::class.java)

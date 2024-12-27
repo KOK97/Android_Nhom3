@@ -7,5 +7,7 @@ data class Comment(
     val productId: String = "",
     val rating: Float = 0f,
     val content: String = "",
-    val timestamp: Long = System.currentTimeMillis()
+    val timestamp: Long = System.currentTimeMillis(),
+    val productName: String = "",
+    val productImage: String = ""
 )
