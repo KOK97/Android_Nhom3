@@ -30,11 +30,11 @@ class CommentHistoryActivity : AppCompatActivity() {
         setContentView(R.layout.activity_comment_history)
 
         mAuth = FirebaseAuth.getInstance()
-        setUpViews()
-        loadUserComments()
+        setControl()
+        setEvent()
     }
 
-    private fun setUpViews() {
+    private fun setControl() {
         rvUserComments = findViewById(R.id.rvUserComments)
         ivBack = findViewById(R.id.ivBack)
         ivEmpty = findViewById(R.id.ivEmpty)
@@ -49,10 +49,10 @@ class CommentHistoryActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadUserComments() {
+    private fun setEvent() {
         val currentUser = mAuth.currentUser
         if (currentUser == null) {
-            showEmptyState()
+            showIvEmpty()
             return
         }
 
@@ -65,7 +65,6 @@ class CommentHistoryActivity : AppCompatActivity() {
                     for (commentSnapshot in snapshot.children) {
                         val comment = commentSnapshot.getValue(Comment::class.java)
                         comment?.let {
-                            // Tải thông tin sản phẩm cho mỗi comment
                             loadProductInfo(it) { commentWithProduct ->
                                 comments.add(commentWithProduct)
                                 if (comments.size == snapshot.childrenCount.toInt()) {
@@ -76,13 +75,13 @@ class CommentHistoryActivity : AppCompatActivity() {
                     }
 
                     if (snapshot.childrenCount == 0L) {
-                        showEmptyState()
+                        showIvEmpty()
                     }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
                     Log.e("Comments", "Error loading comments", error.toException())
-                    showEmptyState()
+                    showIvEmpty()
                 }
             })
     }
@@ -111,27 +110,27 @@ class CommentHistoryActivity : AppCompatActivity() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                onComplete(comment) // Return original comment if error
+                onComplete(comment)
             }
         })
     }
 
     private fun updateUI(comments: List<Comment>) {
         if (comments.isEmpty()) {
-            showEmptyState()
+            showIvEmpty()
         } else {
-            hideEmptyState()
+            hideIvEmpty()
             commentAdapter.submitList(comments)
         }
     }
 
-    private fun showEmptyState() {
+    private fun showIvEmpty() {
         rvUserComments.visibility = View.GONE
         ivEmpty.visibility = View.VISIBLE
         tvEmpty.visibility = View.VISIBLE
     }
 
-    private fun hideEmptyState() {
+    private fun hideIvEmpty() {
         rvUserComments.visibility = View.VISIBLE
         ivEmpty.visibility = View.GONE
         tvEmpty.visibility = View.GONE
